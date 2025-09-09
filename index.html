@@ -1,98 +1,459 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Affiliate Metrics Dashboard</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Affiliate Leaderboard</title>
+
+  <!-- PapaParse for CSV parsing -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <!-- Chart.js for charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
   <style>
-    body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; }
-    h1 { text-align: center; }
-    input { margin: 10px 0; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background: #f2f2f2; }
+    :root{
+      --bg:#0b0f13; --panel:#0f1720; --muted:#9aa6b2; --accent:#38bdf8; --accent-2:#7c3aed; --card:#0b1220;
+      color-scheme: dark;
+    }
+    body.light { --bg:#f6f8fb; --panel:#ffffff; --muted:#4b5563; --accent:#0ea5e9; --accent-2:#8b5cf6; --card:#ffffff; color-scheme: light;}
+    body{ background:linear-gradient(180deg,var(--bg), #020409); color:#e6eef6; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; padding:16px;}
+    .wrap{ max-width:1200px; margin:0 auto; }
+    header{ display:flex; gap:12px; align-items:center; margin-bottom:12px;}
+    h1{ font-size:18px; margin:0;}
+    .toolbar{ margin-left:auto; display:flex; gap:8px; align-items:center; }
+    .card{ background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border:1px solid rgba(255,255,255,0.03); padding:12px; border-radius:12px; margin-bottom:12px;}
+    input[type=file]{ color:transparent;}
+    button, .btn{ background:var(--accent); color:#072026; border:none; padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:600;}
+    .btn-muted{ background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04)}
+    .row{ display:flex; gap:12px; }
+    .col{ flex:1; }
+    table{ width:100%; border-collapse:collapse; font-size:13px;}
+    th, td{ padding:8px; border-bottom:1px solid rgba(255,255,255,0.03); text-align:left; }
+    th{ color:var(--muted); font-weight:600; font-size:12px; }
+    .small{ font-size:12px; color:var(--muted); }
+    .input, input[type=text], input[type=number], select { padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit;}
+    .muted{ color:var(--muted); }
+    .flex-end{ display:flex; justify-content:flex-end; align-items:center; gap:8px;}
+    .tag{ background:rgba(255,255,255,0.03); padding:4px 8px; border-radius:999px; font-size:12px;}
+    .toggle{ cursor:pointer; padding:6px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); }
+    .link{ color:var(--accent); text-decoration:underline; cursor:pointer;}
+    .editable{ background:transparent; border:none; color:inherit; font-weight:700; text-align:right; width:100px;}
+    @media (max-width:900px){ .row{ flex-direction:column;} }
   </style>
 </head>
 <body>
-  <h1>Affiliate Metrics Dashboard</h1>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Affiliate Leaderboard — Upload & Track</h1>
+        <div class="small muted">Upload user CSVs, build a leaderboard, and graph earnings over time. Runs completely in your browser.</div>
+      </div>
 
-  <p>Upload your <strong>campaign CSV</strong>:</p>
-  <input type="file" id="campaignFile" accept=".csv">
+      <div class="toolbar">
+        <div class="muted small" id="savedLabel">No data loaded</div>
+        <div class="toggle" id="themeToggle">Toggle Light</div>
+      </div>
+    </header>
 
-  <p>Upload your <strong>users CSV</strong>:</p>
-  <input type="file" id="usersFile" accept=".csv">
+    <section class="card">
+      <div class="row">
+        <div class="col">
+          <label class="small muted">Choose CSV files (user-level). You can select multiple files. Expected: username, created_at (UTC), value (USD) or similar.</label><br>
+          <input id="fileInput" type="file" multiple accept=".csv" />
+        </div>
 
-  <h2>Summary</h2>
-  <div id="summary"></div>
+        <div style="width:320px">
+          <div style="display:flex; gap:8px; margin-bottom:8px;">
+            <div style="flex:1">
+              <label class="small muted">Commission rate (0–1)</label><br>
+              <input id="commissionRate" class="input" type="number" step="0.01" min="0" max="1" value="0.30" />
+            </div>
+            <div style="flex:1">
+              <label class="small muted">Import mode</label><br>
+              <select id="dateMode" class="input">
+                <option value="row">Use row date when present</option>
+                <option value="import">Assign to import (upload) date</option>
+              </select>
+            </div>
+          </div>
 
-  <h2>User Search</h2>
-  <input type="text" id="searchUser" placeholder="Enter username (e.g. nur1988)">
-  <button onclick="findUser()">Search</button>
-  <div id="userResult"></div>
+          <div style="display:flex; gap:8px;">
+            <button id="appendBtn" class="btn">Append (default)</button>
+            <button id="replaceBtn" class="btn btn-muted">Replace data</button>
+          </div>
 
-  <script>
-    let campaignData = null;
-    let usersData = [];
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <button id="exportBtn" class="btn btn-muted">Export leaderboard CSV</button>
+            <button id="clearBtn" class="btn btn-muted">Clear all</button>
+          </div>
+        </div>
+      </div>
 
-    function parseFile(file, callback) {
-      Papa.parse(file, {
-        header: true,
-        dynamicTyping: true,
-        complete: (results) => callback(results.data)
-      });
+      <div class="small muted" style="margin-top:8px;">
+        Tips: If many rows show the same, incorrect date, choose <strong>Import date</strong> so new uploads are attributed to the week you imported them.
+      </div>
+    </section>
+
+    <!-- KPIs -->
+    <section class="row">
+      <div class="col card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div><strong>Leaderboard</strong><div class="small muted">Sorted by estimated commission</div></div>
+          <div class="small muted">Show top <input id="topCount" type="number" value="20" style="width:56px" /> users</div>
+        </div>
+
+        <div style="overflow:auto; max-height:420px;">
+          <table id="leaderboardTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Total Value (USD)</th>
+                <th>Entries</th>
+                <th>Est. Commission</th>
+                <th>Observed Comm. (edit)</th>
+                <th>First seen</th>
+                <th>Last seen</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="col" style="display:flex; flex-direction:column; gap:12px;">
+        <div class="card" style="height:240px;">
+          <strong>Top users (bar)</strong>
+          <canvas id="barChart" style="width:100%; height:160px;"></canvas>
+        </div>
+
+        <div class="card" style="height:240px;">
+          <strong>Earnings over time (est. commission)</strong>
+          <canvas id="timeChart" style="width:100%; height:160px;"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Summary -->
+    <section class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div class="small muted">Total unique users</div>
+          <div id="totalUsers" style="font-size:20px; font-weight:700">0</div>
+        </div>
+        <div>
+          <div class="small muted">Total value (USD)</div>
+          <div id="totalValue" style="font-size:20px; font-weight:700">$0.00</div>
+        </div>
+        <div>
+          <div class="small muted">Total est. commission</div>
+          <div id="totalEst" style="font-size:20px; font-weight:700">$0.00</div>
+        </div>
+        <div>
+          <div class="small muted">Total observed commission</div>
+          <div id="totalObs" style="font-size:20px; font-weight:700">$0.00</div>
+        </div>
+
+        <div style="text-align:right;">
+          <div class="small muted">Imports</div>
+          <div id="importCount" style="font-weight:700">0</div>
+        </div>
+      </div>
+    </section>
+
+    <footer style="margin-top:12px; color:var(--muted); font-size:13px;" class="small muted">
+      This runs locally in your browser — nothing is uploaded to any server. If row dates look incorrect, use <strong>Import date</strong> mode when importing.
+    </footer>
+  </div>
+
+<script>
+(() => {
+  // --- state & helpers ---
+  const LS_KEY = 'affiliate_leaderboard_v1';
+  let state = loadState() || { users: {}, imports: [] }; // users keyed by username
+  let barChart = null, timeChart = null;
+
+  const formatMoney = (n) => '$' + Number(n||0).toLocaleString(undefined, {maximumFractionDigits:2});
+  const fmtDate = d => d ? (new Date(d)).toLocaleDateString() : '';
+  const parseAnyDate = (val) => {
+    if (!val && val !== 0) return null;
+    // already Date?
+    if (val instanceof Date && !isNaN(val)) return val;
+    // ISO / standard parse
+    let d = new Date(String(val));
+    if (!isNaN(d)) return d;
+    // try common formats dd/mm/yyyy or dd-mm-yyyy
+    const s = String(val).trim();
+    let m;
+    m = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/);
+    if (m) {
+      // assume dd/mm/yyyy
+      const dd = parseInt(m[1],10), mm=parseInt(m[2],10)-1, yy=parseInt(m[3],10);
+      const yy4 = yy < 100 ? (yy > 50 ? 1900+yy : 2000+yy) : yy;
+      d = new Date(yy4, mm, dd);
+      if (!isNaN(d)) return d;
     }
-
-    document.getElementById("campaignFile").addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      parseFile(file, (rows) => {
-        campaignData = rows[0]; // only one row in campaign file
-        updateSummary();
-      });
-    });
-
-    document.getElementById("usersFile").addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      parseFile(file, (rows) => {
-        usersData = rows;
-        updateSummary();
-      });
-    });
-
-    function updateSummary() {
-      if (!campaignData || !usersData.length) return;
-      const referred = campaignData.referred_users;
-      const depositors = campaignData.first_time_depositors;
-      const commission = campaignData["overall_commission (USD)"];
-      const totalValue = usersData.reduce((sum, r) => sum + (Number(r["value (USD)"]) || 0), 0);
-
-      const html = `
-        <table>
-          <tr><th>Referred Users</th><td>${referred}</td></tr>
-          <tr><th>First-time Depositors</th><td>${depositors}</td></tr>
-          <tr><th>Total Value (from users file)</th><td>$${totalValue.toFixed(2)}</td></tr>
-          <tr><th>Overall Commission (from campaign file)</th><td>$${commission}</td></tr>
-        </table>
-      `;
-      document.getElementById("summary").innerHTML = html;
-    }
-
-    function findUser() {
-      const q = document.getElementById("searchUser").value.trim();
-      if (!q) return;
-      const rows = usersData.filter(r => (r.username || "").toLowerCase() === q.toLowerCase());
-      if (!rows.length) {
-        document.getElementById("userResult").innerHTML = "<p>No data found.</p>";
-        return;
+    // try numbers (excel timestamp)
+    if (/^\d+$/.test(s)) {
+      const num = Number(s);
+      // unix seconds?
+      if (num > 1e10) return new Date(num); // ms
+      if (num > 1e9) return new Date(num*1000); // s
+      // excel serial (days since 1899-12-31)
+      if (num < 60000) {
+        const excelEpoch = new Date(1899,11,30);
+        return new Date(excelEpoch.getTime() + num*24*60*60*1000);
       }
-      let total = 0;
-      let table = "<table><tr><th>Campaign</th><th>Username</th><th>Date</th><th>Value (USD)</th></tr>";
-      rows.forEach(r => {
-        total += Number(r["value (USD)"]) || 0;
-        table += `<tr><td>${r.campaign}</td><td>${r.username}</td><td>${r["created_at (UTC)"]}</td><td>${r["value (USD)"]}</td></tr>`;
-      });
-      table += `<tr><th colspan=3>Total</th><th>$${total.toFixed(2)}</th></tr></table>`;
-      document.getElementById("userResult").innerHTML = table;
     }
-  </script>
+    return null;
+  };
+
+  function loadState(){
+    try { return JSON.parse(localStorage.getItem(LS_KEY)); } catch(e){ return null; }
+  }
+  function saveState(){
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+    document.getElementById('savedLabel').textContent = `${state.imports.length} imports • ${Object.keys(state.users).length} users`;
+  }
+
+  // --- mapping helpers for flexible CSV headers ---
+  function findKey(obj, patterns){
+    const keys = Object.keys(obj || {});
+    for (const p of patterns){
+      const pat = p.toLowerCase();
+      for (const k of keys){
+        if (k.toLowerCase() === pat) return k;
+      }
+    }
+    // fallback: contains
+    for (const p of patterns){
+      const pat = p.toLowerCase();
+      for (const k of keys){
+        if (k.toLowerCase().includes(pat)) return k;
+      }
+    }
+    return null;
+  }
+
+  // --- import function ---
+  async function importFiles(files, { append=true, importDateMode='row', commissionRate=0.30 }){
+    if (!files || files.length === 0) return;
+    const importMeta = { id: Date.now(), date: new Date().toISOString(), files: [], rows: 0 };
+    if (!append) { state = { users: {}, imports: [] }; } // reset
+
+    for (const file of files){
+      const res = await new Promise((resolve) => {
+        Papa.parse(file, { header:true, dynamicTyping:true, skipEmptyLines:true, complete: (r)=>resolve(r) });
+      });
+      const rows = res.data || [];
+      importMeta.files.push({ name: file.name, rows: rows.length });
+      importMeta.rows += rows.length;
+
+      // for each row normalize
+      for (const row of rows){
+        // header guesses
+        const usernameKey = findKey(row, ['username','user','player','playername','account']);
+        const valueKey = findKey(row, ['value (usd)','value_usd','value','amount','revenue','net']);
+        const dateKey = findKey(row, ['created_at (utc)','created_at','created','date','date_created','timestamp']);
+
+        const username = (usernameKey ? String(row[usernameKey]).trim() : '').toLowerCase();
+        if (!username) continue;
+        const rawVal = valueKey ? row[valueKey] : (row.value || row.amount || 0);
+        const value = Number(rawVal) || 0;
+
+        let rowDate = parseAnyDate(dateKey ? row[dateKey] : null);
+        if (!rowDate) rowDate = null;
+
+        // if importDateMode is import, set the rowDate to import date
+        const usedDate = importDateMode === 'import' ? new Date(importMeta.date) : (rowDate || new Date(importMeta.date));
+
+        // aggregate into state.users
+        const u = state.users[username] || { username, total_value:0, entries:0, first_seen:null, last_seen:null, observed_commission:0 };
+        u.entries += 1;
+        u.total_value = Number((u.total_value || 0) + value);
+        // usedDate may be null; if so, preserve existing
+        if (usedDate) {
+          const fs = u.first_seen ? new Date(u.first_seen) : null;
+          const ls = u.last_seen ? new Date(u.last_seen) : null;
+          if (!fs || usedDate < fs) u.first_seen = usedDate.toISOString();
+          if (!ls || usedDate > ls) u.last_seen = usedDate.toISOString();
+        }
+        state.users[username] = u;
+      }
+    }
+
+    state.imports.push(importMeta);
+    saveState();
+    renderAll(commissionRate);
+  }
+
+  // --- UI render ---
+  function renderAll(commissionRate = Number(document.getElementById('commissionRate').value || 0.30)){
+    const usersArr = Object.values(state.users);
+    const topN = Math.max(1, Number(document.getElementById('topCount').value || 20));
+
+    // compute derived fields
+    usersArr.forEach(u => {
+      u.est_commission = (u.total_value || 0) * commissionRate;
+      // observed_commission may be stored; leave as-is
+      u.obs_commission = Number(u.observed_commission || 0);
+    });
+
+    // sort by est_commission desc
+    usersArr.sort((a,b) => (b.est_commission || 0) - (a.est_commission||0));
+
+    // leaderboard
+    const tbody = document.querySelector('#leaderboardTable tbody');
+    tbody.innerHTML = '';
+    usersArr.slice(0, topN).forEach((u,i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${i+1}</td>
+        <td><span class="tag">${escapeHtml(u.username)}</span></td>
+        <td>${formatMoney(u.total_value)}</td>
+        <td>${u.entries}</td>
+        <td>${formatMoney(u.est_commission)}</td>
+        <td><input data-user="${escapeHtml(u.username)}" class="editable" value="${(u.obs_commission||'').toFixed ? (u.obs_commission||0).toFixed(2) : (u.obs_commission||0)}" /></td>
+        <td>${fmtDate(u.first_seen)}</td>
+        <td>${fmtDate(u.last_seen)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // hook editable inputs
+    tbody.querySelectorAll('.editable').forEach(inp => {
+      inp.addEventListener('change', (e) => {
+        const user = e.target.dataset.user.toLowerCase();
+        const val = parseFloat(e.target.value) || 0;
+        if (state.users[user]){
+          state.users[user].observed_commission = val;
+          saveState();
+          renderAll();
+        }
+      });
+    });
+
+    // top bar chart (by total_value)
+    const topUsers = usersArr.slice(0, Math.min(50, usersArr.length));
+    const labels = topUsers.map(u => u.username);
+    const dataValues = topUsers.map(u => Number((u.total_value||0).toFixed(2)));
+    drawBarChart(labels, dataValues);
+
+    // time series: aggregate est_commission by day
+    const useImportDates = (document.getElementById('dateMode').value === 'import');
+    const dateBuckets = {}; // YYYY-MM-DD -> sum est_commission
+    // we need individual row dates but we didn't keep all rows; we will attribute entire user's est_commission to last_seen date as a proxy
+    // Better: sum per user's last_seen date (good enough for tracking weekly imports)
+    usersArr.forEach(u => {
+      const dateKey = u.last_seen ? (new Date(u.last_seen)).toISOString().slice(0,10) : (state.imports.length ? state.imports[state.imports.length-1].date.slice(0,10) : (new Date()).toISOString().slice(0,10));
+      dateBuckets[dateKey] = (dateBuckets[dateKey] || 0) + (u.est_commission || 0);
+    });
+
+    // sort dates
+    const sortedDates = Object.keys(dateBuckets).sort();
+    const timeLabels = sortedDates;
+    const timeData = sortedDates.map(d => Number((dateBuckets[d]||0).toFixed(2)));
+    drawTimeChart(timeLabels, timeData);
+
+    // totals
+    const totalUsers = usersArr.length;
+    const totalValue = usersArr.reduce((s,u)=> s + (u.total_value||0), 0);
+    const totalEst = usersArr.reduce((s,u)=> s + (u.est_commission||0), 0);
+    const totalObs = usersArr.reduce((s,u)=> s + (Number(u.observed_commission)||0), 0);
+    document.getElementById('totalUsers').textContent = totalUsers;
+    document.getElementById('totalValue').textContent = formatMoney(totalValue);
+    document.getElementById('totalEst').textContent = formatMoney(totalEst);
+    document.getElementById('totalObs').textContent = formatMoney(totalObs);
+    document.getElementById('importCount').textContent = state.imports.length;
+  }
+
+  // --- chart helpers ---
+  function drawBarChart(labels, values){
+    const ctx = document.getElementById('barChart').getContext('2d');
+    if (barChart) barChart.destroy();
+    barChart = new Chart(ctx, {
+      type:'bar',
+      data: { labels, datasets:[{ label:'Total Value (USD)', data:values }] },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
+    });
+  }
+  function drawTimeChart(labels, values){
+    const ctx = document.getElementById('timeChart').getContext('2d');
+    if (timeChart) timeChart.destroy();
+    timeChart = new Chart(ctx, {
+      type:'line',
+      data:{ labels, datasets:[{ label:'Estimated Commission (USD)', data:values, tension:0.25, fill:true }] },
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false }}, scales:{ x:{ type:'category' } } }
+    });
+  }
+
+  // --- utils ---
+  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  // --- event wiring ---
+  document.getElementById('fileInput').addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    const append = true; // default append
+    const importDateMode = document.getElementById('dateMode').value;
+    const commissionRate = Number(document.getElementById('commissionRate').value || 0.30);
+    await importFiles(files, { append, importDateMode, commissionRate });
+    e.target.value = ''; // clear
+  });
+
+  document.getElementById('appendBtn').addEventListener('click', () => {
+    // just open file dialog
+    document.getElementById('fileInput').click();
+  });
+
+  document.getElementById('replaceBtn').addEventListener('click', () => {
+    // trick: when files selected we will call import with append=false
+    document.getElementById('fileInput').onchange = async (e) => {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
+      const importDateMode = document.getElementById('dateMode').value;
+      const commissionRate = Number(document.getElementById('commissionRate').value || 0.30);
+      await importFiles(files, { append:false, importDateMode, commissionRate });
+      // restore default change to append mode:
+      document.getElementById('fileInput').onchange = null;
+      e.target.value = '';
+    };
+    document.getElementById('fileInput').click();
+  });
+
+  document.getElementById('commissionRate').addEventListener('change', () => renderAll());
+  document.getElementById('topCount').addEventListener('change', () => renderAll());
+  document.getElementById('dateMode').addEventListener('change', () => renderAll());
+
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    if (!confirm('Clear all stored data? This cannot be undone.')) return;
+    state = { users: {}, imports: [] };
+    saveState();
+    renderAll();
+  });
+
+  document.getElementById('exportBtn').addEventListener('click', () => {
+    const rows = [['username','total_value','entries','first_seen','last_seen','est_commission','observed_commission']];
+    for (const u of Object.values(state.users)){
+      rows.push([u.username, (u.total_value||0).toFixed(2), u.entries, u.first_seen||'', u.last_seen||'', ((u.total_value||0)*(Number(document.getElementById('commissionRate').value||0.30))).toFixed(2), (u.observed_commission||0).toFixed(2)]);
+    }
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'leaderboard_export.csv'; a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  // theme toggle
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    themeToggle.textContent = document.body.classList.contains('light') ? 'Toggle Dark' : 'Toggle Light';
+  });
+
+  // initial render
+  saveState();
+  renderAll(Number(document.getElementById('commissionRate').value||0.30));
+})();
+</script>
 </body>
 </html>
