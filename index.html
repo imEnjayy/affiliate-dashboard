@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Affiliate Metrics Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; }
+    h1 { text-align: center; }
+    input { margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Affiliate Metrics Dashboard</h1>
+
+  <p>Upload your <strong>campaign CSV</strong>:</p>
+  <input type="file" id="campaignFile" accept=".csv">
+
+  <p>Upload your <strong>users CSV</strong>:</p>
+  <input type="file" id="usersFile" accept=".csv">
+
+  <h2>Summary</h2>
+  <div id="summary"></div>
+
+  <h2>User Search</h2>
+  <input type="text" id="searchUser" placeholder="Enter username (e.g. nur1988)">
+  <button onclick="findUser()">Search</button>
+  <div id="userResult"></div>
+
+  <script>
+    let campaignData = null;
+    let usersData = [];
+
+    function parseFile(file, callback) {
+      Papa.parse(file, {
+        header: true,
+        dynamicTyping: true,
+        complete: (results) => callback(results.data)
+      });
+    }
+
+    document.getElementById("campaignFile").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      parseFile(file, (rows) => {
+        campaignData = rows[0]; // only one row in campaign file
+        updateSummary();
+      });
+    });
+
+    document.getElementById("usersFile").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      parseFile(file, (rows) => {
+        usersData = rows;
+        updateSummary();
+      });
+    });
+
+    function updateSummary() {
+      if (!campaignData || !usersData.length) return;
+      const referred = campaignData.referred_users;
+      const depositors = campaignData.first_time_depositors;
+      const commission = campaignData["overall_commission (USD)"];
+      const totalValue = usersData.reduce((sum, r) => sum + (Number(r["value (USD)"]) || 0), 0);
+
+      const html = `
+        <table>
+          <tr><th>Referred Users</th><td>${referred}</td></tr>
+          <tr><th>First-time Depositors</th><td>${depositors}</td></tr>
+          <tr><th>Total Value (from users file)</th><td>$${totalValue.toFixed(2)}</td></tr>
+          <tr><th>Overall Commission (from campaign file)</th><td>$${commission}</td></tr>
+        </table>
+      `;
+      document.getElementById("summary").innerHTML = html;
+    }
+
+    function findUser() {
+      const q = document.getElementById("searchUser").value.trim();
+      if (!q) return;
+      const rows = usersData.filter(r => (r.username || "").toLowerCase() === q.toLowerCase());
+      if (!rows.length) {
+        document.getElementById("userResult").innerHTML = "<p>No data found.</p>";
+        return;
+      }
+      let total = 0;
+      let table = "<table><tr><th>Campaign</th><th>Username</th><th>Date</th><th>Value (USD)</th></tr>";
+      rows.forEach(r => {
+        total += Number(r["value (USD)"]) || 0;
+        table += `<tr><td>${r.campaign}</td><td>${r.username}</td><td>${r["created_at (UTC)"]}</td><td>${r["value (USD)"]}</td></tr>`;
+      });
+      table += `<tr><th colspan=3>Total</th><th>$${total.toFixed(2)}</th></tr></table>`;
+      document.getElementById("userResult").innerHTML = table;
+    }
+  </script>
+</body>
+</html>
