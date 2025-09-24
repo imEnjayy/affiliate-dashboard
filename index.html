@@ -1,35 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Top 25 Wins — GamblePnl</title>
+  <style>
+    body{margin:0;font-family:sans-serif;background:#0d1117;color:#e6edf3}
+    .wrap{max-width:1000px;margin:30px auto;padding:20px}
+    h1{font-size:24px;margin-bottom:12px}
+    input[type=file],button{padding:6px 10px;margin:4px 4px 4px 0;border-radius:6px;border:1px solid #444;background:#161b22;color:#ccc;cursor:pointer}
+    button:hover{background:#1f2733}
+    #progress{margin-top:8px;font-size:14px;color:#aaa}
+    table{width:100%;border-collapse:collapse;margin-top:20px}
+    th,td{padding:8px 10px;text-align:left;font-size:14px}
+    th{background:#161b22;color:#aaa}
+    tr:nth-child(even){background:#161b22}
+    .positive{color:#10b981;font-weight:600}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Top 25 Wins</h1>
+  <p>Upload your bet archive JSON files. Then click <b>Load Data</b> to refresh the table.</p>
+  <input id="fileInput" type="file" accept="application/json" multiple />
+  <button id="btnLoad">Load Data</button>
+  <button id="btnClear">Clear Data</button>
+  <div id="progress"></div>
+
+  <table id="winsTable" style="display:none">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>Game</th>
+        <th>Stake</th>
+        <th>Payout</th>
+        <th>Profit</th>
+        <th>Multiplier</th>
+        <th>Currency</th>
+      </tr>
+    </thead>
+    <tbody id="winsBody"></tbody>
+  </table>
+</div>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const LS_KEY = "gambles:records:v7";
+  const LS_KEY = "gambles:records:v8";
+  const progressEl = document.getElementById("progress");
 
   function parseDate(val){
-    if (!val) return null;
-    if (typeof val === "number"){
-      return new Date(val > 1e12 ? val : val*1000);
-    }
-    const d = new Date(val);
-    return isNaN(d) ? null : d;
+    try{
+      if (!val) return null;
+      if (typeof val === "number"){
+        return new Date(val > 1e12 ? val : val*1000);
+      }
+      const d = new Date(val);
+      return isNaN(d) ? null : d;
+    }catch{ return null; }
   }
 
   function normalizeRecord(raw){
-    const d = raw.data || {};
-    const stake = Number(d.amount || 0);
-    const payout = Number(d.payout || 0);
-    const profit = payout - stake;
-    const dateObj = parseDate(d.createdAt) || parseDate(raw.created_at);
-    return {
-      game: d.gameName || "Unknown",
-      stake,
-      payout,
-      profit,
-      multiplier: (d.payoutMultiplier != null) ? Number(d.payoutMultiplier) : null,
-      currency: d.currency || "",
-      date: dateObj ? dateObj.toISOString() : null
-    };
+    try{
+      const d = raw.data || {};
+      const stake = Number(d.amount || 0);
+      const payout = Number(d.payout || 0);
+      const profit = payout - stake;
+      const dateObj = parseDate(d.createdAt) || parseDate(raw.created_at);
+      return {
+        game: d.gameName || "Unknown",
+        stake,
+        payout,
+        profit,
+        multiplier: (d.payoutMultiplier != null) ? Number(d.payoutMultiplier) : null,
+        currency: d.currency || "",
+        date: dateObj ? dateObj.toISOString() : null
+      };
+    }catch(e){
+      console.error("Normalize fail", e, raw);
+      return null;
+    }
   }
 
   function renderTopWins(records){
-    const wins = records.filter(r => r.profit > 0)
+    const wins = records.filter(r => r && r.profit > 0)
                         .sort((a,b)=> b.profit - a.profit)
                         .slice(0,25);
     const tbody = document.getElementById("winsBody");
@@ -51,36 +105,37 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("winsTable").style.display = wins.length ? "table" : "none";
   }
 
-  // --- NEW: sequential file processing ---
-  async function processFilesSequentially(fileList){
+  async function processFilesSequentially(files){
     const parsed = [];
-    for (const f of fileList){
+    for (let i=0;i<files.length;i++){
+      const f = files[i];
+      progressEl.textContent = `Processing file ${i+1} of ${files.length} (${f.name})...`;
       try{
         const txt = await f.text();
         const json = JSON.parse(txt);
-        if (Array.isArray(json)) {
-          json.forEach(item => parsed.push(normalizeRecord(item)));
+        if (Array.isArray(json)){
+          json.forEach(item => {
+            const rec = normalizeRecord(item);
+            if (rec) parsed.push(rec);
+          });
         }
       }catch(e){
         console.error("Parse fail", f.name, e);
       }
     }
+    progressEl.textContent = `Finished processing ${files.length} files. Parsed ${parsed.length} bets.`;
     return parsed;
   }
 
   document.getElementById("fileInput").addEventListener("change", async ev=>{
     const files = ev.target.files;
     if (!files.length) return;
-
-    alert("Processing "+files.length+" files. This may take a while… keep the tab open.");
     const parsed = await processFilesSequentially(files);
-    console.log("Parsed records:", parsed.length);
-
-    if (parsed.length) {
+    if (parsed.length){
       const current = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
       const merged = current.concat(parsed);
       localStorage.setItem(LS_KEY, JSON.stringify(merged));
-      alert("Uploaded "+parsed.length+" bets. Now click 'Load Data'.");
+      alert(`Uploaded ${parsed.length} bets. Click 'Load Data' to refresh the table.`);
     } else {
       alert("No bets parsed. Check console for errors.");
     }
@@ -99,7 +154,9 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem(LS_KEY);
     document.getElementById("winsBody").innerHTML = "";
     document.getElementById("winsTable").style.display = "none";
-    alert("All stored data cleared.");
+    progressEl.textContent = "All stored data cleared.";
   });
 });
 </script>
+</body>
+</html>
