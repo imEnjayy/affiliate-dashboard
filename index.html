@@ -8,21 +8,22 @@
     body{margin:0;font-family:Inter,ui-sans-serif,system-ui;background:#0d1117;color:#e6edf3}
     .wrap{max-width:1000px;margin:30px auto;padding:20px}
     h1{font-size:24px;margin-bottom:12px}
-    input[type=file]{padding:6px;border:1px dashed #555;border-radius:6px;background:#161b22;color:#aaa}
+    input[type=file],button{padding:6px 10px;margin:4px 0;border-radius:6px;border:1px solid #444;background:#161b22;color:#ccc;cursor:pointer}
+    button:hover{background:#1f2733}
     table{width:100%;border-collapse:collapse;margin-top:20px}
     th,td{padding:8px 10px;text-align:left;font-size:14px}
     th{background:#161b22;color:#aaa}
     tr:nth-child(even){background:#161b22}
     .positive{color:#10b981;font-weight:600}
-    .small{font-size:13px;color:#888}
     .lead{color:#aaa;font-size:14px}
   </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Top 25 Wins</h1>
-  <p class="lead">Upload your bet archive JSON files. The table will show your 25 biggest wins.</p>
+  <p class="lead">Upload your bet archive JSON files. Then click <b>Load Data</b> to refresh the table.</p>
   <input id="fileInput" type="file" accept="application/json" multiple />
+  <button id="btnLoad">Load Data</button>
 
   <table id="winsTable" style="display:none">
     <thead>
@@ -106,15 +107,20 @@ document.getElementById("fileInput").addEventListener("change", async ev=>{
       arr.forEach(item => parsed.push(normalizeRecord(item)));
     }catch(e){console.error("Parse fail", f.name, e);}
   }
-  localStorage.setItem(LS_KEY, JSON.stringify(parsed));
-  renderTopWins(parsed);
+  // append to existing dataset in localStorage
+  const current = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+  const merged = current.concat(parsed);
+  localStorage.setItem(LS_KEY, JSON.stringify(merged));
+  alert("Uploaded "+parsed.length+" bets. Click 'Load Data' to refresh the table.");
 });
 
-// load from localStorage on startup
-const saved = localStorage.getItem(LS_KEY);
-if (saved){
-  try{ renderTopWins(JSON.parse(saved)); }catch(e){}
-}
+// Load Data button
+document.getElementById("btnLoad").addEventListener("click", ()=>{
+  const saved = localStorage.getItem(LS_KEY);
+  if (saved){
+    try{ renderTopWins(JSON.parse(saved)); }catch(e){ console.error(e); }
+  }
+});
 </script>
 </body>
 </html>
