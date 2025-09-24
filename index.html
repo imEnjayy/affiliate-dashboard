@@ -1,50 +1,6 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Top 25 Wins — GamblePnl</title>
-  <style>
-    body{margin:0;font-family:sans-serif;background:#0d1117;color:#e6edf3}
-    .wrap{max-width:1000px;margin:30px auto;padding:20px}
-    h1{font-size:24px;margin-bottom:12px}
-    input[type=file],button{padding:6px 10px;margin:4px 4px 4px 0;border-radius:6px;border:1px solid #444;background:#161b22;color:#ccc;cursor:pointer}
-    button:hover{background:#1f2733}
-    table{width:100%;border-collapse:collapse;margin-top:20px}
-    th,td{padding:8px 10px;text-align:left;font-size:14px}
-    th{background:#161b22;color:#aaa}
-    tr:nth-child(even){background:#161b22}
-    .positive{color:#10b981;font-weight:600}
-  </style>
-</head>
-<body>
-<div class="wrap">
-  <h1>Top 25 Wins</h1>
-  <p>Upload your bet archive JSON files. Then click <b>Load Data</b> to refresh the table.</p>
-  <input id="fileInput" type="file" accept="application/json" multiple />
-  <button id="btnLoad">Load Data</button>
-  <button id="btnClear">Clear Data</button>
-
-  <table id="winsTable" style="display:none">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Date</th>
-        <th>Game</th>
-        <th>Stake</th>
-        <th>Payout</th>
-        <th>Profit</th>
-        <th>Multiplier</th>
-        <th>Currency</th>
-      </tr>
-    </thead>
-    <tbody id="winsBody"></tbody>
-  </table>
-</div>
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const LS_KEY = "gambles:records:v6";
+  const LS_KEY = "gambles:records:v7";
 
   function parseDate(val){
     if (!val) return null;
@@ -95,31 +51,38 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("winsTable").style.display = wins.length ? "table" : "none";
   }
 
-  document.getElementById("fileInput").addEventListener("change", async ev=>{
-    const files = ev.target.files;
-    if (!files.length) return;
-    let parsed = [];
-    for (const f of files){
+  // --- NEW: sequential file processing ---
+  async function processFilesSequentially(fileList){
+    const parsed = [];
+    for (const f of fileList){
       try{
         const txt = await f.text();
         const json = JSON.parse(txt);
         if (Array.isArray(json)) {
           json.forEach(item => parsed.push(normalizeRecord(item)));
-        } else {
-          console.warn("Unexpected JSON shape in", f.name);
         }
       }catch(e){
         console.error("Parse fail", f.name, e);
       }
     }
+    return parsed;
+  }
+
+  document.getElementById("fileInput").addEventListener("change", async ev=>{
+    const files = ev.target.files;
+    if (!files.length) return;
+
+    alert("Processing "+files.length+" files. This may take a while… keep the tab open.");
+    const parsed = await processFilesSequentially(files);
     console.log("Parsed records:", parsed.length);
+
     if (parsed.length) {
       const current = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
       const merged = current.concat(parsed);
       localStorage.setItem(LS_KEY, JSON.stringify(merged));
       alert("Uploaded "+parsed.length+" bets. Now click 'Load Data'.");
     } else {
-      alert("No bets parsed. Check console (F12) for details.");
+      alert("No bets parsed. Check console for errors.");
     }
   });
 
@@ -140,5 +103,3 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-</body>
-</html>
