@@ -3,698 +3,506 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Affiliate Leaderboard — History + Find User</title>
-
-  <!-- PapaParse for CSV parsing -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <!-- Chart.js for charts -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
+  <title>GamblePnl — JSON uploader & PnL tracker</title>
   <style>
-    :root{
-      --bg:#071019; --panel:#0b1520; --muted:#9aa6b2; --accent:#3dd3ff; --accent-2:#7c3aed; --card:#071320;
-      color-scheme: dark;
-    }
-    body.light { --bg:#f6f8fb; --panel:#ffffff; --muted:#394249; --accent:#0ea5e9; --accent-2:#8b5cf6; --card:#ffffff; color-scheme: light;}
-    body{ background:linear-gradient(180deg,var(--bg), #020409); color:#e6eef6; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; padding:16px;}
-    .wrap{ max-width:1200px; margin:0 auto; }
-    header{ display:flex; gap:12px; align-items:center; margin-bottom:12px;}
-    h1{ font-size:18px; margin:0;}
-    .toolbar{ margin-left:auto; display:flex; gap:8px; align-items:center; }
-    .card{ background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border:1px solid rgba(255,255,255,0.03); padding:12px; border-radius:12px; margin-bottom:12px;}
-    input[type=file]{ color:transparent;}
-    button, .btn{ background:var(--accent); color:#072026; border:none; padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:600;}
-    .btn-muted{ background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04)}
-    .row{ display:flex; gap:12px; }
-    .col{ flex:1; }
-    table{ width:100%; border-collapse:collapse; font-size:13px;}
-    th, td{ padding:8px; border-bottom:1px solid rgba(255,255,255,0.03); text-align:left; }
-    th{ color:var(--muted); font-weight:600; font-size:12px; position:sticky; top:0; background:var(--panel); }
-    .small{ font-size:12px; color:var(--muted); }
-    .input, input[type=text], input[type=number], select { padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit;}
-    .muted{ color:var(--muted); }
-    .flex-end{ display:flex; justify-content:flex-end; align-items:center; gap:8px;}
-    .tag{ background:rgba(255,255,255,0.03); padding:4px 8px; border-radius:999px; font-size:12px;}
-    .toggle{ cursor:pointer; padding:6px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); }
-    .link{ color:var(--accent); text-decoration:underline; cursor:pointer;}
-    .editable{ background:transparent; border:none; color:inherit; font-weight:700; text-align:right; width:100px;}
-    nav{ display:flex; gap:8px; margin-bottom:12px; }
-    nav button { padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:var(--muted); cursor:pointer;}
-    nav button.active { background:var(--accent); color:#042026; border:none; }
-    .compact { font-size:12px; padding:6px 8px; }
-    @media (max-width:900px){ .row{ flex-direction:column;} table thead th { position:relative; } }
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#06b6d4;--success:#10b981;--danger:#ef4444;--glass: rgba(255,255,255,0.03)}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:linear-gradient(180deg,#071023 0%, #02111a 100%);color:#e6eef6}
+    .wrap{max-width:980px;margin:28px auto;padding:20px}
+    .card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:16px;box-shadow: 0 6px 18px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03)}
+    h1{margin:0 0 6px;font-size:20px}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .col{flex:1 1 220px;min-width:220px}
+    input[type=file]{background:var(--glass);padding:8px;border-radius:8px;border:1px dashed rgba(255,255,255,0.04);color:var(--muted)}
+    button{cursor:pointer;border:0;padding:8px 12px;border-radius:8px;background:var(--accent);color:#042a30;font-weight:600}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+    table{width:100%;border-collapse:collapse}
+    td,th{padding:8px 6px;font-size:14px}
+    th{color:var(--muted);text-align:left;font-weight:600;font-size:13px}
+    .positive{color:var(--success);font-weight:700}
+    .negative{color:var(--danger);font-weight:700}
+    ol{padding-left:20px;margin:6px 0}
+    pre{background:rgba(255,255,255,0.02);padding:8px;border-radius:8px;overflow:auto;font-size:13px}
+    .small{font-size:13px;color:var(--muted)}
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    .top-win{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02)}
+    .muted{color:var(--muted)}
+    .badge{display:inline-block;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,0.02);font-size:12px}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <div>
-        <h1>Affiliate Leaderboard — Persistent History</h1>
-        <div class="small muted">Upload campaign & user CSVs. History saved to your browser. Use Find User & timespan filters.</div>
-      </div>
+    <div class="card">
+      <h1>GamblePnl — JSON uploader & PnL tracker</h1>
+      <p class="lead">Upload your gambling bet archive JSON files (arrays or objects). The app will parse common fields (timestamp/date/time, profit/payout/stake) and compute PnL windows + top wins. Data is stored locally in your browser.</p>
+    </div>
 
-      <div class="toolbar">
-        <div class="small muted" id="savedLabel">No imports</div>
-        <div class="toggle" id="themeToggle">Toggle Light</div>
-      </div>
-    </header>
-
-    <section class="card">
+    <div class="card">
       <div class="row">
         <div class="col">
-          <label class="small muted">Select CSV files (users CSVs and campaign CSV). Multiple files allowed.</label><br>
-          <input id="fileInput" type="file" multiple accept=".csv" />
+          <label class="small">Select JSON files</label><br/>
+          <input id="fileInput" type="file" accept="application/json" multiple />
+          <div style="height:8px"></div>
+          <div class="small muted">Files can contain an array of bets or a single object. Common fields it recognizes: <code>timestamp,date,time,played_at,created_at,datetime</code> and <code>profit,pnl,net,win,payout,stake</code>.</div>
         </div>
 
-        <div style="width:360px">
-          <div style="display:flex; gap:8px; margin-bottom:8px;">
-            <div style="flex:1">
-              <label class="small muted">Commission rate (decimal) — default is 0.0019972 (0.19972%)</label><br>
-              <input id="commissionRate" class="input" type="number" step="0.0000000001" min="0" value="0.0019972" />
-            </div>
-            <div style="flex:1">
-              <label class="small muted">Date mode</label><br>
-              <select id="dateMode" class="input">
-                <option value="row">Use row date if present</option>
-                <option value="import">Force to import (upload) date</option>
-              </select>
-            </div>
+        <div class="col">
+          <label class="small">Quick actions</label><br/>
+          <div class="controls" style="margin-top:8px">
+            <button id="btnPublish" title="Export summary JSON">Export summary</button>
+            <button id="btnExport" class="btn-ghost" title="Export raw dataset">Export dataset</button>
+            <button id="btnImport" class="btn-ghost" title="Import dataset">Import dataset</button>
+            <button id="btnClear" class="btn-ghost" title="Clear all stored">Clear all</button>
           </div>
-
-          <div style="display:flex; gap:8px; margin-bottom:8px;">
-            <button id="appendBtn" class="btn compact">Append (default)</button>
-            <button id="replaceBtn" class="btn btn-muted compact">Replace data</button>
-            <button id="clearBtn" class="btn btn-muted compact">Clear all</button>
-          </div>
-
-          <div style="display:flex; gap:8px;">
-            <button id="exportHistory" class="btn btn-muted compact">Export history CSV</button>
-            <button id="exportBackup" class="btn btn-muted compact">Export backup JSON</button>
-            <input id="importBackupFile" type="file" accept=".json" style="display:none">
-            <button id="importBackupBtn" class="btn btn-muted compact">Import backup JSON</button>
-          </div>
+          <div style="height:8px"></div>
+          <div class="small muted">Exported dataset is a JSON file you can keep offline or re-import.</div>
         </div>
       </div>
-      <div class="small muted" style="margin-top:8px;">
-        Tip: Upload both the campaign summary CSV (to capture official commission totals) and the user-level CSV(s). If row dates look wrong in your CSV, use "Force to import date".
-      </div>
-    </section>
-
-    <nav>
-      <button id="tabDashboard" class="active">Dashboard</button>
-      <button id="tabFind">Find User</button>
-      <button id="tabRaw">Raw Rows</button>
-    </nav>
-
-    <!-- Dashboard -->
-    <div id="dashboard">
-      <section class="card">
-        <div style="display:flex; gap:12px; align-items:center; justify-content:space-between;">
-          <div>
-            <div class="small muted">Official commission (campaign CSV)</div>
-            <div id="officialCommission" style="font-size:20px; font-weight:700">$0.00</div>
-            <div class="small muted" id="campaignMeta"></div>
-          </div>
-
-          <div style="display:flex; gap:18px;">
-            <div>
-              <div class="small muted">Unique users</div>
-              <div id="totalUsers" style="font-size:18px; font-weight:700">0</div>
-            </div>
-            <div>
-              <div class="small muted">Total value (users CSV)</div>
-              <div id="totalValue" style="font-size:18px; font-weight:700">$0.00</div>
-            </div>
-            <div>
-              <div class="small muted">Total est. commission</div>
-              <div id="totalEst" style="font-size:18px; font-weight:700">$0.00</div>
-            </div>
-            <div>
-              <div class="small muted">Total observed commission</div>
-              <div id="totalObs" style="font-size:18px; font-weight:700">$0.00</div>
-            </div>
-            <div>
-              <div class="small muted">Imports</div>
-              <div id="importCount" style="font-size:18px; font-weight:700">0</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="row">
-        <div class="col card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <div><strong>Leaderboard</strong><div class="small muted">Sorted by estimated commission (you can change)</div></div>
-            <div class="small muted">
-              Timespan:
-              <button class="compact" data-range="7">1w</button>
-              <button class="compact" data-range="14">2w</button>
-              <button class="compact" data-range="30">1m</button>
-              <button class="compact" data-range="120">4m</button>
-              <button class="compact" data-range="365">1y</button>
-              <button class="compact" data-range="all">All</button>
-            </div>
-          </div>
-
-          <div style="overflow:auto; max-height:420px;">
-            <table id="leaderboardTable">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Username</th>
-                  <th>Total Value (USD)</th>
-                  <th>Entries</th>
-                  <th>Est. Commission</th>
-                  <th>Observed Comm. (edit)</th>
-                  <th>First seen</th>
-                  <th>Last seen</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="col" style="display:flex; flex-direction:column; gap:12px;">
-          <div class="card" style="height:260px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <strong>Top users (by value)</strong>
-              <div class="small muted">Top N: <input id="chartTopN" type="number" value="10" style="width:56px" /></div>
-            </div>
-            <canvas id="barChart" style="width:100%; height:170px;"></canvas>
-          </div>
-
-          <div class="card" style="height:260px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <strong>Value vs Estimated Commission (timespan)</strong>
-              <div class="small muted">Smoothing: <input id="smoothing" type="checkbox" /></div>
-            </div>
-            <canvas id="timeChart" style="width:100%; height:170px;"></canvas>
-          </div>
-        </div>
-      </section>
     </div>
 
-    <!-- Find User -->
-    <div id="findTab" style="display:none;">
-      <section class="card">
-        <div style="display:flex; gap:12px; align-items:center;">
-          <input id="findInput" class="input" type="text" placeholder="Enter username (e.g., nur1988)" style="flex:1">
-          <button id="findBtn" class="btn">Find</button>
-          <button id="findClearBtn" class="btn btn-muted">Clear</button>
-        </div>
-        <div id="findResult" style="margin-top:12px;"></div>
-      </section>
-    </div>
-
-    <!-- Raw Rows -->
-    <div id="rawTab" style="display:none;">
-      <section class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-          <div><strong>Raw imported rows</strong><div class="small muted">You can review raw rows and delete single rows if needed.</div></div>
-          <div class="small muted">Rows stored in browser only</div>
-        </div>
-        <div style="overflow:auto; max-height:420px; margin-top:8px;">
-          <table id="rowsTable">
-            <thead>
-              <tr><th>#</th><th>Import</th><th>Username</th><th>Date</th><th>Value (USD)</th><th>Actions</th></tr>
-            </thead>
-            <tbody></tbody>
+    <div class="card" id="summaryCard" aria-live="polite">
+      <h3 style="margin:0 0 8px">PnL Summary</h3>
+      <div class="row">
+        <div class="col">
+          <table>
+            <thead><tr><th>Window</th><th style="text-align:right">PnL</th></tr></thead>
+            <tbody>
+              <tr><td>1 day</td><td id="pnlDay" style="text-align:right">—</td></tr>
+              <tr><td>1 week</td><td id="pnlWeek" style="text-align:right">—</td></tr>
+              <tr><td>1 month</td><td id="pnlMonth" style="text-align:right">—</td></tr>
+              <tr><td>3 months</td><td id="pnl3Month" style="text-align:right">—</td></tr>
+              <tr><td>1 year</td><td id="pnlYear" style="text-align:right">—</td></tr>
+              <tr style="border-top:1px solid rgba(255,255,255,0.03)"><td><strong>Overall</strong></td><td id="pnlOverall" style="text-align:right"><strong>—</strong></td></tr>
+            </tbody>
           </table>
+          <div style="height:8px"></div>
+          <div class="small muted">Note: overall includes all parsed records with numeric profit. Time windows only include records with a parseable date.</div>
         </div>
-      </section>
+
+        <div class="col">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h3 style="margin:0">Top 10 Wins</h3>
+            <div class="badge" id="betsCount">0 bets</div>
+          </div>
+          <div id="topWinsList" style="margin-top:8px">
+            <div class="small muted">No wins yet — upload files to see top wins.</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <footer style="margin-top:12px; color:var(--muted); font-size:13px;" class="small muted">
-      This runs fully in your browser — nothing is uploaded externally. Export a backup JSON for safekeeping or to move devices.
-    </footer>
+    <div class="card">
+      <h3 style="margin:0 0 8px">Data (preview)</h3>
+      <div id="dataPreview"><div class="small muted">No data loaded.</div></div>
+    </div>
+
+    <div class="card small muted">
+      <strong>Deploy</strong>: save this file as <code>index.html</code> in a GitHub repo, then enable GitHub Pages (branch: main or gh-pages) — GitHub will serve the page at <code>https://username.github.io/repo/</code>.
+    </div>
   </div>
 
 <script>
-(() => {
-  // --- state & storage ---
-  const LS_KEY = 'affiliate_history_v2';
-  let state = loadState() || { rows: [], imports: [], campaigns: [], usersObserved: {} };
-  // rows: { id, importId, username, value, dateISO, raw }
-  // imports: { id, dateISO, fileNames:[], rowCount }
-  // campaigns: { id, dateISO, overall_commission, metaFields... }
-  // usersObserved: { username: observedCommission }
+/*
+  GamblePnl single file app
+  - robust parsing of common timestamp and profit fields
+  - stores records in localStorage under key 'gambles:records'
+  - computes pnl for windows and top 10 wins
+*/
 
-  // default commission decimal from user: 0.19972% -> 0.0019972
-  const defaultCommission = 0.0019972;
+const LS_KEY = 'gambles:records:v1';
 
-  // charts
-  let barChart = null, timeChart = null;
+function readLS(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+function writeLS(arr){
+  localStorage.setItem(LS_KEY, JSON.stringify(arr));
+}
 
-  // helpers
-  const $ = (id) => document.getElementById(id);
-  const formatMoney = (n) => '$' + Number(n||0).toLocaleString(undefined, {maximumFractionDigits:2});
-  const parseAnyDate = (val) => {
-    if (!val && val !== 0) return null;
-    if (val instanceof Date && !isNaN(val)) return val;
-    const s = String(val).trim();
-    // try ISO / Date constructor
-    const d1 = new Date(s);
-    if (!isNaN(d1)) return d1;
-    // dd/mm/yyyy or dd-mm-yyyy
-    const m = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/);
-    if (m) {
-      const dd = parseInt(m[1],10), mm = parseInt(m[2],10)-1, yy = parseInt(m[3],10);
-      const yy4 = (yy<100)? (yy>50?1900+yy:2000+yy):yy;
-      const d = new Date(yy4, mm, dd);
-      if (!isNaN(d)) return d;
+// date helpers
+function now(){ return new Date(); }
+function isValidDate(d){ return d instanceof Date && !isNaN(d.getTime()); }
+function parsePossibleDate(raw){
+  if (raw == null) return null;
+  // if number -> unix s or ms
+  if (typeof raw === 'number'){
+    // heuristic: > 1e12 is ms, else seconds
+    if (raw > 1e12) return new Date(raw);
+    return new Date(raw * 1000);
+  }
+  // string
+  if (typeof raw === 'string'){
+    // try ISO
+    const maybeISO = new Date(raw);
+    if (isValidDate(maybeISO)) return maybeISO;
+    // try numeric string
+    if (/^\d+$/.test(raw)){
+      const n = Number(raw);
+      if (n > 1e12) return new Date(n);
+      return new Date(n*1000);
     }
-    // numeric epoch or excel serial
-    if (/^\d+$/.test(s)) {
-      const num = Number(s);
-      // timestamp ms
-      if (num > 1e12) return new Date(num);
-      if (num > 1e9) return new Date(num*1000);
-      // excel serial
-      if (num < 60000) {
-        const excelEpoch = new Date(1899,11,30);
-        return new Date(excelEpoch.getTime() + num*24*60*60*1000);
+    // try fallback
+    try {
+      const d = Date.parse(raw);
+      if (!isNaN(d)) return new Date(d);
+    } catch(e){}
+  }
+  return null;
+}
+
+// profit extraction helpers
+function extractProfitFromRecord(r){
+  if (r == null || typeof r !== 'object') return null;
+  // common keys
+  const keys = Object.keys(r);
+  const lower = keys.map(k=>k.toLowerCase());
+  const map = {};
+  for(let i=0;i<keys.length;i++) map[lower[i]] = keys[i];
+
+  const candidates = ['profit','pnl','net','win','amount_won','amount','winnings','result','payout'];
+  for (const c of candidates){
+    if (c in map){
+      const val = r[map[c]];
+      if (typeof val === 'number') return val;
+      if (typeof val === 'string' && val.trim() !== ''){
+        const n = Number(val.replace(/[^\d\.\-]/g, ''));
+        if (!isNaN(n)) return n;
       }
     }
-    return null;
-  };
-
-  function saveState(){
-    localStorage.setItem(LS_KEY, JSON.stringify(state));
-    $('savedLabel').textContent = `${state.imports.length} imports • ${uniqueUsersCount()} users • ${state.rows.length} rows`;
   }
-  function loadState(){
-    try { return JSON.parse(localStorage.getItem(LS_KEY)); } catch(e) { return null; }
+  // fallback: if stake & payout -> payout - stake
+  if ('payout' in map && 'stake' in map){
+    const p = Number(String(r[map['payout']]).replace(/[^\d\.\-]/g,'')) || 0;
+    const s = Number(String(r[map['stake']]).replace(/[^\d\.\-]/g,'')) || 0;
+    if (!isNaN(p) && !isNaN(s)) return p - s;
   }
-  function uniqueUsersCount(){
-    const s = new Set(state.rows.map(r => r.username));
-    return s.size;
-  }
+  return null;
+}
 
-  // --- import / parsing ---
-  async function importFiles(files, { append=true, dateMode='row' } = {}){
-    if (!files || !files.length) return;
-    if (!append) { state = { rows: [], imports: [], campaigns: [], usersObserved: {} }; }
-    const importId = Date.now().toString();
-    const importMeta = { id: importId, dateISO: new Date().toISOString(), fileNames: [], rowCount:0 };
-    for (const file of files){
-      importMeta.fileNames.push(file.name);
-      const res = await new Promise(resolve => Papa.parse(file, { header:true, dynamicTyping:true, skipEmptyLines:true, complete: (r)=>resolve(r)}));
-      const rows = res.data || [];
-      importMeta.rowCount += rows.length;
+// timestamp field detection
+function extractDateFromRecord(r){
+  if (r == null || typeof r !== 'object') return null;
+  const keys = Object.keys(r);
+  const lower = keys.map(k=>k.toLowerCase());
+  const map = {};
+  for(let i=0;i<keys.length;i++) map[lower[i]] = keys[i];
 
-      // detect if this is campaign summary (single row) by columns
-      // common header: overall_commission (USD) or overall_commission
-      const first = rows[0] || null;
-      if (first && findKey(first, ['overall_commission (USD)','overall_commission','overall_available_commission'])) {
-        // treat as campaign summary
-        const commKey = findKey(first, ['overall_commission (USD)','overall_commission']);
-        const commVal = first[commKey];
-        const cobj = { id: Date.now().toString() + '_' + Math.random().toString(36).slice(2,6), dateISO: new Date().toISOString(), fileName: file.name, overall_commission: Number(commVal) || 0, meta: first };
-        state.campaigns.push(cobj);
-        continue;
-      }
-
-      // otherwise treat as user-level rows
-      for (const r of rows){
-        const usernameKey = findKey(r, ['username','user','player','playername','account']);
-        const valueKey = findKey(r, ['value (usd)','value_usd','value','amount','revenue','net']);
-        const dateKey = findKey(r, ['created_at (utc)','created_at','created','date','date_created','timestamp','time']);
-
-        const usernameRaw = usernameKey ? r[usernameKey] : (r.username || r.user || '');
-        if (!usernameRaw) continue;
-        const username = String(usernameRaw).trim().toLowerCase();
-        const rawVal = valueKey ? r[valueKey] : (r.value || r.amount || 0);
-        const value = Number(rawVal) || 0;
-
-        const parsedDate = parseAnyDate(dateKey ? r[dateKey] : null);
-        const usedDate = (dateMode === 'import') ? new Date(importMeta.dateISO) : (parsedDate || new Date(importMeta.dateISO));
-
-        state.rows.push({
-          id: Date.now().toString() + '_' + Math.random().toString(36).slice(2,6),
-          importId,
-          username,
-          value,
-          dateISO: usedDate.toISOString(),
-          raw: r
-        });
-      }
+  const candidates = ['timestamp','time','date','played_at','created_at','datetime','played','ts','epoch'];
+  for (const c of candidates){
+    if (c in map){
+      const raw = r[map[c]];
+      const d = parsePossibleDate(raw);
+      if (isValidDate(d)) return d;
     }
-    state.imports.push(importMeta);
-    saveState();
+  }
+  // sometimes there is 'meta' field or nested
+  // shallow search: numeric fields that look like unix timestamp
+  for (const k of keys){
+    const v = r[k];
+    if (typeof v === 'number' && (v > 1e9)){
+      // treat as timestamp
+      const d = parsePossibleDate(v);
+      if (isValidDate(d)) return d;
+    }
+  }
+  return null;
+}
+
+// normalization: return {date: ISOString|null, profit:number|null, raw: original}
+function normalizeRecord(raw){
+  const profit = extractProfitFromRecord(raw);
+  const dateObj = extractDateFromRecord(raw);
+  return { date: dateObj ? dateObj.toISOString() : null, profit: profit === null ? null : Number(profit), raw: raw };
+}
+
+// read multiple files
+document.getElementById('fileInput').addEventListener('change', async (ev) => {
+  const files = ev.target.files;
+  if (!files || files.length === 0) return;
+  const parsed = [];
+  for (const f of files){
+    try{
+      const txt = await f.text();
+      const json = JSON.parse(txt);
+      const arr = Array.isArray(json) ? json : (json.bets || json.data || [json]);
+      for (const it of arr) parsed.push(normalizeRecord(it));
+    }catch(e){
+      console.error('Failed to parse', f.name, e);
+      alert('Some file(s) failed to parse. Check console for details.');
+    }
+  }
+  if (parsed.length){
+    const current = readLS();
+    // We store normalized records only (date,profit,raw)
+    const merged = current.concat(parsed);
+    writeLS(merged);
     renderAll();
+    // reset input
+    ev.target.value = '';
+  }
+});
+
+function sumAmounts(arr){
+  return arr.reduce((s,r)=> s + (typeof r.profit === 'number' ? r.profit : 0), 0);
+}
+
+function filterAfter(arr, dateObj){
+  if (!dateObj) return [];
+  return arr.filter(r => r.date && (new Date(r.date) >= dateObj));
+}
+
+function subtractDays(d, days){
+  const copy = new Date(d);
+  copy.setDate(copy.getDate() - days);
+  return copy;
+}
+function subtractMonths(d, months){
+  const copy = new Date(d);
+  const m = copy.getMonth();
+  copy.setMonth(m - months);
+  return copy;
+}
+function subtractYears(d, years){
+  const copy = new Date(d);
+  copy.setFullYear(copy.getFullYear() - years);
+  return copy;
+}
+
+function formatDateString(iso){
+  if (!iso) return '';
+  try{
+    const d = new Date(iso);
+    if (!isValidDate(d)) return iso;
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0')
+      + ' ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+  }catch(e){ return iso; }
+}
+
+function renderAll(){
+  const records = readLS();
+  const totalCount = records.length;
+  document.getElementById('betsCount').textContent = `${totalCount} bets`;
+
+  const nowDate = new Date();
+  // compute windows: only consider records with date for windows
+  const dayAgo = subtractDays(nowDate, 1);
+  const weekAgo = subtractDays(nowDate, 7);
+  const monthAgo = subtractMonths(nowDate, 1);
+  const threeMonthAgo = subtractMonths(nowDate, 3);
+  const yearAgo = subtractYears(nowDate, 1);
+
+  const withDates = records.filter(r => r.date && r.profit !== null && !isNaN(r.profit));
+
+  const pnlDay = sumAmounts(filterAfter(withDates, dayAgo));
+  const pnlWeek = sumAmounts(filterAfter(withDates, weekAgo));
+  const pnlMonth = sumAmounts(filterAfter(withDates, monthAgo));
+  const pnl3Month = sumAmounts(filterAfter(withDates, threeMonthAgo));
+  const pnlYear = sumAmounts(filterAfter(withDates, yearAgo));
+  // overall: include any record that has numeric profit, even if no date
+  const overall = sumAmounts(records.filter(r => r.profit !== null && !isNaN(r.profit)));
+
+  // render numbers
+  function fmt(n){
+    if (n === 0) return '0.00';
+    if (n === null || n === undefined) return '—';
+    return n.toFixed(2);
+  }
+  function setElem(id, n){
+    const e = document.getElementById(id);
+    if (!e) return;
+    e.textContent = fmt(n);
+    e.className = (n > 0 ? 'positive' : (n < 0 ? 'negative' : ''));
+  }
+  setElem('pnlDay', pnlDay);
+  setElem('pnlWeek', pnlWeek);
+  setElem('pnlMonth', pnlMonth);
+  setElem('pnl3Month', pnl3Month);
+  setElem('pnlYear', pnlYear);
+  setElem('pnlOverall', overall);
+
+  // top 10 wins
+  const wins = records.filter(r => typeof r.profit === 'number' && r.profit > 0)
+                      .sort((a,b)=> b.profit - a.profit)
+                      .slice(0,10);
+  const topEl = document.getElementById('topWinsList');
+  topEl.innerHTML = '';
+  if (wins.length === 0){
+    topEl.innerHTML = '<div class="small muted">No wins yet</div>';
+  }else{
+    wins.forEach((w,idx) => {
+      const div = document.createElement('div');
+      div.className = 'top-win';
+      const left = document.createElement('div');
+      left.innerHTML = `<strong>#$${(idx+1)} &nbsp;${Number(w.profit).toFixed(2)}</strong><div class="small muted">${w.date ? formatDateString(w.date) : 'no date'}</div>`;
+      const right = document.createElement('div');
+      right.style.textAlign = 'right';
+      right.innerHTML = `<button class="btn-ghost" data-idx="${idx}" style="font-size:12px">Preview</button>`;
+      div.appendChild(left);
+      div.appendChild(right);
+      topEl.appendChild(div);
+
+      // preview handler
+      right.querySelector('button').addEventListener('click', () => {
+        const preview = document.createElement('pre');
+        preview.textContent = JSON.stringify(w.raw, null, 2);
+        // show inline modal
+        const modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.left = '50%';
+        modal.style.top = '50%';
+        modal.style.transform = 'translate(-50%, -50%)';
+        modal.style.zIndex = 2147483647;
+        modal.style.padding = '12px';
+        modal.style.background = 'rgba(2,6,23,0.98)';
+        modal.style.border = '1px solid rgba(255,255,255,0.03)';
+        modal.style.borderRadius = '10px';
+        modal.style.maxWidth = '90%';
+        modal.style.maxHeight = '80%';
+        modal.style.overflow = 'auto';
+        const close = document.createElement('button');
+        close.textContent = 'Close';
+        close.style.marginTop = '8px';
+        close.addEventListener('click', ()=> modal.remove());
+        modal.appendChild(preview);
+        modal.appendChild(close);
+        document.body.appendChild(modal);
+      })
+    })
   }
 
-  // helper to find heterogenous header keys
-  function findKey(obj, patterns){
-    const keys = Object.keys(obj || {});
-    for (const p of patterns){
-      const pat = p.toLowerCase();
-      for (const k of keys){
-        if (k.toLowerCase() === pat) return k;
-      }
-    }
-    for (const p of patterns){
-      const pat = p.toLowerCase();
-      for (const k of keys){
-        if (k.toLowerCase().includes(pat)) return k;
-      }
-    }
-    return null;
-  }
-
-  // --- aggregations ---
-  function aggregateUsers(){
-    const map = new Map();
-    for (const r of state.rows){
-      const u = map.get(r.username) || { username: r.username, total_value:0, entries:0, first_seen:null, last_seen:null };
-      u.total_value += Number(r.value || 0);
-      u.entries += 1;
-      const d = new Date(r.dateISO);
-      if (!u.first_seen || d < new Date(u.first_seen)) u.first_seen = d.toISOString();
-      if (!u.last_seen || d > new Date(u.last_seen)) u.last_seen = d.toISOString();
-      map.set(r.username, u);
-    }
-    // attach observed if present
-    for (const [k, u] of map.entries()){
-      if (state.usersObserved && state.usersObserved[k] != null) u.observed_commission = Number(state.usersObserved[k]) || 0;
-      else u.observed_commission = 0;
-    }
-    return Array.from(map.values());
-  }
-
-  // timespan helper (rangeDays: number or 'all')
-  function rowsInRange(rangeDays){
-    if (!rangeDays || rangeDays === 'all') return state.rows.slice();
-    const days = Number(rangeDays);
-    const cutoff = Date.now() - days*24*60*60*1000;
-    return state.rows.filter(r => new Date(r.dateISO).getTime() >= cutoff);
-  }
-
-  // --- UI rendering ---
-  function renderAll(){
-    // load commission rate
-    const commissionRate = Number($('commissionRate').value || defaultCommission);
-    // official commission from latest campaign if any
-    const latestCampaign = state.campaigns.length ? state.campaigns[state.campaigns.length-1] : null;
-    $('officialCommission').textContent = latestCampaign ? formatMoney(latestCampaign.overall_commission) : '$0.00';
-    $('campaignMeta').textContent = latestCampaign ? `Campaign import: ${latestCampaign.fileName || ''} (${new Date(latestCampaign.dateISO).toLocaleString()})` : '';
-
-    // aggregated users (global)
-    const users = aggregateUsers();
-    const totalUsers = users.length;
-    const totalValue = users.reduce((s,u) => s + (Number(u.total_value)||0), 0);
-    const totalEst = users.reduce((s,u) => s + ((Number(u.total_value)||0) * commissionRate), 0);
-    const totalObs = users.reduce((s,u) => s + (Number(u.observed_commission)||0), 0);
-
-    $('totalUsers').textContent = totalUsers;
-    $('totalValue').textContent = formatMoney(totalValue);
-    $('totalEst').textContent = formatMoney(totalEst);
-    $('totalObs').textContent = formatMoney(totalObs);
-    $('importCount').textContent = state.imports.length;
-
-    // populate leaderboard using current timespan filter (default 'all')
-    const activeRange = document.querySelector('button.range-active') ? document.querySelector('button.range-active').dataset.range : 'all';
-    const rowsForRange = rowsInRange(activeRange);
-    // aggregate for range
-    const mapRange = new Map();
-    for (const r of rowsForRange){
-      const u = mapRange.get(r.username) || { username: r.username, total_value:0, entries:0, first_seen:null, last_seen:null };
-      u.total_value += Number(r.value || 0);
-      u.entries += 1;
-      const d = new Date(r.dateISO);
-      if (!u.first_seen || d < new Date(u.first_seen)) u.first_seen = d.toISOString();
-      if (!u.last_seen || d > new Date(u.last_seen)) u.last_seen = d.toISOString();
-      mapRange.set(r.username, u);
-    }
-    // compute est commission and observed
-    const arrRange = Array.from(mapRange.values()).map(u => {
-      u.est_commission = (u.total_value || 0) * commissionRate;
-      u.observed_commission = state.usersObserved[u.username] ? Number(state.usersObserved[u.username]) : 0;
-      return u;
-    });
-    // sort by est_commission desc
-    arrRange.sort((a,b) => (b.est_commission||0) - (a.est_commission||0));
-
-    // render leaderboard table (top N limited)
-    const tbody = $('leaderboardTable').querySelector('tbody');
-    tbody.innerHTML = '';
-    const topN = Math.max(1, Number($('chartTopN').value || 20));
-    arrRange.slice(0, topN).forEach((u, i) => {
+  // data preview (show first 15 records)
+  const previewEl = document.getElementById('dataPreview');
+  previewEl.innerHTML = '';
+  if (records.length === 0){
+    previewEl.innerHTML = '<div class="small muted">No data loaded.</div>';
+  } else {
+    const tbl = document.createElement('table');
+    const thead = document.createElement('thead');
+    thead.innerHTML = '<tr><th>#</th><th>date</th><th>profit</th><th>raw (preview)</th></tr>';
+    tbl.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    const slice = records.slice(0, 50);
+    for (let i=0;i<slice.length;i++){
+      const r = slice[i];
       const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${i+1}</td>
-        <td><span class="tag">${escapeHtml(u.username)}</span></td>
-        <td>${formatMoney(u.total_value)}</td>
-        <td>${u.entries}</td>
-        <td>${formatMoney(u.est_commission)}</td>
-        <td><input data-user="${escapeHtml(u.username)}" class="editable" value="${(u.observed_commission||0).toFixed(2)}" /></td>
-        <td>${u.first_seen ? new Date(u.first_seen).toLocaleDateString() : ''}</td>
-        <td>${u.last_seen ? new Date(u.last_seen).toLocaleDateString() : ''}</td>
-      `;
+      const tdIdx = document.createElement('td'); tdIdx.textContent = (i+1);
+      const tdDate = document.createElement('td'); tdDate.textContent = r.date ? formatDateString(r.date) : '—';
+      const tdProfit = document.createElement('td'); tdProfit.textContent = (r.profit === null || r.profit === undefined) ? '—' : Number(r.profit).toFixed(2);
+      const tdRaw = document.createElement('td'); tdRaw.innerHTML = `<pre style="margin:0;max-height:64px;overflow:auto">${escapeHtml(JSON.stringify(r.raw, null, 2))}</pre>`;
+      tr.appendChild(tdIdx); tr.appendChild(tdDate); tr.appendChild(tdProfit); tr.appendChild(tdRaw);
       tbody.appendChild(tr);
-    });
-    // hook editable inputs
-    tbody.querySelectorAll('.editable').forEach(inp => {
-      inp.addEventListener('change', (e) => {
-        const username = e.target.dataset.user.toLowerCase();
-        const val = Number(e.target.value) || 0;
-        state.usersObserved[username] = val;
-        saveState();
-        renderAll();
-      });
-    });
-
-    // charts:
-    // bar chart: top users by total_value (global or range? use range)
-    const topUsers = arrRange.slice(0, Math.min(100, arrRange.length)).slice(0, Number($('chartTopN').value || 10));
-    const labelsBar = topUsers.map(u => u.username);
-    const valuesBar = topUsers.map(u => Number(u.total_value.toFixed(2)));
-    drawBarChart(labelsBar, valuesBar);
-
-    // timeseries: sum total_value and est_commission per day for rowsForRange
-    const byDay = {};
-    for (const r of rowsForRange){
-      const day = new Date(r.dateISO).toISOString().slice(0,10);
-      byDay[day] = byDay[day] || { value:0, est:0 };
-      byDay[day].value += Number(r.value || 0);
-      byDay[day].est += Number(r.value || 0) * commissionRate;
     }
-    const sortedDays = Object.keys(byDay).sort();
-    const labelsTime = sortedDays;
-    const dataValue = sortedDays.map(d => Number(byDay[d].value.toFixed(2)));
-    const dataEst = sortedDays.map(d => Number(byDay[d].est.toFixed(2)));
-    drawTimeChart(labelsTime, dataValue, dataEst);
-
-    // raw rows table
-    renderRowsTable();
-
-    saveState();
-  }
-
-  // --- charts using Chart.js ---
-  function drawBarChart(labels, values){
-    const ctx = $('barChart').getContext('2d');
-    if (barChart) barChart.destroy();
-    barChart = new Chart(ctx, {
-      type:'bar',
-      data: { labels, datasets:[{ label:'Total Value (USD)', data:values }] },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true } } }
-    });
-  }
-  function drawTimeChart(labels, valuesA, valuesB){
-    const ctx = $('timeChart').getContext('2d');
-    if (timeChart) timeChart.destroy();
-    timeChart = new Chart(ctx, {
-      type:'line',
-      data:{ labels, datasets:[
-        { label:'Total Value', data:valuesA, tension:0.25, fill:false },
-        { label:'Est. Commission', data:valuesB, tension:0.25, fill:true }
-      ]},
-      options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' } }, scales:{ x:{ type:'category' } } }
-    });
-  }
-
-  // --- rows table (raw) ---
-  function renderRowsTable(){
-    const tbody = $('rowsTable').querySelector('tbody');
-    tbody.innerHTML = '';
-    state.rows.slice().sort((a,b) => new Date(b.dateISO) - new Date(a.dateISO)).forEach((r,i) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${i+1}</td>
-        <td>${state.imports.find(im => im.id === r.importId)?.fileNames?.join(',') || ''}</td>
-        <td>${escapeHtml(r.username)}</td>
-        <td>${new Date(r.dateISO).toLocaleString()}</td>
-        <td>${formatMoney(r.value)}</td>
-        <td><button data-id="${r.id}" class="btn btn-muted compact">Delete</button></td>
-      `;
-      tbody.appendChild(tr);
-    });
-    tbody.querySelectorAll('button[data-id]').forEach(b => {
-      b.addEventListener('click', (e) => {
-        const id = e.target.dataset.id;
-        if (!confirm('Delete this row?')) return;
-        state.rows = state.rows.filter(rr => rr.id !== id);
-        saveState();
-        renderAll();
-      });
-    });
-  }
-
-  // --- find user ---
-  function findUser(username){
-    if (!username) { $('findResult').innerHTML = '<div class="small muted">Enter a username.</div>'; return; }
-    const q = username.trim().toLowerCase();
-    const rows = state.rows.filter(r => r.username === q).sort((a,b) => new Date(b.dateISO) - new Date(a.dateISO));
-    if (!rows.length) { $('findResult').innerHTML = '<div class="small muted">No data found for that username.</div>'; return; }
-    const totalValue = rows.reduce((s,r)=>s+(Number(r.value)||0),0);
-    const commissionRate = Number($('commissionRate').value || defaultCommission);
-    const est = totalValue * commissionRate;
-    const obs = Number(state.usersObserved[q] || 0);
-
-    let html = `<div style="display:flex; gap:12px; align-items:center; margin-bottom:8px;">
-      <div><strong>${escapeHtml(q)}</strong><div class="small muted">${rows.length} entries</div></div>
-      <div style="margin-left:auto; text-align:right;">
-        <div class="small muted">Total value</div><div style="font-weight:700">${formatMoney(totalValue)}</div>
-      </div>
-      <div style="text-align:right;">
-        <div class="small muted">Est. commission (@ ${commissionRate})</div><div style="font-weight:700">${formatMoney(est)}</div>
-      </div>
-      <div style="text-align:right;">
-        <div class="small muted">Observed commission</div><input id="obsInput" class="input" value="${obs.toFixed(2)}" style="width:120px" />
-      </div>
-    </div>`;
-
-    html += '<div style="overflow:auto; max-height:260px;"><table><thead><tr><th>Date</th><th>Value (USD)</th></tr></thead><tbody>';
-    for (const r of rows) {
-      html += `<tr><td>${new Date(r.dateISO).toLocaleString()}</td><td>${formatMoney(r.value)}</td></tr>`;
+    tbl.appendChild(tbody);
+    previewEl.appendChild(tbl);
+    if (records.length > 50){
+      const more = document.createElement('div');
+      more.className = 'small muted';
+      more.style.marginTop = '8px';
+      more.textContent = `Showing first 50 of ${records.length} records. Use export to download full dataset.`;
+      previewEl.appendChild(more);
     }
-    html += `</tbody></table></div>`;
-    $('findResult').innerHTML = html;
-
-    $('obsInput').addEventListener('change', (e) => {
-      const v = Number(e.target.value) || 0;
-      state.usersObserved[q] = v;
-      saveState();
-      renderAll();
-    });
   }
+}
 
-  // --- export helpers ---
-  function exportHistoryCSV(){
-    // export aggregated per user (global)
-    const users = aggregateUsers();
-    const commissionRate = Number($('commissionRate').value || defaultCommission);
-    const rows = [['username','total_value','entries','first_seen','last_seen','est_commission','observed_commission']];
-    for (const u of users){
-      rows.push([u.username, (u.total_value||0).toFixed(2), u.entries, u.first_seen||'', u.last_seen||'', ((u.total_value||0)*commissionRate).toFixed(2), (state.usersObserved[u.username]||0).toFixed(2)]);
-    }
-    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-    const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'leaderboard_aggregated.csv'; a.click();
-    URL.revokeObjectURL(a.href);
-  }
-  function exportBackupJSON(){
-    const blob = new Blob([JSON.stringify(state)], { type:'application/json;charset=utf-8;' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'affiliate_history_backup.json'; a.click();
-    URL.revokeObjectURL(a.href);
-  }
-  function importBackupFile(file){
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const obj = JSON.parse(e.target.result);
-        if (!obj) throw new Error('Invalid file');
-        state = obj;
-        saveState();
-        renderAll();
-        alert('Backup imported.');
-      } catch(err) {
-        alert('Failed to import backup JSON.');
-      }
-    };
-    reader.readAsText(file);
-  }
+// utility: escape html for pre
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
 
-  // --- UI wiring ---
-  $('fileInput').addEventListener('change', async (e) => {
-    const files = Array.from(e.target.files || []);
-    await importFiles(files, { append: true, dateMode: $('dateMode').value });
-    e.target.value = '';
-    renderAll();
-  });
-  $('appendBtn').addEventListener('click', () => $('fileInput').click());
-  $('replaceBtn').addEventListener('click', () => {
-    // temporarily override onchange to replace
-    $('fileInput').onchange = async (e) => {
-      const files = Array.from(e.target.files || []);
-      await importFiles(files, { append: false, dateMode: $('dateMode').value });
-      $('fileInput').onchange = null;
-      $('fileInput').value = '';
-    };
-    $('fileInput').click();
-  });
-  $('clearBtn').addEventListener('click', () => {
-    if (!confirm('Clear all stored data? This cannot be undone.')) return;
-    state = { rows: [], imports: [], campaigns: [], usersObserved: {} };
-    saveState();
-    renderAll();
-  });
-
-  // timespan buttons
-  document.querySelectorAll('button[data-range]').forEach(b => {
-    b.addEventListener('click', (e) => {
-      document.querySelectorAll('button[data-range]').forEach(x => x.classList.remove('range-active'));
-      e.target.classList.add('range-active');
-      // store selected range on element for render
-      renderAll();
-    });
-  });
-  // default 'All'
-  Array.from(document.querySelectorAll('button[data-range]')).find(b => b.dataset.range === 'all').classList.add('range-active');
-
-  $('chartTopN').addEventListener('change', () => renderAll());
-  $('commissionRate').addEventListener('change', () => renderAll());
-
-  // tabs
-  $('tabDashboard').addEventListener('click', () => { showTab('dashboard'); });
-  $('tabFind').addEventListener('click', () => { showTab('findTab'); });
-  $('tabRaw').addEventListener('click', () => { showTab('rawTab'); });
-  function showTab(id){
-    ['dashboard','findTab','rawTab'].forEach(k => { $(k).style.display = (k===id)?'block':'none'; });
-    ['tabDashboard','tabFind','tabRaw'].forEach(t => { $(t).classList.toggle('active', t === ('tab' + id.charAt(0).toUpperCase() + id.slice(1))); });
-  }
-
-  // find actions
-  $('findBtn').addEventListener('click', () => findUser($('findInput').value));
-  $('findClearBtn').addEventListener('click', () => { $('findInput').value=''; $('findResult').innerHTML=''; });
-
-  // export/import
-  $('exportHistory').addEventListener('click', exportHistoryCSV);
-  $('exportBackup').addEventListener('click', exportBackupJSON);
-  $('importBackupBtn').addEventListener('click', () => $('importBackupFile').click());
-  $('importBackupFile').addEventListener('change', (e) => {
-    const f = e.target.files[0];
-    if (f) importBackupFile(f);
-    e.target.value = '';
-  });
-
-  // theme toggle
-  $('themeToggle').addEventListener('click', () => {
-    document.body.classList.toggle('light');
-    $('themeToggle').textContent = document.body.classList.contains('light') ? 'Toggle Dark' : 'Toggle Light';
-  });
-
-  // escape html
-  function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-  // initial boot
-  saveState();
+// clear dataset
+document.getElementById('btnClear').addEventListener('click', () => {
+  if (!confirm('Clear all stored records in this browser?')) return;
+  localStorage.removeItem(LS_KEY);
   renderAll();
+});
 
-})();
+// export raw dataset
+document.getElementById('btnExport').addEventListener('click', () => {
+  const records = readLS();
+  const blob = new Blob([JSON.stringify(records, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'gambles_dataset.json'; document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+});
+
+// import dataset (file dialog)
+document.getElementById('btnImport').addEventListener('click', () => {
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = 'application/json';
+  input.addEventListener('change', async (ev) => {
+    const f = ev.target.files[0];
+    if (!f) return;
+    try{
+      const txt = await f.text();
+      const json = JSON.parse(txt);
+      if (!Array.isArray(json)) return alert('Imported file must be an array of normalized records (date, profit, raw) or original raw bets array.');
+      // try detect shape: if items look normalized (have date & profit) -> use them; else normalize
+      let normalized = [];
+      if (json.length > 0 && ('date' in json[0] || 'profit' in json[0])){
+        normalized = json.map(item => ({
+          date: item.date || null,
+          profit: (typeof item.profit === 'number') ? item.profit : (item.profit ? Number(item.profit) : null),
+          raw: item.raw || item
+        }));
+      } else {
+        normalized = json.map(item => normalizeRecord(item));
+      }
+      const current = readLS();
+      const merged = current.concat(normalized);
+      writeLS(merged);
+      renderAll();
+      alert('Imported ' + normalized.length + ' records.');
+    }catch(e){
+      console.error(e);
+      alert('Failed to import dataset. See console for details.');
+    }
+  });
+  input.click();
+});
+
+// publish summary (export small summary)
+document.getElementById('btnPublish').addEventListener('click', () => {
+  // build small summary: windows + topWins
+  const records = readLS();
+  const nowDate = new Date();
+  const dayAgo = subtractDays(nowDate, 1);
+  const weekAgo = subtractDays(nowDate, 7);
+  const monthAgo = subtractMonths(nowDate, 1);
+  const threeMonthAgo = subtractMonths(nowDate, 3);
+  const yearAgo = subtractYears(nowDate, 1);
+  const withDates = records.filter(r => r.date && r.profit !== null && !isNaN(r.profit));
+  const summary = {
+    publishedAt: new Date().toISOString(),
+    windows: {
+      day: sumAmounts(filterAfter(withDates, dayAgo)),
+      week: sumAmounts(filterAfter(withDates, weekAgo)),
+      month: sumAmounts(filterAfter(withDates, monthAgo)),
+      threeMonth: sumAmounts(filterAfter(withDates, threeMonthAgo)),
+      year: sumAmounts(filterAfter(withDates, yearAgo)),
+      overall: sumAmounts(records.filter(r => r.profit !== null && !isNaN(r.profit)))
+    },
+    topWins: records.filter(r => typeof r.profit === 'number' && r.profit > 0).sort((a,b)=> b.profit - a.profit).slice(0,10).map(r => ({profit: r.profit, date: r.date, raw: r.raw}))
+  };
+  const blob = new Blob([JSON.stringify(summary, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'gambles_summary.json'; document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+});
+
+// initial render
+renderAll();
+
+// keyboard shortcut: press D to open debug console summary in alert (for power user)
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'D' && (e.ctrlKey || e.metaKey)) {
+    const rec = readLS();
+    alert('Records: ' + rec.length + '\\nLocalStorage key: ' + LS_KEY);
+  }
+});
 </script>
 </body>
 </html>
