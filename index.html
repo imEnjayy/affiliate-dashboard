@@ -1,508 +1,120 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GamblePnl — JSON uploader & PnL tracker</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Top 25 Wins — GamblePnl</title>
   <style>
-    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#06b6d4;--success:#10b981;--danger:#ef4444;--glass: rgba(255,255,255,0.03)}
-    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:linear-gradient(180deg,#071023 0%, #02111a 100%);color:#e6eef6}
-    .wrap{max-width:980px;margin:28px auto;padding:20px}
-    .card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:16px;box-shadow: 0 6px 18px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03)}
-    h1{margin:0 0 6px;font-size:20px}
-    p.lead{margin:0;color:var(--muted);font-size:13px}
-    .row{display:flex;gap:12px;flex-wrap:wrap}
-    .col{flex:1 1 220px;min-width:220px}
-    input[type=file]{background:var(--glass);padding:8px;border-radius:8px;border:1px dashed rgba(255,255,255,0.04);color:var(--muted)}
-    button{cursor:pointer;border:0;padding:8px 12px;border-radius:8px;background:var(--accent);color:#042a30;font-weight:600}
-    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
-    table{width:100%;border-collapse:collapse}
-    td,th{padding:8px 6px;font-size:14px}
-    th{color:var(--muted);text-align:left;font-weight:600;font-size:13px}
-    .positive{color:var(--success);font-weight:700}
-    .negative{color:var(--danger);font-weight:700}
-    ol{padding-left:20px;margin:6px 0}
-    pre{background:rgba(255,255,255,0.02);padding:8px;border-radius:8px;overflow:auto;font-size:13px}
-    .small{font-size:13px;color:var(--muted)}
-    .controls{display:flex;gap:8px;flex-wrap:wrap}
-    .top-win{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02)}
-    .muted{color:var(--muted)}
-    .badge{display:inline-block;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,0.02);font-size:12px}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui;background:#0d1117;color:#e6edf3}
+    .wrap{max-width:1000px;margin:30px auto;padding:20px}
+    h1{font-size:24px;margin-bottom:12px}
+    input[type=file]{padding:6px;border:1px dashed #555;border-radius:6px;background:#161b22;color:#aaa}
+    table{width:100%;border-collapse:collapse;margin-top:20px}
+    th,td{padding:8px 10px;text-align:left;font-size:14px}
+    th{background:#161b22;color:#aaa}
+    tr:nth-child(even){background:#161b22}
+    .positive{color:#10b981;font-weight:600}
+    .small{font-size:13px;color:#888}
+    .lead{color:#aaa;font-size:14px}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>GamblePnl — JSON uploader & PnL tracker</h1>
-      <p class="lead">Upload your gambling bet archive JSON files (arrays or objects). The app will parse common fields (timestamp/date/time, profit/payout/stake) and compute PnL windows + top wins. Data is stored locally in your browser.</p>
-    </div>
+<div class="wrap">
+  <h1>Top 25 Wins</h1>
+  <p class="lead">Upload your bet archive JSON files. The table will show your 25 biggest wins.</p>
+  <input id="fileInput" type="file" accept="application/json" multiple />
 
-    <div class="card">
-      <div class="row">
-        <div class="col">
-          <label class="small">Select JSON files</label><br/>
-          <input id="fileInput" type="file" accept="application/json" multiple />
-          <div style="height:8px"></div>
-          <div class="small muted">Files can contain an array of bets or a single object. Common fields it recognizes: <code>timestamp,date,time,played_at,created_at,datetime</code> and <code>profit,pnl,net,win,payout,stake</code>.</div>
-        </div>
-
-        <div class="col">
-          <label class="small">Quick actions</label><br/>
-          <div class="controls" style="margin-top:8px">
-            <button id="btnPublish" title="Export summary JSON">Export summary</button>
-            <button id="btnExport" class="btn-ghost" title="Export raw dataset">Export dataset</button>
-            <button id="btnImport" class="btn-ghost" title="Import dataset">Import dataset</button>
-            <button id="btnClear" class="btn-ghost" title="Clear all stored">Clear all</button>
-          </div>
-          <div style="height:8px"></div>
-          <div class="small muted">Exported dataset is a JSON file you can keep offline or re-import.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" id="summaryCard" aria-live="polite">
-      <h3 style="margin:0 0 8px">PnL Summary</h3>
-      <div class="row">
-        <div class="col">
-          <table>
-            <thead><tr><th>Window</th><th style="text-align:right">PnL</th></tr></thead>
-            <tbody>
-              <tr><td>1 day</td><td id="pnlDay" style="text-align:right">—</td></tr>
-              <tr><td>1 week</td><td id="pnlWeek" style="text-align:right">—</td></tr>
-              <tr><td>1 month</td><td id="pnlMonth" style="text-align:right">—</td></tr>
-              <tr><td>3 months</td><td id="pnl3Month" style="text-align:right">—</td></tr>
-              <tr><td>1 year</td><td id="pnlYear" style="text-align:right">—</td></tr>
-              <tr style="border-top:1px solid rgba(255,255,255,0.03)"><td><strong>Overall</strong></td><td id="pnlOverall" style="text-align:right"><strong>—</strong></td></tr>
-            </tbody>
-          </table>
-          <div style="height:8px"></div>
-          <div class="small muted">Note: overall includes all parsed records with numeric profit. Time windows only include records with a parseable date.</div>
-        </div>
-
-        <div class="col">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <h3 style="margin:0">Top 10 Wins</h3>
-            <div class="badge" id="betsCount">0 bets</div>
-          </div>
-          <div id="topWinsList" style="margin-top:8px">
-            <div class="small muted">No wins yet — upload files to see top wins.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3 style="margin:0 0 8px">Data (preview)</h3>
-      <div id="dataPreview"><div class="small muted">No data loaded.</div></div>
-    </div>
-
-    <div class="card small muted">
-      <strong>Deploy</strong>: save this file as <code>index.html</code> in a GitHub repo, then enable GitHub Pages (branch: main or gh-pages) — GitHub will serve the page at <code>https://username.github.io/repo/</code>.
-    </div>
-  </div>
+  <table id="winsTable" style="display:none">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>Game</th>
+        <th>Stake</th>
+        <th>Payout</th>
+        <th>Profit</th>
+        <th>Multiplier</th>
+        <th>Currency</th>
+      </tr>
+    </thead>
+    <tbody id="winsBody"></tbody>
+  </table>
+</div>
 
 <script>
-/*
-  GamblePnl single file app
-  - robust parsing of common timestamp and profit fields
-  - stores records in localStorage under key 'gambles:records'
-  - computes pnl for windows and top 10 wins
-*/
+const LS_KEY = "gambles:records:v2";
 
-const LS_KEY = 'gambles:records:v1';
-
-function readLS(){
-  try{
-    const raw = localStorage.getItem(LS_KEY);
-    return raw ? JSON.parse(raw) : [];
-  }catch(e){ return []; }
-}
-function writeLS(arr){
-  localStorage.setItem(LS_KEY, JSON.stringify(arr));
+function parseDate(val){
+  if (!val) return null;
+  if (typeof val === "number"){
+    return new Date(val > 1e12 ? val : val*1000);
+  }
+  const d = new Date(val);
+  return isNaN(d) ? null : d;
 }
 
-// date helpers
-function now(){ return new Date(); }
-function isValidDate(d){ return d instanceof Date && !isNaN(d.getTime()); }
-function parsePossibleDate(raw){
-  if (raw == null) return null;
-  // if number -> unix s or ms
-  if (typeof raw === 'number'){
-    // heuristic: > 1e12 is ms, else seconds
-    if (raw > 1e12) return new Date(raw);
-    return new Date(raw * 1000);
-  }
-  // string
-  if (typeof raw === 'string'){
-    // try ISO
-    const maybeISO = new Date(raw);
-    if (isValidDate(maybeISO)) return maybeISO;
-    // try numeric string
-    if (/^\d+$/.test(raw)){
-      const n = Number(raw);
-      if (n > 1e12) return new Date(n);
-      return new Date(n*1000);
-    }
-    // try fallback
-    try {
-      const d = Date.parse(raw);
-      if (!isNaN(d)) return new Date(d);
-    } catch(e){}
-  }
-  return null;
-}
-
-// profit extraction helpers
-function extractProfitFromRecord(r){
-  if (r == null || typeof r !== 'object') return null;
-  // common keys
-  const keys = Object.keys(r);
-  const lower = keys.map(k=>k.toLowerCase());
-  const map = {};
-  for(let i=0;i<keys.length;i++) map[lower[i]] = keys[i];
-
-  const candidates = ['profit','pnl','net','win','amount_won','amount','winnings','result','payout'];
-  for (const c of candidates){
-    if (c in map){
-      const val = r[map[c]];
-      if (typeof val === 'number') return val;
-      if (typeof val === 'string' && val.trim() !== ''){
-        const n = Number(val.replace(/[^\d\.\-]/g, ''));
-        if (!isNaN(n)) return n;
-      }
-    }
-  }
-  // fallback: if stake & payout -> payout - stake
-  if ('payout' in map && 'stake' in map){
-    const p = Number(String(r[map['payout']]).replace(/[^\d\.\-]/g,'')) || 0;
-    const s = Number(String(r[map['stake']]).replace(/[^\d\.\-]/g,'')) || 0;
-    if (!isNaN(p) && !isNaN(s)) return p - s;
-  }
-  return null;
-}
-
-// timestamp field detection
-function extractDateFromRecord(r){
-  if (r == null || typeof r !== 'object') return null;
-  const keys = Object.keys(r);
-  const lower = keys.map(k=>k.toLowerCase());
-  const map = {};
-  for(let i=0;i<keys.length;i++) map[lower[i]] = keys[i];
-
-  const candidates = ['timestamp','time','date','played_at','created_at','datetime','played','ts','epoch'];
-  for (const c of candidates){
-    if (c in map){
-      const raw = r[map[c]];
-      const d = parsePossibleDate(raw);
-      if (isValidDate(d)) return d;
-    }
-  }
-  // sometimes there is 'meta' field or nested
-  // shallow search: numeric fields that look like unix timestamp
-  for (const k of keys){
-    const v = r[k];
-    if (typeof v === 'number' && (v > 1e9)){
-      // treat as timestamp
-      const d = parsePossibleDate(v);
-      if (isValidDate(d)) return d;
-    }
-  }
-  return null;
-}
-
-// normalization: return {date: ISOString|null, profit:number|null, raw: original}
 function normalizeRecord(raw){
-  const profit = extractProfitFromRecord(raw);
-  const dateObj = extractDateFromRecord(raw);
-  return { date: dateObj ? dateObj.toISOString() : null, profit: profit === null ? null : Number(profit), raw: raw };
+  const d = raw.data || {};
+  const stake = Number(d.amount||0);
+  const payout = Number(d.payout||0);
+  const profit = payout - stake;
+  const dateObj = parseDate(d.createdAt) || parseDate(raw.created_at);
+  return {
+    game: d.gameName || "Unknown",
+    stake,
+    payout,
+    profit,
+    multiplier: d.payoutMultiplier || null,
+    currency: d.currency || "",
+    date: dateObj ? dateObj.toISOString() : null,
+    raw
+  };
 }
 
-// read multiple files
-document.getElementById('fileInput').addEventListener('change', async (ev) => {
+function renderTopWins(records){
+  const wins = records.filter(r => r.profit > 0)
+                      .sort((a,b)=> b.profit - a.profit)
+                      .slice(0,25);
+  const tbody = document.getElementById("winsBody");
+  tbody.innerHTML = "";
+  wins.forEach((w,i)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td>${w.date ? new Date(w.date).toLocaleString() : "—"}</td>
+      <td>${w.game}</td>
+      <td>${w.stake.toFixed(6)}</td>
+      <td>${w.payout.toFixed(6)}</td>
+      <td class="positive">${w.profit.toFixed(6)}</td>
+      <td>${w.multiplier ? w.multiplier.toFixed(2)+"x" : "—"}</td>
+      <td>${w.currency}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  document.getElementById("winsTable").style.display = wins.length ? "table" : "none";
+}
+
+document.getElementById("fileInput").addEventListener("change", async ev=>{
   const files = ev.target.files;
-  if (!files || files.length === 0) return;
+  if (!files.length) return;
   const parsed = [];
   for (const f of files){
     try{
       const txt = await f.text();
       const json = JSON.parse(txt);
-      const arr = Array.isArray(json) ? json : (json.bets || json.data || [json]);
-      for (const it of arr) parsed.push(normalizeRecord(it));
-    }catch(e){
-      console.error('Failed to parse', f.name, e);
-      alert('Some file(s) failed to parse. Check console for details.');
-    }
+      const arr = Array.isArray(json) ? json : (json.data ? [json] : (json.bets||json.records||[]));
+      arr.forEach(item => parsed.push(normalizeRecord(item)));
+    }catch(e){console.error("Parse fail", f.name, e);}
   }
-  if (parsed.length){
-    const current = readLS();
-    // We store normalized records only (date,profit,raw)
-    const merged = current.concat(parsed);
-    writeLS(merged);
-    renderAll();
-    // reset input
-    ev.target.value = '';
-  }
+  localStorage.setItem(LS_KEY, JSON.stringify(parsed));
+  renderTopWins(parsed);
 });
 
-function sumAmounts(arr){
-  return arr.reduce((s,r)=> s + (typeof r.profit === 'number' ? r.profit : 0), 0);
+// load from localStorage on startup
+const saved = localStorage.getItem(LS_KEY);
+if (saved){
+  try{ renderTopWins(JSON.parse(saved)); }catch(e){}
 }
-
-function filterAfter(arr, dateObj){
-  if (!dateObj) return [];
-  return arr.filter(r => r.date && (new Date(r.date) >= dateObj));
-}
-
-function subtractDays(d, days){
-  const copy = new Date(d);
-  copy.setDate(copy.getDate() - days);
-  return copy;
-}
-function subtractMonths(d, months){
-  const copy = new Date(d);
-  const m = copy.getMonth();
-  copy.setMonth(m - months);
-  return copy;
-}
-function subtractYears(d, years){
-  const copy = new Date(d);
-  copy.setFullYear(copy.getFullYear() - years);
-  return copy;
-}
-
-function formatDateString(iso){
-  if (!iso) return '';
-  try{
-    const d = new Date(iso);
-    if (!isValidDate(d)) return iso;
-    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0')
-      + ' ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
-  }catch(e){ return iso; }
-}
-
-function renderAll(){
-  const records = readLS();
-  const totalCount = records.length;
-  document.getElementById('betsCount').textContent = `${totalCount} bets`;
-
-  const nowDate = new Date();
-  // compute windows: only consider records with date for windows
-  const dayAgo = subtractDays(nowDate, 1);
-  const weekAgo = subtractDays(nowDate, 7);
-  const monthAgo = subtractMonths(nowDate, 1);
-  const threeMonthAgo = subtractMonths(nowDate, 3);
-  const yearAgo = subtractYears(nowDate, 1);
-
-  const withDates = records.filter(r => r.date && r.profit !== null && !isNaN(r.profit));
-
-  const pnlDay = sumAmounts(filterAfter(withDates, dayAgo));
-  const pnlWeek = sumAmounts(filterAfter(withDates, weekAgo));
-  const pnlMonth = sumAmounts(filterAfter(withDates, monthAgo));
-  const pnl3Month = sumAmounts(filterAfter(withDates, threeMonthAgo));
-  const pnlYear = sumAmounts(filterAfter(withDates, yearAgo));
-  // overall: include any record that has numeric profit, even if no date
-  const overall = sumAmounts(records.filter(r => r.profit !== null && !isNaN(r.profit)));
-
-  // render numbers
-  function fmt(n){
-    if (n === 0) return '0.00';
-    if (n === null || n === undefined) return '—';
-    return n.toFixed(2);
-  }
-  function setElem(id, n){
-    const e = document.getElementById(id);
-    if (!e) return;
-    e.textContent = fmt(n);
-    e.className = (n > 0 ? 'positive' : (n < 0 ? 'negative' : ''));
-  }
-  setElem('pnlDay', pnlDay);
-  setElem('pnlWeek', pnlWeek);
-  setElem('pnlMonth', pnlMonth);
-  setElem('pnl3Month', pnl3Month);
-  setElem('pnlYear', pnlYear);
-  setElem('pnlOverall', overall);
-
-  // top 10 wins
-  const wins = records.filter(r => typeof r.profit === 'number' && r.profit > 0)
-                      .sort((a,b)=> b.profit - a.profit)
-                      .slice(0,10);
-  const topEl = document.getElementById('topWinsList');
-  topEl.innerHTML = '';
-  if (wins.length === 0){
-    topEl.innerHTML = '<div class="small muted">No wins yet</div>';
-  }else{
-    wins.forEach((w,idx) => {
-      const div = document.createElement('div');
-      div.className = 'top-win';
-      const left = document.createElement('div');
-      left.innerHTML = `<strong>#$${(idx+1)} &nbsp;${Number(w.profit).toFixed(2)}</strong><div class="small muted">${w.date ? formatDateString(w.date) : 'no date'}</div>`;
-      const right = document.createElement('div');
-      right.style.textAlign = 'right';
-      right.innerHTML = `<button class="btn-ghost" data-idx="${idx}" style="font-size:12px">Preview</button>`;
-      div.appendChild(left);
-      div.appendChild(right);
-      topEl.appendChild(div);
-
-      // preview handler
-      right.querySelector('button').addEventListener('click', () => {
-        const preview = document.createElement('pre');
-        preview.textContent = JSON.stringify(w.raw, null, 2);
-        // show inline modal
-        const modal = document.createElement('div');
-        modal.style.position = 'fixed';
-        modal.style.left = '50%';
-        modal.style.top = '50%';
-        modal.style.transform = 'translate(-50%, -50%)';
-        modal.style.zIndex = 2147483647;
-        modal.style.padding = '12px';
-        modal.style.background = 'rgba(2,6,23,0.98)';
-        modal.style.border = '1px solid rgba(255,255,255,0.03)';
-        modal.style.borderRadius = '10px';
-        modal.style.maxWidth = '90%';
-        modal.style.maxHeight = '80%';
-        modal.style.overflow = 'auto';
-        const close = document.createElement('button');
-        close.textContent = 'Close';
-        close.style.marginTop = '8px';
-        close.addEventListener('click', ()=> modal.remove());
-        modal.appendChild(preview);
-        modal.appendChild(close);
-        document.body.appendChild(modal);
-      })
-    })
-  }
-
-  // data preview (show first 15 records)
-  const previewEl = document.getElementById('dataPreview');
-  previewEl.innerHTML = '';
-  if (records.length === 0){
-    previewEl.innerHTML = '<div class="small muted">No data loaded.</div>';
-  } else {
-    const tbl = document.createElement('table');
-    const thead = document.createElement('thead');
-    thead.innerHTML = '<tr><th>#</th><th>date</th><th>profit</th><th>raw (preview)</th></tr>';
-    tbl.appendChild(thead);
-    const tbody = document.createElement('tbody');
-    const slice = records.slice(0, 50);
-    for (let i=0;i<slice.length;i++){
-      const r = slice[i];
-      const tr = document.createElement('tr');
-      const tdIdx = document.createElement('td'); tdIdx.textContent = (i+1);
-      const tdDate = document.createElement('td'); tdDate.textContent = r.date ? formatDateString(r.date) : '—';
-      const tdProfit = document.createElement('td'); tdProfit.textContent = (r.profit === null || r.profit === undefined) ? '—' : Number(r.profit).toFixed(2);
-      const tdRaw = document.createElement('td'); tdRaw.innerHTML = `<pre style="margin:0;max-height:64px;overflow:auto">${escapeHtml(JSON.stringify(r.raw, null, 2))}</pre>`;
-      tr.appendChild(tdIdx); tr.appendChild(tdDate); tr.appendChild(tdProfit); tr.appendChild(tdRaw);
-      tbody.appendChild(tr);
-    }
-    tbl.appendChild(tbody);
-    previewEl.appendChild(tbl);
-    if (records.length > 50){
-      const more = document.createElement('div');
-      more.className = 'small muted';
-      more.style.marginTop = '8px';
-      more.textContent = `Showing first 50 of ${records.length} records. Use export to download full dataset.`;
-      previewEl.appendChild(more);
-    }
-  }
-}
-
-// utility: escape html for pre
-function escapeHtml(str){
-  return String(str).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-}
-
-// clear dataset
-document.getElementById('btnClear').addEventListener('click', () => {
-  if (!confirm('Clear all stored records in this browser?')) return;
-  localStorage.removeItem(LS_KEY);
-  renderAll();
-});
-
-// export raw dataset
-document.getElementById('btnExport').addEventListener('click', () => {
-  const records = readLS();
-  const blob = new Blob([JSON.stringify(records, null, 2)], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'gambles_dataset.json'; document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
-});
-
-// import dataset (file dialog)
-document.getElementById('btnImport').addEventListener('click', () => {
-  const input = document.createElement('input');
-  input.type = 'file'; input.accept = 'application/json';
-  input.addEventListener('change', async (ev) => {
-    const f = ev.target.files[0];
-    if (!f) return;
-    try{
-      const txt = await f.text();
-      const json = JSON.parse(txt);
-      if (!Array.isArray(json)) return alert('Imported file must be an array of normalized records (date, profit, raw) or original raw bets array.');
-      // try detect shape: if items look normalized (have date & profit) -> use them; else normalize
-      let normalized = [];
-      if (json.length > 0 && ('date' in json[0] || 'profit' in json[0])){
-        normalized = json.map(item => ({
-          date: item.date || null,
-          profit: (typeof item.profit === 'number') ? item.profit : (item.profit ? Number(item.profit) : null),
-          raw: item.raw || item
-        }));
-      } else {
-        normalized = json.map(item => normalizeRecord(item));
-      }
-      const current = readLS();
-      const merged = current.concat(normalized);
-      writeLS(merged);
-      renderAll();
-      alert('Imported ' + normalized.length + ' records.');
-    }catch(e){
-      console.error(e);
-      alert('Failed to import dataset. See console for details.');
-    }
-  });
-  input.click();
-});
-
-// publish summary (export small summary)
-document.getElementById('btnPublish').addEventListener('click', () => {
-  // build small summary: windows + topWins
-  const records = readLS();
-  const nowDate = new Date();
-  const dayAgo = subtractDays(nowDate, 1);
-  const weekAgo = subtractDays(nowDate, 7);
-  const monthAgo = subtractMonths(nowDate, 1);
-  const threeMonthAgo = subtractMonths(nowDate, 3);
-  const yearAgo = subtractYears(nowDate, 1);
-  const withDates = records.filter(r => r.date && r.profit !== null && !isNaN(r.profit));
-  const summary = {
-    publishedAt: new Date().toISOString(),
-    windows: {
-      day: sumAmounts(filterAfter(withDates, dayAgo)),
-      week: sumAmounts(filterAfter(withDates, weekAgo)),
-      month: sumAmounts(filterAfter(withDates, monthAgo)),
-      threeMonth: sumAmounts(filterAfter(withDates, threeMonthAgo)),
-      year: sumAmounts(filterAfter(withDates, yearAgo)),
-      overall: sumAmounts(records.filter(r => r.profit !== null && !isNaN(r.profit)))
-    },
-    topWins: records.filter(r => typeof r.profit === 'number' && r.profit > 0).sort((a,b)=> b.profit - a.profit).slice(0,10).map(r => ({profit: r.profit, date: r.date, raw: r.raw}))
-  };
-  const blob = new Blob([JSON.stringify(summary, null, 2)], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'gambles_summary.json'; document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
-});
-
-// initial render
-renderAll();
-
-// keyboard shortcut: press D to open debug console summary in alert (for power user)
-window.addEventListener('keydown', (e) => {
-  if (e.key === 'D' && (e.ctrlKey || e.metaKey)) {
-    const rec = readLS();
-    alert('Records: ' + rec.length + '\\nLocalStorage key: ' + LS_KEY);
-  }
-});
 </script>
 </body>
 </html>
