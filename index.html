@@ -34,7 +34,7 @@
       background: radial-gradient(circle at top, #121723 0, #050608 55%, #020304 100%);
       color: var(--text-main);
       font-family: var(--font);
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: stretch;
@@ -110,29 +110,6 @@
       border-color: var(--accent-green-soft);
       box-shadow: 0 0 0 1px rgba(31, 255, 138, 0.25);
       background: #11151d;
-    }
-
-    .input-buttons {
-      display: flex;
-      gap: 4px;
-    }
-
-    .pill-btn {
-      padding: 7px 9px;
-      border-radius: var(--radius);
-      background: #151a22;
-      border: 1px solid var(--border-soft);
-      color: var(--text-muted);
-      font-size: 11px;
-      cursor: pointer;
-      transition: background var(--transition-fast), color var(--transition-fast), border var(--transition-fast), transform var(--transition-fast);
-    }
-
-    .pill-btn:hover {
-      background: #1f2631;
-      border-color: #2b3647;
-      color: var(--text-main);
-      transform: translateY(-1px);
     }
 
     .select {
@@ -231,8 +208,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      grid-auto-rows: 52px;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
       gap: 6px;
       padding: 8px;
       border-radius: var(--radius);
@@ -255,6 +231,7 @@
       position: relative;
       overflow: hidden;
       transition: background var(--transition-fast), transform var(--transition-fast), border var(--transition-fast), box-shadow var(--transition-fast), color var(--transition-fast);
+      aspect-ratio: 1 / 1; /* <-- makes tiles perfect squares */
     }
 
     .tile.hoverable {
@@ -285,20 +262,11 @@
       z-index: 2;
     }
 
-    .paint-splat {
-      position: absolute;
-      inset: 8px;
-      border-radius: 999px;
-      opacity: 0.2;
-      filter: blur(2px);
-      pointer-events: none;
-    }
-
-    /* DICE AREA */
+    /* DICE / LIMBO PANEL */
 
     .dice-panel {
       margin-top: 4px;
-      padding: 10px 12px 14px;
+      padding: 12px 14px 14px;
       background: var(--panel-darker);
       border-radius: var(--radius);
       border: 1px solid var(--border-soft);
@@ -307,50 +275,39 @@
       gap: 10px;
     }
 
-    .dice-slider-wrapper {
-      position: relative;
-      padding-top: 10px;
+    .dice-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
     }
 
-    .dice-bar {
-      position: relative;
-      height: 10px;
+    .dice-display {
+      margin-top: 4px;
+      width: 100%;
+      min-height: 40px;
       border-radius: 999px;
-      background: linear-gradient(to right, var(--accent-green-soft) 0%, var(--accent-green-soft) 50%, var(--accent-red) 50%, var(--accent-red) 100%);
-      overflow: hidden;
-    }
-
-    .dice-thumb {
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: #f7f9ff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-      border: 2px solid #121725;
-      cursor: pointer;
-    }
-
-    .dice-result-label {
-      position: absolute;
-      top: -18px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 10px;
-      background: #141a23;
-      padding: 1px 6px;
-      border-radius: 999px;
-      border: 1px solid #262f3d;
+      border: 1px solid var(--border-soft);
+      background: #050709;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
       color: var(--text-main);
+    }
+
+    .dice-display span {
+      color: var(--accent-green);
+      margin-left: 4px;
     }
 
     .dice-fields {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 6px;
     }
 
     .dice-field {
@@ -382,20 +339,11 @@
       opacity: 0.7;
     }
 
-    .dice-input.small {
-      text-align: center;
-    }
-
-    .dice-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .dice-help {
       font-size: 11px;
       color: var(--text-muted);
       margin-top: 2px;
     }
-
-    /* STATUS / POPUP */
 
     .status-bar {
       margin-top: 2px;
@@ -499,8 +447,7 @@
       }
       .side-panel {
         width: 100%;
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: column;
       }
       .main-panel {
         min-height: 420px;
@@ -521,11 +468,6 @@
         <span class="field-label">Bet Amount</span>
         <div class="input-row">
           <input id="betAmount" type="number" min="0" step="0.00000001" value="1.00" class="input" />
-          <div class="input-buttons">
-            <button class="pill-btn" id="halfBtn">½</button>
-            <button class="pill-btn" id="doubleBtn">×2</button>
-            <button class="pill-btn" id="maxBtn">Max</button>
-          </div>
         </div>
       </div>
 
@@ -550,7 +492,7 @@
 
       <p class="hint">
         1) Place your bet & difficulty.<br />
-        2) Use <strong>Multiply Wins</strong> to risk dice rolls that scale all tile multipliers.<br />
+        2) Use <strong>Multiply Wins</strong> to risk a Limbo roll (1–100) that scales all multipliers.<br />
         3) Hit <strong>Shoot</strong> and choose a tile to splat for your final win.
       </p>
     </aside>
@@ -560,33 +502,28 @@
       <!-- GRID -->
       <div id="grid" class="grid"></div>
 
-      <!-- DICE PANEL -->
+      <!-- LIMBO DICE PANEL -->
       <section class="dice-panel">
-        <div class="dice-slider-wrapper">
-          <div id="diceBar" class="dice-bar"></div>
-          <div id="diceThumb" class="dice-thumb"></div>
-          <span id="diceResult" class="dice-result-label">–</span>
+        <div class="dice-title">Multiply Wins – Limbo Style</div>
+        <div id="diceDisplay" class="dice-display">
+          Roll: <span>–</span>
         </div>
 
         <div class="dice-fields">
           <div class="dice-field">
-            <span class="dice-field-label">Multiplier</span>
-            <input id="diceMultiplier" type="text" class="dice-input small" value="1.27" disabled />
+            <span class="dice-field-label">Target Multiplier</span>
+            <input id="targetMultiplier" type="number" min="1.10" max="1000.00" step="0.01" value="2.00" class="dice-input" />
           </div>
           <div class="dice-field">
-            <span class="dice-field-label">Roll Under</span>
-            <input id="diceRollUnder" type="number" min="1" max="99.99" step="0.01" class="dice-input small" value="78.00" />
-          </div>
-          <div class="dice-field">
-            <span class="dice-field-label">Win Chance</span>
-            <input id="diceWinChance" type="number" min="0.01" max="99.99" step="0.01" class="dice-input small" value="78.00" />
+            <span class="dice-field-label">Estimated Win Chance</span>
+            <input id="targetChance" type="text" class="dice-input" value="≈ 48.51%" disabled />
           </div>
         </div>
 
-        <div class="dice-meta">
-          <span>Roll range: <span class="emph">0.00 – 100.00</span></span>
-          <span id="diceModeLabel">Mode: Roll Under</span>
-        </div>
+        <p class="dice-help">
+          When you click <strong>Multiply Wins</strong>, a number between 1 and 100 is rolled.
+          You win if the roll is below the threshold for your target multiplier and all tile multipliers are multiplied by it.
+        </p>
       </section>
 
       <div class="status-bar">
@@ -624,22 +561,16 @@
     const statusText = document.getElementById("statusText");
     const betSummary = document.getElementById("betSummary");
 
-    const diceBarEl = document.getElementById("diceBar");
-    const diceThumbEl = document.getElementById("diceThumb");
-    const diceResultLabel = document.getElementById("diceResult");
-    const diceMultiplierInput = document.getElementById("diceMultiplier");
-    const diceRollUnderInput = document.getElementById("diceRollUnder");
-    const diceWinChanceInput = document.getElementById("diceWinChance");
+    const diceDisplay = document.getElementById("diceDisplay");
+    const diceDisplayValue = diceDisplay.querySelector("span");
+    const targetMultiplierInput = document.getElementById("targetMultiplier");
+    const targetChanceInput = document.getElementById("targetChance");
 
     const toastEl = document.getElementById("toast");
     const overlayEl = document.getElementById("overlay");
     const modalMultEl = document.getElementById("modalMult");
     const modalAmountEl = document.getElementById("modalAmount");
     const playAgainBtn = document.getElementById("playAgainBtn");
-
-    const halfBtn = document.getElementById("halfBtn");
-    const doubleBtn = document.getElementById("doubleBtn");
-    const maxBtn = document.getElementById("maxBtn");
 
     let gameState = {
       bet: 0,
@@ -724,7 +655,7 @@
             else value = randBetween(8.0, 30.0);
             break;
           case "maniac":
-            // Very close to your degenerate example: mostly zeros with a few strong hits.
+            // Close to your degenerate profile: 48 zeros, 8 strong tiles
             if (i < 48) value = 0;
             else {
               const special = [2, 2.3, 3, 4, 5, 6, 8, 24];
@@ -736,7 +667,7 @@
         arr.push(parseFloat(value.toFixed(2)));
       }
 
-      // shuffle to spread highs
+      // Shuffle to distribute highs
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -757,45 +688,26 @@
       });
     }
 
-    // ========= DICE MECHANIC =========
-    function syncDiceFromWinChance() {
-      let chance = parseFloat(diceWinChanceInput.value) || 50;
+    // ========= LIMBO MATH =========
+    function updateChanceFromMultiplier() {
+      let mult = parseFloat(targetMultiplierInput.value) || 2.0;
+      if (mult < 1.10) mult = 1.10;
+      if (mult > 1000) mult = 1000;
+      targetMultiplierInput.value = mult.toFixed(2);
+
+      // Simple limbo-style approx: chance ~ (99 / mult) with 1% edge
+      let chance = (99 / mult) * 0.99;
       if (chance < 0.01) chance = 0.01;
-      if (chance > 99.99) chance = 99.99;
-      diceWinChanceInput.value = chance.toFixed(2);
-      diceRollUnderInput.value = chance.toFixed(2);
-
-      // simple house-edge style multiplier
-      const rawMult = (99 / chance) * 0.99; // ~1% edge
-      const clamped = Math.min(Math.max(rawMult, 1.01), 9900);
-      diceMultiplierInput.value = clamped.toFixed(2);
-
-      // move thumb
-      const pct = chance / 100; // 0–1
-      const barRect = diceBarEl.getBoundingClientRect();
-      const barWidth = barRect.width;
-      diceThumbEl.style.left = pct * barWidth + "px";
-
-      // update color gradient: green up to chance, rest red
-      diceBarEl.style.background = `linear-gradient(to right, var(--accent-green-soft) 0%, var(--accent-green-soft) ${chance}%, var(--accent-red) ${chance}%, var(--accent-red) 100%)`;
+      if (chance > 99) chance = 99;
+      targetChanceInput.value = "≈ " + chance.toFixed(2) + "%";
+      return chance;
     }
 
-    function syncWinChanceFromRollUnder() {
-      let ru = parseFloat(diceRollUnderInput.value) || 50;
-      if (ru < 0.01) ru = 0.01;
-      if (ru > 99.99) ru = 99.99;
-      diceRollUnderInput.value = ru.toFixed(2);
-      diceWinChanceInput.value = ru.toFixed(2);
-      syncDiceFromWinChance();
-    }
-
-    function performDiceRoll() {
-      const roll = randBetween(0, 100);
+    function performLimboRoll() {
+      const roll = randBetween(1, 100);
       gameState.lastRoll = roll;
-      diceResultLabel.textContent = roll.toFixed(2);
-      const threshold = parseFloat(diceRollUnderInput.value);
-      const win = roll < threshold;
-      return win;
+      diceDisplayValue.textContent = roll.toFixed(2);
+      return roll;
     }
 
     // ========= GAME LOGIC =========
@@ -811,7 +723,6 @@
       gameState.inReveal = false;
       gameState.lastRoll = null;
 
-      diceResultLabel.textContent = "–";
       statusText.textContent = "Place a bet to generate a new board.";
       betSummary.textContent = "";
 
@@ -819,8 +730,9 @@
       shootBtn.disabled = true;
       betBtn.disabled = false;
 
+      diceDisplayValue.textContent = "–";
+      updateChanceFromMultiplier();
       resetGridDom();
-      syncDiceFromWinChance();
     }
 
     function handleBet() {
@@ -854,12 +766,16 @@
     function handleMultiplyWins() {
       if (!gameState.hasBet || !gameState.canMultiply || gameState.inReveal) return;
 
-      const win = performDiceRoll();
-      const diceMult = parseFloat(diceMultiplierInput.value) || 1.0;
+      const chance = updateChanceFromMultiplier();
+      const multiplier = parseFloat(targetMultiplierInput.value);
+      const roll = performLimboRoll();
 
-      if (!win) {
-        showToast("Dice missed. Game over!", "error", 2200);
-        statusText.textContent = "Dice missed. Your paintball jammed. Place a new bet.";
+      const threshold = (chance / 100) * 100; // conceptually same, but we just use chance %
+
+      // In limbo style, win if roll < threshold
+      if (roll >= threshold) {
+        showToast("Limbo roll lost. Game over!", "error", 2200);
+        statusText.textContent = "Limbo roll lost. Your paintball jammed. Place a new bet.";
         multiplyBtn.disabled = true;
         shootBtn.disabled = true;
         betBtn.disabled = false;
@@ -867,9 +783,18 @@
       }
 
       // scale all multipliers
-      gameState.multipliers = gameState.multipliers.map((m) => parseFloat((m * diceMult).toFixed(2)));
-      showToast(`Dice hit! All tiles multiplied by ×${diceMult.toFixed(2)}.`, "success", 2200);
-      statusText.textContent = `Multipliers boosted by ×${diceMult.toFixed(2)}. You can multiply again or shoot.`;
+      gameState.multipliers = gameState.multipliers.map((m) =>
+        parseFloat((m * multiplier).toFixed(2))
+      );
+
+      showToast(
+        `Limbo hit! All tiles multiplied by ×${multiplier.toFixed(2)}.`,
+        "success",
+        2200
+      );
+      statusText.textContent = `Multipliers boosted by ×${multiplier.toFixed(
+        2
+      )}. You can multiply again or shoot.`;
     }
 
     function handleShoot() {
@@ -898,7 +823,6 @@
         t.onclick = null;
       });
 
-      // highlight chosen tile
       const chosenTile = gridEl.querySelector(`.tile[data-index="${index}"]`);
       chosenTile.classList.add("highlight");
 
@@ -910,23 +834,22 @@
       const order = [];
       for (let i = 0; i < TILE_COUNT; i++) order.push(i);
 
-      // ensure chosen tile is last
       const chosen = gameState.chosenTileIndex;
       const idx = order.indexOf(chosen);
-      if (idx !== -1) {
-        order.splice(idx, 1);
-      }
-      // shuffle the rest
+      if (idx !== -1) order.splice(idx, 1);
+
+      // shuffle others
       for (let i = order.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [order[i], order[j]] = [order[j], order[i]];
       }
-      order.push(chosen);
+      order.push(chosen); // chosen last
 
       let pointer = 0;
 
       const interval = setInterval(() => {
-        const batchSize = Math.min(randBetween(4, 9) | 0, order.length - pointer);
+        const remaining = order.length - pointer;
+        const batchSize = Math.min(Math.floor(randBetween(4, 9)), remaining);
         const toReveal = order.slice(pointer, pointer + batchSize);
         pointer += batchSize;
 
@@ -935,7 +858,6 @@
           const mult = gameState.multipliers[tileIndex];
           tile.classList.add("revealed");
           if (mult === 0) tile.classList.add("zero");
-
           tile.textContent = formatMult(mult);
         });
 
@@ -943,7 +865,7 @@
           clearInterval(interval);
           finishRound();
         }
-      }, 450); // reveal pace
+      }, 450);
     }
 
     function finishRound() {
@@ -952,7 +874,11 @@
       const winAmount = gameState.bet * chosenMult;
 
       statusText.textContent = `Your tile hit ${formatMult(chosenMult)}.`;
-      showToast(`You hit ${formatMult(chosenMult)}!`, chosenMult > 0 ? "success" : "error", 2500);
+      showToast(
+        `You hit ${formatMult(chosenMult)}!`,
+        chosenMult > 0 ? "success" : "error",
+        2500
+      );
 
       modalMultEl.textContent = formatMult(chosenMult);
       modalAmountEl.textContent = formatMoney(winAmount);
@@ -969,33 +895,16 @@
     multiplyBtn.addEventListener("click", handleMultiplyWins);
     shootBtn.addEventListener("click", handleShoot);
 
-    halfBtn.addEventListener("click", () => {
-      const val = parseFloat(betAmountInput.value) || 0;
-      betAmountInput.value = (val / 2).toFixed(2);
-    });
-
-    doubleBtn.addEventListener("click", () => {
-      const val = parseFloat(betAmountInput.value) || 0;
-      betAmountInput.value = (val * 2).toFixed(2);
-    });
-
-    maxBtn.addEventListener("click", () => {
-      // For demo purposes, treat "max" as 100
-      betAmountInput.value = "100.00";
-    });
-
-    diceWinChanceInput.addEventListener("input", syncDiceFromWinChance);
-    diceRollUnderInput.addEventListener("input", syncWinChanceFromRollUnder);
-    window.addEventListener("resize", syncDiceFromWinChance);
+    targetMultiplierInput.addEventListener("input", updateChanceFromMultiplier);
 
     playAgainBtn.addEventListener("click", () => {
       overlayEl.style.display = "none";
       resetGameState(false);
     });
 
-    // Initialize
+    // INIT
     resetGridDom();
-    syncDiceFromWinChance();
+    updateChanceFromMultiplier();
   </script>
 </body>
 </html>
