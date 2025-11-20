@@ -2,891 +2,1000 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Paintball Frenzy Prototype</title>
+  <title>Paintball Frenzy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-      --bg-main: #05060a;
-      --bg-panel: #11141c;
-      --bg-card: #161924;
-      --bg-card-hover: #1e2230;
-      --accent: #21c56d;
-      --accent-soft: rgba(33, 197, 109, 0.15);
-      --accent-danger: #d14545;
-      --text-main: #f4f6ff;
-      --text-muted: #9ea3b8;
-      --border: #232839;
-      --radius-lg: 10px;
-      --radius-sm: 6px;
-      --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.5);
+      --bg-dark: #060809;
+      --panel-dark: #10141a;
+      --panel-darker: #0b0f14;
+      --tile-dark: #1a2029;
+      --tile-hover: #232c38;
+      --accent-green: #1fff8a;
+      --accent-green-soft: #15cc6a;
+      --accent-red: #ff3b5c;
+      --text-main: #f7f9ff;
+      --text-muted: #8b97a8;
+      --border-soft: #222a36;
+      --shadow-soft: 0 0 18px rgba(0, 0, 0, 0.55);
+      --radius: 8px;
       --transition-fast: 0.15s ease-out;
-      --transition-med: 0.25s ease;
-      --grid-cols: 7;
-      --grid-rows: 8;
-      --tile-size: 64px;
+      --transition-med: 0.25s ease-out;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
     }
 
     body {
-      background: radial-gradient(circle at top, #151929 0, #05060a 55%);
+      background: radial-gradient(circle at top, #121723 0, #050608 55%, #020304 100%);
       color: var(--text-main);
-      min-height: 100vh;
+      font-family: var(--font);
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: stretch;
-      padding: 20px;
     }
 
-    .game-shell {
+    #app {
       width: 100%;
-      max-width: 1280px;
-      min-height: 700px;
-      background: radial-gradient(circle at top left, #151a28 0, #080a11 45%, #04050b 100%);
-      border-radius: 16px;
-      box-shadow: var(--shadow-soft);
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      overflow: hidden;
-      border: 1px solid #1a1f2c;
+      max-width: 1200px;
+      display: flex;
+      gap: 16px;
+      padding: 16px;
     }
 
     /* LEFT PANEL */
 
-    .left-panel {
-      background: linear-gradient(180deg, #0c0f19 0%, #05060a 100%);
-      border-right: 1px solid var(--border);
-      padding: 20px 18px;
+    .side-panel {
+      width: 260px;
+      background: var(--panel-dark);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 18px;
     }
 
-    .logo {
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      font-size: 13px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .game-title {
+    .side-panel h1 {
       font-size: 18px;
       font-weight: 600;
+      color: var(--text-main);
       margin-bottom: 4px;
     }
 
-    .game-subtitle {
-      font-size: 12px;
+    .subtext {
+      font-size: 11px;
       color: var(--text-muted);
-      margin-bottom: 12px;
+      opacity: 0.9;
     }
 
-    .panel-section-title {
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .field-label {
       font-size: 11px;
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 4px;
     }
 
-    .input-group {
-      margin-bottom: 12px;
-    }
-
-    .input-label-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
-    }
-
-    .input-label {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .bet-input-wrapper {
+    .input-row {
       display: flex;
       align-items: center;
       gap: 6px;
-      background: var(--bg-card);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      padding: 6px 6px 6px 10px;
     }
 
-    .currency-tag {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .bet-input {
-      background: transparent;
-      border: none;
-      outline: none;
+    .input {
       flex: 1;
+      background: var(--panel-darker);
+      border-radius: var(--radius);
+      padding: 8px 10px;
+      border: 1px solid var(--border-soft);
       color: var(--text-main);
-      font-size: 14px;
+      font-size: 13px;
+      outline: none;
+      transition: border var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
     }
 
-    .bet-quick-buttons {
+    .input:focus {
+      border-color: var(--accent-green-soft);
+      box-shadow: 0 0 0 1px rgba(31, 255, 138, 0.25);
+      background: #11151d;
+    }
+
+    .input-buttons {
       display: flex;
       gap: 4px;
     }
 
-    .chip-btn {
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: #131722;
+    .pill-btn {
+      padding: 7px 9px;
+      border-radius: var(--radius);
+      background: #151a22;
+      border: 1px solid var(--border-soft);
       color: var(--text-muted);
       font-size: 11px;
-      padding: 4px 8px;
       cursor: pointer;
-      transition: var(--transition-fast);
+      transition: background var(--transition-fast), color var(--transition-fast), border var(--transition-fast), transform var(--transition-fast);
     }
 
-    .chip-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: #171c27;
-    }
-
-    .select-wrapper {
-      background: var(--bg-card);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      padding: 8px 10px;
-      position: relative;
+    .pill-btn:hover {
+      background: #1f2631;
+      border-color: #2b3647;
+      color: var(--text-main);
+      transform: translateY(-1px);
     }
 
     .select {
-      background: transparent;
-      border: none;
-      outline: none;
       width: 100%;
+      background: var(--panel-darker);
+      border-radius: var(--radius);
+      padding: 8px 10px;
+      border: 1px solid var(--border-soft);
       color: var(--text-main);
-      font-size: 14px;
-      appearance: none;
+      font-size: 13px;
+      outline: none;
     }
 
-    .select-arrow {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      font-size: 10px;
-      color: var(--text-muted);
-    }
-
-    .primary-btn,
-    .secondary-btn {
+    .btn-main {
+      margin-top: 4px;
       width: 100%;
-      padding: 10px 0;
-      border-radius: var(--radius-sm);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition-med);
+      padding: 11px 12px;
+      border-radius: var(--radius);
       border: none;
+      background: var(--accent-green);
+      color: #020304;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 0 18px rgba(31, 255, 138, 0.25);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
     }
 
-    .primary-btn {
-      background: var(--accent);
-      color: #02150b;
-      box-shadow: 0 0 24px rgba(33, 197, 109, 0.4);
-      margin-top: 8px;
-    }
-
-    .primary-btn:hover {
-      filter: brightness(1.06);
+    .btn-main:hover {
       transform: translateY(-1px);
-      box-shadow: 0 3px 24px rgba(33, 197, 109, 0.6);
+      box-shadow: 0 0 32px rgba(31, 255, 138, 0.4);
+      filter: brightness(1.02);
     }
 
-    .primary-btn:disabled {
-      opacity: 0.4;
+    .btn-main:disabled {
+      opacity: 0.35;
       cursor: default;
       box-shadow: none;
       transform: none;
     }
 
-    .secondary-btn {
-      background: transparent;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-    }
-
-    .secondary-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .secondary-row .secondary-btn {
-      flex: 1;
-      font-size: 13px;
-      padding: 8px 0;
-    }
-
-    .secondary-btn:hover {
-      background: var(--accent-soft);
-    }
-
-    .secondary-btn:disabled {
-      opacity: 0.35;
-      cursor: default;
-      background: transparent;
-    }
-
-    .helper-text {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 6px;
-      line-height: 1.4;
-    }
-
-    /* RIGHT PANEL */
-
-    .right-panel {
-      padding: 18px 22px 22px;
+    .secondary-actions {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
+      margin-top: 8px;
     }
 
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-
-    .top-title {
+    .btn-secondary {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-soft);
+      background: #151a22;
+      color: var(--text-main);
       font-size: 13px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--transition-fast), transform var(--transition-fast), border var(--transition-fast);
     }
 
-    .status-tag {
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(17, 177, 92, 0.14);
-      color: #49ff9b;
-      border: 1px solid rgba(73, 255, 155, 0.4);
-    }
-
-    .status-tag-idle {
-      background: rgba(114, 132, 172, 0.1);
-      color: var(--text-muted);
-      border-color: rgba(114, 132, 172, 0.4);
-    }
-
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: currentColor;
-    }
-
-    .grid-wrapper {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 8px 0 4px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(var(--grid-cols), var(--tile-size));
-      grid-template-rows: repeat(var(--grid-rows), var(--tile-size));
-      gap: 6px;
-      padding: 10px;
-      background: #0d1018;
-      border-radius: 14px;
-      border: 1px solid #1c2232;
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.01);
-    }
-
-    .tile {
-      width: var(--tile-size);
-      height: var(--tile-size);
-      border-radius: 8px;
-      background: var(--bg-card);
-      border: 1px solid #24293a;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 13px;
-      color: var(--text-muted);
-      position: relative;
-      overflow: hidden;
-      cursor: default;
-      transition: var(--transition-fast);
-    }
-
-    .tile.hover-enabled {
-      cursor: crosshair;
-    }
-
-    .tile.hover-enabled:hover {
-      background: var(--bg-card-hover);
-      box-shadow: 0 0 0 1px rgba(78, 213, 134, 0.6),
-                  0 0 18px rgba(78, 213, 134, 0.3);
+    .btn-secondary:hover:not(:disabled) {
+      background: #1f2631;
+      border-color: #2f3a4d;
       transform: translateY(-1px);
     }
 
-    .tile.selected {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(78, 213, 134, 0.9),
-                  0 0 20px rgba(78, 213, 134, 0.6);
+    .btn-secondary:disabled {
+      opacity: 0.35;
+      cursor: default;
+      transform: none;
     }
 
-    .tile-multiplier {
-      opacity: 0;
-      transform: translateY(4px);
-      transition: var(--transition-med);
+    .hint {
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
     }
 
-    .tile.revealed .tile-multiplier {
-      opacity: 1;
-      transform: translateY(0);
+    /* MAIN PANEL */
+
+    .main-panel {
+      flex: 1;
+      background: var(--panel-dark);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
     }
 
-    .tile.splat::before {
-      content: "";
+    /* GRID */
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-auto-rows: 52px;
+      gap: 6px;
+      padding: 8px;
+      border-radius: var(--radius);
+      background: #0d1117;
+      border: 1px solid var(--border-soft);
+      position: relative;
+    }
+
+    .tile {
+      background: var(--tile-dark);
+      border-radius: 6px;
+      border: 1px solid #252f3b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: default;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+      transition: background var(--transition-fast), transform var(--transition-fast), border var(--transition-fast), box-shadow var(--transition-fast), color var(--transition-fast);
+    }
+
+    .tile.hoverable {
+      cursor: crosshair;
+    }
+
+    .tile.hoverable:hover {
+      background: var(--tile-hover);
+      border-color: #3a485b;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .tile.revealed {
+      color: var(--text-main);
+      background: #171e28;
+      border-color: #3a4659;
+    }
+
+    .tile.zero {
+      color: #4d5664;
+      opacity: 0.85;
+    }
+
+    .tile.highlight {
+      box-shadow: 0 0 0 2px rgba(31, 255, 138, 0.65);
+      border-color: var(--accent-green);
+      z-index: 2;
+    }
+
+    .paint-splat {
       position: absolute;
-      width: 130%;
-      height: 130%;
-      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.38) 0, transparent 50%),
-                  radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.32) 0, transparent 50%),
-                  radial-gradient(circle, rgba(106, 240, 173, 0.9) 0, rgba(36, 187, 119, 0.95) 45%, transparent 65%);
-      mix-blend-mode: screen;
-      border-radius: 50%;
-      opacity: 0;
-      transform: scale(0.4);
-      animation: splat 0.4s forwards;
+      inset: 8px;
+      border-radius: 999px;
+      opacity: 0.2;
+      filter: blur(2px);
       pointer-events: none;
-    }
-
-    @keyframes splat {
-      0% {
-        opacity: 0;
-        transform: scale(0.1) translateY(-6px);
-      }
-      60% {
-        opacity: 1;
-        transform: scale(1.1) translateY(0);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
     }
 
     /* DICE AREA */
 
     .dice-panel {
-      margin-top: 8px;
-      padding: 12px 14px 10px;
-      background: #0a0d15;
-      border-radius: 12px;
-      border: 1px solid #1b2130;
-    }
-
-    .dice-row-top {
+      margin-top: 4px;
+      padding: 10px 12px 14px;
+      background: var(--panel-darker);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-soft);
       display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .dice-bar-wrapper {
+    .dice-slider-wrapper {
       position: relative;
-      margin-bottom: 8px;
+      padding-top: 10px;
     }
 
     .dice-bar {
-      width: 100%;
+      position: relative;
       height: 10px;
       border-radius: 999px;
-      background: linear-gradient(90deg, #3dcf7a 0, #56da87 50%, #d14545 100%);
-      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.52);
-      position: relative;
+      background: linear-gradient(to right, var(--accent-green-soft) 0%, var(--accent-green-soft) 50%, var(--accent-red) 50%, var(--accent-red) 100%);
+      overflow: hidden;
     }
 
-    .dice-slider-thumb {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #e3ffe5;
-      box-shadow: 0 0 0 2px #1d5234, 0 0 18px rgba(23, 230, 120, 0.65);
+    .dice-thumb {
       position: absolute;
       top: 50%;
       transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: #f7f9ff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+      border: 2px solid #121725;
       cursor: pointer;
     }
 
-    .dice-result-tag {
+    .dice-result-label {
       position: absolute;
-      left: 20%;
-      bottom: 100%;
+      top: -18px;
+      left: 50%;
       transform: translateX(-50%);
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: #1a2130;
       font-size: 10px;
-      color: var(--text-muted);
-      border: 1px solid #2b3348;
+      background: #141a23;
+      padding: 1px 6px;
+      border-radius: 999px;
+      border: 1px solid #262f3d;
+      color: var(--text-main);
     }
 
-    .dice-bottom-row {
+    .dice-fields {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 6px;
+      gap: 10px;
+      margin-top: 10px;
     }
 
     .dice-field {
-      background: #070a11;
-      border-radius: 6px;
-      border: 1px solid #23293a;
-      padding: 6px 8px;
       display: flex;
       flex-direction: column;
-      gap: 2px;
-    }
-
-    .dice-label {
+      gap: 4px;
       font-size: 11px;
       color: var(--text-muted);
     }
 
-    .dice-value-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .dice-field-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
     .dice-input {
-      background: transparent;
-      border: none;
-      outline: none;
+      background: #0d1117;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-soft);
+      padding: 6px 8px;
+      font-size: 12px;
       color: var(--text-main);
-      font-size: 13px;
+      outline: none;
       width: 100%;
     }
 
-    .dice-unit {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-left: 4px;
+    .dice-input:disabled {
+      opacity: 0.7;
     }
 
-    .roll-btn {
-      margin-top: 8px;
-      padding: 6px 0;
-      width: 120px;
-      font-size: 12px;
-      border-radius: 999px;
-      background: #161c2a;
-      border: 1px solid #2a3244;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: var(--transition-fast);
+    .dice-input.small {
+      text-align: center;
     }
 
-    .roll-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #04140b;
-      box-shadow: 0 0 18px rgba(33, 197, 109, 0.7);
-    }
-
-    .roll-btn:hover.active {
-      filter: brightness(1.04);
-    }
-
-    .dice-footer-row {
+    .dice-meta {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 4px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
     }
 
-    /* WIN POPUP */
+    /* STATUS / POPUP */
 
-    .win-popup-backdrop {
+    .status-bar {
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status-bar span.emph {
+      color: var(--accent-green);
+      font-weight: 500;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(11, 18, 26, 0.96);
+      border: 1px solid #2c3645;
+      color: var(--text-main);
+      box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+      display: none;
+      z-index: 50;
+    }
+
+    .toast.success {
+      border-color: var(--accent-green-soft);
+      color: var(--accent-green);
+    }
+
+    .toast.error {
+      border-color: var(--accent-red);
+      color: var(--accent-red);
+    }
+
+    .overlay {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9));
+      background: rgba(2, 4, 8, 0.7);
       display: none;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       z-index: 40;
     }
 
-    .win-popup-backdrop.visible {
-      display: flex;
-    }
-
-    .win-popup {
-      background: #05070d;
-      border-radius: 14px;
-      border: 1px solid rgba(78, 213, 134, 0.7);
-      box-shadow: 0 0 28px rgba(78, 213, 134, 0.7);
-      padding: 16px 22px 18px;
-      text-align: center;
+    .win-modal {
+      background: var(--panel-dark);
+      border-radius: 12px;
+      padding: 18px 20px 14px;
+      border: 1px solid #313b4d;
       min-width: 220px;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
     }
 
-    .win-popup-title {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .win-popup-mult {
+    .win-mult {
       font-size: 26px;
       font-weight: 700;
-      margin-bottom: 2px;
+      color: var(--accent-green);
+      margin-bottom: 4px;
     }
 
-    .win-popup-amount {
+    .win-amount {
       font-size: 14px;
-      color: var(--text-muted);
-      margin-bottom: 12px;
+      color: var(--text-main);
+      margin-bottom: 10px;
     }
 
-    .win-popup-btn {
-      padding: 8px 18px;
+    .win-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .btn-small {
+      margin-top: 8px;
+      padding: 7px 12px;
       border-radius: 999px;
       border: none;
-      background: var(--accent);
-      color: #04140b;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 500;
       cursor: pointer;
-      transition: var(--transition-fast);
+      background: var(--accent-green);
+      color: #020304;
     }
 
-    .win-popup-btn:hover {
-      filter: brightness(1.05);
+    .btn-small:hover {
+      filter: brightness(1.03);
     }
 
-    /* RESPONSIVE */
-
-    @media (max-width: 980px) {
-      .game-shell {
-        grid-template-columns: 1fr;
-        max-width: 100%;
+    @media (max-width: 960px) {
+      #app {
+        flex-direction: column;
       }
-      .left-panel {
-        border-right: none;
-        border-bottom: 1px solid var(--border);
+      .side-panel {
+        width: 100%;
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 12px;
       }
-      .left-panel > * {
-        flex-basis: 100%;
-      }
-    }
-
-    @media (max-width: 720px) {
-      :root {
-        --tile-size: 46px;
+      .main-panel {
+        min-height: 420px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="game-shell">
+  <div id="app">
     <!-- LEFT PANEL -->
-    <aside class="left-panel">
+    <aside class="side-panel">
       <div>
-        <div class="logo">PAINTBALL FRENZY</div>
-        <div class="game-title">Paintball Frenzy</div>
-        <div class="game-subtitle">Click • Multiply • Shoot</div>
+        <h1>Paintball Frenzy</h1>
+        <p class="subtext">Stake-style dice + grid game with paintball reveal.</p>
       </div>
 
-      <!-- Bet amount -->
-      <div class="input-group">
-        <div class="input-label-row">
-          <span class="input-label">Bet amount</span>
-        </div>
-        <div class="bet-input-wrapper">
-          <span class="currency-tag">$</span>
-          <input
-            type="number"
-            class="bet-input"
-            id="betAmount"
-            min="0"
-            step="0.01"
-            placeholder="0.00"
-          />
-          <div class="bet-quick-buttons">
-            <button class="chip-btn" type="button" onclick="quickBet(0.5)">½</button>
-            <button class="chip-btn" type="button" onclick="quickBet(2)">×2</button>
-            <button class="chip-btn" type="button" onclick="quickBet('max')">Max</button>
+      <div class="field-group">
+        <span class="field-label">Bet Amount</span>
+        <div class="input-row">
+          <input id="betAmount" type="number" min="0" step="0.00000001" value="1.00" class="input" />
+          <div class="input-buttons">
+            <button class="pill-btn" id="halfBtn">½</button>
+            <button class="pill-btn" id="doubleBtn">×2</button>
+            <button class="pill-btn" id="maxBtn">Max</button>
           </div>
         </div>
       </div>
 
-      <!-- Difficulty -->
-      <div class="input-group">
-        <div class="input-label-row">
-          <span class="input-label">Difficulty</span>
-        </div>
-        <div class="select-wrapper">
-          <select id="difficulty" class="select">
-            <option>Easy</option>
-            <option>Medium</option>
-            <option>Hard</option>
-            <option>Expert</option>
-            <option>Master</option>
-            <option>Maniac</option>
-          </select>
-          <span class="select-arrow">▾</span>
-        </div>
+      <div class="field-group">
+        <span class="field-label">Difficulty</span>
+        <select id="difficultySelect" class="select">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+          <option value="expert">Expert</option>
+          <option value="master">Master</option>
+          <option value="maniac">Maniac</option>
+        </select>
       </div>
 
-      <!-- Main Bet button -->
-      <button id="betBtn" class="primary-btn" type="button">
-        Bet
-      </button>
+      <button id="betBtn" class="btn-main">Bet</button>
 
-      <!-- Multiply / Shoot buttons (appear after bet) -->
-      <div class="secondary-row">
-        <button id="multiplyBtn" class="secondary-btn" type="button" disabled>
-          Multiply Wins
-        </button>
-        <button id="shootBtn" class="secondary-btn" type="button" disabled>
-          Shoot
-        </button>
+      <div class="secondary-actions">
+        <button id="multiplyBtn" class="btn-secondary" disabled>Multiply Wins</button>
+        <button id="shootBtn" class="btn-secondary" disabled>Shoot</button>
       </div>
 
-      <p class="helper-text">
-        1. Place your bet and choose difficulty.<br />
-        2. Use <strong>Multiply Wins</strong> to boost tile multipliers via dice.<br />
-        3. Hit <strong>Shoot</strong> and pick a tile to splat.
+      <p class="hint">
+        1) Place your bet & difficulty.<br />
+        2) Use <strong>Multiply Wins</strong> to risk dice rolls that scale all tile multipliers.<br />
+        3) Hit <strong>Shoot</strong> and choose a tile to splat for your final win.
       </p>
     </aside>
 
-    <!-- RIGHT PANEL -->
-    <main class="right-panel">
-      <div class="top-bar">
-        <div>
-          <div class="top-title">Paintball grid</div>
-          <div style="font-size:12px;color:var(--text-muted);">
-            56 tiles • multipliers hidden until you shoot
-          </div>
-        </div>
-        <div id="statusTag" class="status-tag status-tag-idle">
-          <span class="status-dot"></span>
-          <span id="statusText">Idle</span>
-        </div>
-      </div>
-
+    <!-- MAIN PANEL -->
+    <main class="main-panel">
       <!-- GRID -->
-      <div class="grid-wrapper">
-        <div id="grid" class="grid"></div>
-      </div>
+      <div id="grid" class="grid"></div>
 
       <!-- DICE PANEL -->
-      <div class="dice-panel">
-        <div class="dice-row-top">
-          <span>Dice: Multiply Wins</span>
-          <button id="rollBtn" class="roll-btn" type="button" disabled>Roll dice</button>
+      <section class="dice-panel">
+        <div class="dice-slider-wrapper">
+          <div id="diceBar" class="dice-bar"></div>
+          <div id="diceThumb" class="dice-thumb"></div>
+          <span id="diceResult" class="dice-result-label">–</span>
         </div>
-        <div class="dice-bar-wrapper">
-          <div class="dice-result-tag" id="diceResultTag">–</div>
-          <div class="dice-bar" id="diceBar">
-            <div class="dice-slider-thumb" id="diceThumb"></div>
-          </div>
-        </div>
-        <div class="dice-bottom-row">
+
+        <div class="dice-fields">
           <div class="dice-field">
-            <span class="dice-label">Multiplier</span>
-            <div class="dice-value-row">
-              <input id="diceMultiplier" class="dice-input" type="number" value="1.28" step="0.01" />
-              <span class="dice-unit">×</span>
-            </div>
+            <span class="dice-field-label">Multiplier</span>
+            <input id="diceMultiplier" type="text" class="dice-input small" value="1.27" disabled />
           </div>
           <div class="dice-field">
-            <span class="dice-label" id="diceModeLabel">Roll Under</span>
-            <div class="dice-value-row">
-              <input id="diceRollTarget" class="dice-input" type="number" value="78" />
-            </div>
+            <span class="dice-field-label">Roll Under</span>
+            <input id="diceRollUnder" type="number" min="1" max="99.99" step="0.01" class="dice-input small" value="78.00" />
           </div>
           <div class="dice-field">
-            <span class="dice-label">Win Chance</span>
-            <div class="dice-value-row">
-              <input id="diceWinChance" class="dice-input" type="number" value="78.0000" step="0.0001" />
-              <span class="dice-unit">%</span>
-            </div>
+            <span class="dice-field-label">Win Chance</span>
+            <input id="diceWinChance" type="number" min="0.01" max="99.99" step="0.01" class="dice-input small" value="78.00" />
           </div>
         </div>
-        <div class="dice-footer-row">
-          <span style="font-size:11px;color:var(--text-muted);">
-            Adjust win chance or multiplier. Higher multipliers mean riskier rolls.
-          </span>
+
+        <div class="dice-meta">
+          <span>Roll range: <span class="emph">0.00 – 100.00</span></span>
+          <span id="diceModeLabel">Mode: Roll Under</span>
         </div>
+      </section>
+
+      <div class="status-bar">
+        <span id="statusText">Place a bet to generate a new board.</span>
+        <span id="betSummary"></span>
       </div>
     </main>
   </div>
 
-  <!-- WIN POPUP -->
-  <div id="winPopupBackdrop" class="win-popup-backdrop">
-    <div class="win-popup">
-      <div class="win-popup-title">Result</div>
-      <div id="winPopupMult" class="win-popup-mult">1.02×</div>
-      <div id="winPopupAmount" class="win-popup-amount">$0.00</div>
-      <button class="win-popup-btn" type="button" onclick="closeWinPopup()">Play again</button>
+  <!-- TOAST & MODAL -->
+  <div id="toast" class="toast"></div>
+
+  <div id="overlay" class="overlay">
+    <div class="win-modal">
+      <div class="win-label">Total Win</div>
+      <div id="modalMult" class="win-mult">0.00×</div>
+      <div id="modalAmount" class="win-amount">$0.00</div>
+      <button id="playAgainBtn" class="btn-small">Play Again</button>
     </div>
   </div>
 
   <script>
-    // -----------------------------
-    // BASIC STATE
-    // -----------------------------
-    const gridEl = document.getElementById("grid");
+    // ========= BASIC STATE =========
+    const GRID_ROWS = 7;
+    const GRID_COLS = 8;
+    const TILE_COUNT = GRID_ROWS * GRID_COLS;
+
+    const betAmountInput = document.getElementById("betAmount");
+    const difficultySelect = document.getElementById("difficultySelect");
     const betBtn = document.getElementById("betBtn");
     const multiplyBtn = document.getElementById("multiplyBtn");
     const shootBtn = document.getElementById("shootBtn");
-    const statusTag = document.getElementById("statusTag");
+
+    const gridEl = document.getElementById("grid");
     const statusText = document.getElementById("statusText");
-    const betAmountInput = document.getElementById("betAmount");
+    const betSummary = document.getElementById("betSummary");
 
-    const diceThumb = document.getElementById("diceThumb");
-    const diceBar = document.getElementById("diceBar");
-    const diceResultTag = document.getElementById("diceResultTag");
+    const diceBarEl = document.getElementById("diceBar");
+    const diceThumbEl = document.getElementById("diceThumb");
+    const diceResultLabel = document.getElementById("diceResult");
     const diceMultiplierInput = document.getElementById("diceMultiplier");
-    const diceRollTargetInput = document.getElementById("diceRollTarget");
+    const diceRollUnderInput = document.getElementById("diceRollUnder");
     const diceWinChanceInput = document.getElementById("diceWinChance");
-    const rollBtn = document.getElementById("rollBtn");
 
-    const winPopupBackdrop = document.getElementById("winPopupBackdrop");
-    const winPopupMult = document.getElementById("winPopupMult");
-    const winPopupAmount = document.getElementById("winPopupAmount");
+    const toastEl = document.getElementById("toast");
+    const overlayEl = document.getElementById("overlay");
+    const modalMultEl = document.getElementById("modalMult");
+    const modalAmountEl = document.getElementById("modalAmount");
+    const playAgainBtn = document.getElementById("playAgainBtn");
 
-    let gameState = "idle"; // 'idle' | 'betPlaced' | 'multiplying' | 'readyToShoot' | 'revealing'
-    let tiles = [];
-    let selectedTileIndex = null;
+    const halfBtn = document.getElementById("halfBtn");
+    const doubleBtn = document.getElementById("doubleBtn");
+    const maxBtn = document.getElementById("maxBtn");
 
-    function setStatus(mode, text) {
-      statusTag.classList.toggle("status-tag-idle", mode === "idle");
-      statusText.textContent = text;
+    let gameState = {
+      bet: 0,
+      difficulty: "easy",
+      multipliers: [],
+      revealed: [],
+      chosenTileIndex: null,
+      hasBet: false,
+      canMultiply: false,
+      canShoot: false,
+      inReveal: false,
+      lastRoll: null
+    };
+
+    // ========= UTILS =========
+    function randBetween(min, max) {
+      return Math.random() * (max - min) + min;
     }
 
-    // -----------------------------
-    // INIT GRID
-    // -----------------------------
-    function initGrid() {
+    function formatMult(x) {
+      return x.toFixed(2) + "×";
+    }
+
+    function formatMoney(x) {
+      return "$" + x.toFixed(2);
+    }
+
+    function showToast(message, type = "info", duration = 1800) {
+      toastEl.textContent = message;
+      toastEl.className = "toast " + (type === "success" ? "success" : type === "error" ? "error" : "");
+      toastEl.style.display = "block";
+      setTimeout(() => {
+        toastEl.style.display = "none";
+      }, duration);
+    }
+
+    function resetGridDom() {
       gridEl.innerHTML = "";
-      tiles = [];
-      const totalTiles = 7 * 8;
-      for (let i = 0; i < totalTiles; i++) {
+      for (let i = 0; i < TILE_COUNT; i++) {
         const tile = document.createElement("div");
         tile.className = "tile";
-        const label = document.createElement("div");
-        label.className = "tile-multiplier";
-        label.textContent = "0.00×";
-        tile.appendChild(label);
         tile.dataset.index = i;
-        tiles.push({ el: tile, multiplier: 0 });
+        tile.textContent = "0.00×";
         gridEl.appendChild(tile);
       }
     }
 
-    initGrid();
+    // ========= MULTIPLIER GENERATION BY DIFFICULTY =========
+    function generateMultipliers(difficulty) {
+      const arr = [];
+      for (let i = 0; i < TILE_COUNT; i++) {
+        let value = 0;
+        const r = Math.random();
 
-    // -----------------------------
-    // MOCK MULTIPLIER GENERATION
-    // (placeholder – replace with real difficulty math)
-    // -----------------------------
-    function generateMultipliers() {
-      // Simple fake distribution for demo: mostly 0, some random multipliers
-      tiles.forEach((t) => {
-        const roll = Math.random();
-        if (roll < 0.78) {
-          t.multiplier = 0;
-        } else {
-          t.multiplier = +(1 + Math.random() * 30).toFixed(2);
+        switch (difficulty) {
+          case "easy":
+            if (r < 0.6) value = randBetween(0.20, 1.20);
+            else if (r < 0.9) value = randBetween(1.20, 4.0);
+            else value = randBetween(4.0, 7.0);
+            break;
+          case "medium":
+            if (r < 0.25) value = 0;
+            else if (r < 0.7) value = randBetween(0.20, 2.0);
+            else if (r < 0.93) value = randBetween(2.0, 7.5);
+            else value = randBetween(7.5, 15.0);
+            break;
+          case "hard":
+            if (r < 0.45) value = 0;
+            else if (r < 0.8) value = randBetween(0.20, 2.0);
+            else if (r < 0.95) value = randBetween(2.0, 8.0);
+            else value = randBetween(8.0, 25.0);
+            break;
+          case "expert":
+            if (r < 0.65) value = 0;
+            else if (r < 0.9) value = randBetween(0.20, 2.0);
+            else if (r < 0.97) value = randBetween(2.0, 16.0);
+            else value = randBetween(16.0, 50.0);
+            break;
+          case "master":
+            if (r < 0.8) value = 0;
+            else if (r < 0.95) value = randBetween(0.20, 4.0);
+            else value = randBetween(8.0, 30.0);
+            break;
+          case "maniac":
+            // Very close to your degenerate example: mostly zeros with a few strong hits.
+            if (i < 48) value = 0;
+            else {
+              const special = [2, 2.3, 3, 4, 5, 6, 8, 24];
+              value = special[i - 48];
+            }
+            break;
         }
-        t.el.querySelector(".tile-multiplier").textContent = t.multiplier.toFixed(2) + "×";
-        t.el.classList.remove("revealed", "selected", "splat", "hover-enabled");
+
+        arr.push(parseFloat(value.toFixed(2)));
+      }
+
+      // shuffle to spread highs
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function updateGridDisplay(hideValues = true) {
+      const tiles = gridEl.querySelectorAll(".tile");
+      tiles.forEach((tile, idx) => {
+        const mult = gameState.multipliers[idx] || 0;
+        tile.className = "tile";
+        tile.textContent = hideValues ? "0.00×" : formatMult(mult);
+        if (!hideValues) {
+          tile.classList.add("revealed");
+          if (mult === 0) tile.classList.add("zero");
+        }
       });
     }
 
-    function enableTileHover(enable) {
-      tiles.forEach((t) => {
-        t.el.classList.toggle("hover-enabled", enable);
-      });
+    // ========= DICE MECHANIC =========
+    function syncDiceFromWinChance() {
+      let chance = parseFloat(diceWinChanceInput.value) || 50;
+      if (chance < 0.01) chance = 0.01;
+      if (chance > 99.99) chance = 99.99;
+      diceWinChanceInput.value = chance.toFixed(2);
+      diceRollUnderInput.value = chance.toFixed(2);
+
+      // simple house-edge style multiplier
+      const rawMult = (99 / chance) * 0.99; // ~1% edge
+      const clamped = Math.min(Math.max(rawMult, 1.01), 9900);
+      diceMultiplierInput.value = clamped.toFixed(2);
+
+      // move thumb
+      const pct = chance / 100; // 0–1
+      const barRect = diceBarEl.getBoundingClientRect();
+      const barWidth = barRect.width;
+      diceThumbEl.style.left = pct * barWidth + "px";
+
+      // update color gradient: green up to chance, rest red
+      diceBarEl.style.background = `linear-gradient(to right, var(--accent-green-soft) 0%, var(--accent-green-soft) ${chance}%, var(--accent-red) ${chance}%, var(--accent-red) 100%)`;
     }
 
-    // -----------------------------
-    // BET
-    // -----------------------------
-    betBtn.addEventListener("click", () => {
-      const amount = parseFloat(betAmountInput.value || "0");
-      if (!(amount > 0)) {
-        alert("Enter a bet amount above 0.");
+    function syncWinChanceFromRollUnder() {
+      let ru = parseFloat(diceRollUnderInput.value) || 50;
+      if (ru < 0.01) ru = 0.01;
+      if (ru > 99.99) ru = 99.99;
+      diceRollUnderInput.value = ru.toFixed(2);
+      diceWinChanceInput.value = ru.toFixed(2);
+      syncDiceFromWinChance();
+    }
+
+    function performDiceRoll() {
+      const roll = randBetween(0, 100);
+      gameState.lastRoll = roll;
+      diceResultLabel.textContent = roll.toFixed(2);
+      const threshold = parseFloat(diceRollUnderInput.value);
+      const win = roll < threshold;
+      return win;
+    }
+
+    // ========= GAME LOGIC =========
+    function resetGameState(soft = false) {
+      gameState.bet = soft ? gameState.bet : 0;
+      gameState.difficulty = difficultySelect.value;
+      gameState.multipliers = [];
+      gameState.revealed = Array(TILE_COUNT).fill(false);
+      gameState.chosenTileIndex = null;
+      gameState.hasBet = false;
+      gameState.canMultiply = false;
+      gameState.canShoot = false;
+      gameState.inReveal = false;
+      gameState.lastRoll = null;
+
+      diceResultLabel.textContent = "–";
+      statusText.textContent = "Place a bet to generate a new board.";
+      betSummary.textContent = "";
+
+      multiplyBtn.disabled = true;
+      shootBtn.disabled = true;
+      betBtn.disabled = false;
+
+      resetGridDom();
+      syncDiceFromWinChance();
+    }
+
+    function handleBet() {
+      const bet = parseFloat(betAmountInput.value);
+      if (!bet || bet <= 0) {
+        showToast("Enter a valid bet amount.", "error");
         return;
       }
-      gameState = "betPlaced";
-      selectedTileIndex = null;
-      generateMultipliers();
-      enableTileHover(false);
 
+      gameState.bet = bet;
+      gameState.difficulty = difficultySelect.value;
+      gameState.multipliers = generateMultipliers(gameState.difficulty);
+      gameState.revealed = Array(TILE_COUNT).fill(false);
+      gameState.chosenTileIndex = null;
+      gameState.hasBet = true;
+      gameState.canMultiply = true;
+      gameState.canShoot = true;
+      gameState.inReveal = false;
+
+      updateGridDisplay(true);
+
+      statusText.textContent = "Board generated. Multiply your wins or shoot when ready.";
+      betSummary.textContent = `Bet: ${formatMoney(bet)} • Difficulty: ${gameState.difficulty.toUpperCase()}`;
       multiplyBtn.disabled = false;
       shootBtn.disabled = false;
+      betBtn.disabled = true;
 
-      rollBtn.disabled = true;
-      rollBtn.classList.remove("active");
-
-      setStatus("bet", "Bet placed");
-    });
-
-    // -----------------------------
-    // MULTIPLY WINS (DICE)
-    // (Visual mock only – math is yours to plug in)
-    // -----------------------------
-    function updateThumbFromWinChance() {
-      const chance = parseFloat(diceWinChanceInput.value || "50");
-      const clamped = Math.max(1, Math.min(99, chance));
-      const pct = clamped; // 0–100
-      const barRect = diceBar.getBoundingClientRect();
-      diceThumb.style.left = pct + "%";
-      diceRollTargetInput.value = Math.round(pct);
-      // Basic house edge-free multiplier approx: (100/chance)
-      const mult = 100 / clamped;
-      diceMultiplierInput.value = mult.toFixed(2);
+      showToast("New board ready. Good luck!", "success");
     }
 
-    diceWinChanceInput.addEventListener("input", updateThumbFromWinChance);
-    window.addEventListener("resize", updateThumbFromWinChance);
-    updateThumbFromWinChance();
+    function handleMultiplyWins() {
+      if (!gameState.hasBet || !gameState.canMultiply || gameState.inReveal) return;
 
-    multiplyBtn.addEventListener("click", () => {
-      if (gameState !== "betPlaced" && gameState !== "readyToShoot") return;
-      gameState = "multiplying";
-      rollBtn.disabled = false;
-      rollBtn.classList.add("active");
-      setS
+      const win = performDiceRoll();
+      const diceMult = parseFloat(diceMultiplierInput.value) || 1.0;
+
+      if (!win) {
+        showToast("Dice missed. Game over!", "error", 2200);
+        statusText.textContent = "Dice missed. Your paintball jammed. Place a new bet.";
+        multiplyBtn.disabled = true;
+        shootBtn.disabled = true;
+        betBtn.disabled = false;
+        return;
+      }
+
+      // scale all multipliers
+      gameState.multipliers = gameState.multipliers.map((m) => parseFloat((m * diceMult).toFixed(2)));
+      showToast(`Dice hit! All tiles multiplied by ×${diceMult.toFixed(2)}.`, "success", 2200);
+      statusText.textContent = `Multipliers boosted by ×${diceMult.toFixed(2)}. You can multiply again or shoot.`;
+    }
+
+    function handleShoot() {
+      if (!gameState.hasBet || !gameState.canShoot || gameState.inReveal) return;
+
+      statusText.textContent = "Choose a tile to splat. Your tile will reveal last.";
+      const tiles = gridEl.querySelectorAll(".tile");
+      tiles.forEach((t) => {
+        t.classList.add("hoverable");
+        t.onclick = onTileChosen;
+      });
+    }
+
+    function onTileChosen(e) {
+      if (gameState.inReveal) return;
+
+      const index = parseInt(e.currentTarget.dataset.index, 10);
+      gameState.chosenTileIndex = index;
+      gameState.inReveal = true;
+      gameState.canMultiply = false;
+      gameState.canShoot = false;
+
+      const tiles = gridEl.querySelectorAll(".tile");
+      tiles.forEach((t) => {
+        t.classList.remove("hoverable");
+        t.onclick = null;
+      });
+
+      // highlight chosen tile
+      const chosenTile = gridEl.querySelector(`.tile[data-index="${index}"]`);
+      chosenTile.classList.add("highlight");
+
+      statusText.textContent = "Revealing tiles...";
+      revealTilesSequence();
+    }
+
+    function revealTilesSequence() {
+      const order = [];
+      for (let i = 0; i < TILE_COUNT; i++) order.push(i);
+
+      // ensure chosen tile is last
+      const chosen = gameState.chosenTileIndex;
+      const idx = order.indexOf(chosen);
+      if (idx !== -1) {
+        order.splice(idx, 1);
+      }
+      // shuffle the rest
+      for (let i = order.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+      order.push(chosen);
+
+      let pointer = 0;
+
+      const interval = setInterval(() => {
+        const batchSize = Math.min(randBetween(4, 9) | 0, order.length - pointer);
+        const toReveal = order.slice(pointer, pointer + batchSize);
+        pointer += batchSize;
+
+        toReveal.forEach((tileIndex) => {
+          const tile = gridEl.querySelector(`.tile[data-index="${tileIndex}"]`);
+          const mult = gameState.multipliers[tileIndex];
+          tile.classList.add("revealed");
+          if (mult === 0) tile.classList.add("zero");
+
+          tile.textContent = formatMult(mult);
+        });
+
+        if (pointer >= order.length) {
+          clearInterval(interval);
+          finishRound();
+        }
+      }, 450); // reveal pace
+    }
+
+    function finishRound() {
+      const chosenIdx = gameState.chosenTileIndex;
+      const chosenMult = gameState.multipliers[chosenIdx] || 0;
+      const winAmount = gameState.bet * chosenMult;
+
+      statusText.textContent = `Your tile hit ${formatMult(chosenMult)}.`;
+      showToast(`You hit ${formatMult(chosenMult)}!`, chosenMult > 0 ? "success" : "error", 2500);
+
+      modalMultEl.textContent = formatMult(chosenMult);
+      modalAmountEl.textContent = formatMoney(winAmount);
+      overlayEl.style.display = "flex";
+
+      multiplyBtn.disabled = true;
+      shootBtn.disabled = true;
+      betBtn.disabled = false;
+      gameState.inReveal = false;
+    }
+
+    // ========= EVENT HOOKS =========
+    betBtn.addEventListener("click", handleBet);
+    multiplyBtn.addEventListener("click", handleMultiplyWins);
+    shootBtn.addEventListener("click", handleShoot);
+
+    halfBtn.addEventListener("click", () => {
+      const val = parseFloat(betAmountInput.value) || 0;
+      betAmountInput.value = (val / 2).toFixed(2);
+    });
+
+    doubleBtn.addEventListener("click", () => {
+      const val = parseFloat(betAmountInput.value) || 0;
+      betAmountInput.value = (val * 2).toFixed(2);
+    });
+
+    maxBtn.addEventListener("click", () => {
+      // For demo purposes, treat "max" as 100
+      betAmountInput.value = "100.00";
+    });
+
+    diceWinChanceInput.addEventListener("input", syncDiceFromWinChance);
+    diceRollUnderInput.addEventListener("input", syncWinChanceFromRollUnder);
+    window.addEventListener("resize", syncDiceFromWinChance);
+
+    playAgainBtn.addEventListener("click", () => {
+      overlayEl.style.display = "none";
+      resetGameState(false);
+    });
+
+    // Initialize
+    resetGridDom();
+    syncDiceFromWinChance();
+  </script>
+</body>
+</html>
