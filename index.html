@@ -2,26 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Paintball Frenzy</title>
+  <title>Insert A Penny – Stake Exclusive Casino Game Provider</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Insert A Penny is a Stake Exclusive casino game provider. Play our games only on Stake.com and Stake.us."
+  />
   <style>
     :root {
-      --bg-dark: #060809;
-      --panel-dark: #10141a;
-      --panel-darker: #0b0f14;
-      --tile-dark: #1a2029;
-      --tile-hover: #232c38;
-      --accent-green: #1fff8a;
-      --accent-green-soft: #15cc6a;
-      --accent-red: #ff3b5c;
-      --text-main: #f7f9ff;
-      --text-muted: #8b97a8;
-      --border-soft: #222a36;
-      --shadow-soft: 0 0 18px rgba(0, 0, 0, 0.55);
-      --radius: 8px;
-      --transition-fast: 0.15s ease-out;
-      --transition-med: 0.25s ease-out;
-      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --bg-dark: #05060b;
+      --bg-card: #111320;
+      --bg-card-soft: #181b2e;
+      --accent: #fbbf24;
+      --accent-soft: rgba(251, 191, 36, 0.16);
+      --muted: #a0aec0;
+      --text: #f7fafc;
+      --border-soft: rgba(255, 255, 255, 0.06);
+      --radius-xl: 18px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.4);
+      --transition-fast: 180ms ease-out;
     }
 
     * {
@@ -31,880 +30,1018 @@
     }
 
     body {
-      background: radial-gradient(circle at top, #121723 0, #050608 55%, #020304 100%);
-      color: var(--text-main);
-      font-family: var(--font);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: stretch;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1a1f3a 0, #05060b 55%, #000 100%);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
-    #app {
-      width: 100%;
-      max-width: 1200px;
-      display: flex;
-      gap: 16px;
-      padding: 16px;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    /* LEFT PANEL */
-
-    .side-panel {
-      width: 260px;
-      background: var(--panel-dark);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .side-panel h1 {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text-main);
-      margin-bottom: 4px;
-    }
-
-    .subtext {
-      font-size: 11px;
-      color: var(--text-muted);
-      opacity: 0.9;
-    }
-
-    .field-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .field-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .input-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .input {
-      flex: 1;
-      background: var(--panel-darker);
-      border-radius: var(--radius);
-      padding: 8px 10px;
-      border: 1px solid var(--border-soft);
-      color: var(--text-main);
-      font-size: 13px;
-      outline: none;
-      transition: border var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
-    }
-
-    .input:focus {
-      border-color: var(--accent-green-soft);
-      box-shadow: 0 0 0 1px rgba(31, 255, 138, 0.25);
-      background: #11151d;
-    }
-
-    .select {
-      width: 100%;
-      background: var(--panel-darker);
-      border-radius: var(--radius);
-      padding: 8px 10px;
-      border: 1px solid var(--border-soft);
-      color: var(--text-main);
-      font-size: 13px;
-      outline: none;
-    }
-
-    .btn-main {
-      margin-top: 4px;
-      width: 100%;
-      padding: 11px 12px;
-      border-radius: var(--radius);
-      border: none;
-      background: var(--accent-green);
-      color: #020304;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: 0 0 18px rgba(31, 255, 138, 0.25);
-      transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
-    }
-
-    .btn-main:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 32px rgba(31, 255, 138, 0.4);
-      filter: brightness(1.02);
-    }
-
-    .btn-main:disabled {
-      opacity: 0.35;
-      cursor: default;
-      box-shadow: none;
-      transform: none;
-    }
-
-    .secondary-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .btn-secondary {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-soft);
-      background: #151a22;
-      color: var(--text-main);
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background var(--transition-fast), transform var(--transition-fast), border var(--transition-fast);
-    }
-
-    .btn-secondary:hover:not(:disabled) {
-      background: #1f2631;
-      border-color: #2f3a4d;
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary:disabled {
-      opacity: 0.35;
-      cursor: default;
-      transform: none;
-    }
-
-    .hint {
-      margin-top: 4px;
-      font-size: 11px;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    /* MAIN PANEL */
-
-    .main-panel {
-      flex: 1;
-      background: var(--panel-dark);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      overflow: hidden;
-    }
-
-    /* GRID */
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(8, minmax(0, 1fr));
-      gap: 6px;
-      padding: 8px;
-      border-radius: var(--radius);
-      background: #0d1117;
-      border: 1px solid var(--border-soft);
-      position: relative;
-    }
-
-    .tile {
-      background: var(--tile-dark);
-      border-radius: 6px;
-      border: 1px solid #252f3b;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 13px;
-      color: var(--text-muted);
-      cursor: default;
-      user-select: none;
-      position: relative;
-      overflow: hidden;
-      transition: background var(--transition-fast), transform var(--transition-fast), border var(--transition-fast), box-shadow var(--transition-fast), color var(--transition-fast);
-      aspect-ratio: 1 / 1; /* <-- makes tiles perfect squares */
-    }
-
-    .tile.hoverable {
-      cursor: crosshair;
-    }
-
-    .tile.hoverable:hover {
-      background: var(--tile-hover);
-      border-color: #3a485b;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-      transform: translateY(-1px);
-    }
-
-    .tile.revealed {
-      color: var(--text-main);
-      background: #171e28;
-      border-color: #3a4659;
-    }
-
-    .tile.zero {
-      color: #4d5664;
-      opacity: 0.85;
-    }
-
-    .tile.highlight {
-      box-shadow: 0 0 0 2px rgba(31, 255, 138, 0.65);
-      border-color: var(--accent-green);
-      z-index: 2;
-    }
-
-    /* DICE / LIMBO PANEL */
-
-    .dice-panel {
-      margin-top: 4px;
-      padding: 12px 14px 14px;
-      background: var(--panel-darker);
-      border-radius: var(--radius);
-      border: 1px solid var(--border-soft);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .dice-title {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-    }
-
-    .dice-display {
-      margin-top: 4px;
-      width: 100%;
-      min-height: 40px;
-      border-radius: 999px;
-      border: 1px solid var(--border-soft);
-      background: #050709;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      color: var(--text-main);
-    }
-
-    .dice-display span {
-      color: var(--accent-green);
-      margin-left: 4px;
-    }
-
-    .dice-fields {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 6px;
-    }
-
-    .dice-field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .dice-field-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .dice-input {
-      background: #0d1117;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-soft);
-      padding: 6px 8px;
-      font-size: 12px;
-      color: var(--text-main);
-      outline: none;
-      width: 100%;
-    }
-
-    .dice-input:disabled {
-      opacity: 0.7;
-    }
-
-    .dice-help {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .status-bar {
-      margin-top: 2px;
-      font-size: 11px;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .status-bar span.emph {
-      color: var(--accent-green);
-      font-weight: 500;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 12px;
-      background: rgba(11, 18, 26, 0.96);
-      border: 1px solid #2c3645;
-      color: var(--text-main);
-      box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
-      display: none;
-      z-index: 50;
-    }
-
-    .toast.success {
-      border-color: var(--accent-green-soft);
-      color: var(--accent-green);
-    }
-
-    .toast.error {
-      border-color: var(--accent-red);
-      color: var(--accent-red);
-    }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(2, 4, 8, 0.7);
-      display: none;
-      align-items: center;
-      justify-content: center;
+    header {
+      position: sticky;
+      top: 0;
       z-index: 40;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(
+        to bottom,
+        rgba(5, 6, 11, 0.92),
+        rgba(5, 6, 11, 0.7),
+        transparent
+      );
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    .win-modal {
-      background: var(--panel-dark);
-      border-radius: 12px;
-      padding: 18px 20px 14px;
-      border: 1px solid #313b4d;
-      min-width: 220px;
-      text-align: center;
-      box-shadow: var(--shadow-soft);
+    .nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
-    .win-mult {
-      font-size: 26px;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-weight: 700;
-      color: var(--accent-green);
-      margin-bottom: 4px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 0.86rem;
     }
 
-    .win-amount {
-      font-size: 14px;
-      color: var(--text-main);
+    .logo-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #fbbf24, #a855f7);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 24px rgba(251, 191, 36, 0.4);
+      font-size: 0.9rem;
+    }
+
+    .logo-mark span {
+      font-weight: 900;
+      color: #05060b;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      font-size: 0.86rem;
+    }
+
+    .nav-links a {
+      opacity: 0.85;
+      padding: 6px 0;
+      border-bottom: 2px solid transparent;
+      transition: opacity var(--transition-fast),
+        border-color var(--transition-fast);
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+      border-color: var(--accent);
+    }
+
+    .nav-cta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .badge-exclusive {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 0.82rem;
+      gap: 6px;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.92);
+      transition: background var(--transition-fast),
+        transform var(--transition-fast), box-shadow var(--transition-fast),
+        border-color var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, #fbbf24, #f97316);
+      color: #05060b;
+      border-color: transparent;
+      box-shadow: 0 0 22px rgba(251, 191, 36, 0.6);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.7);
+      border-color: rgba(226, 232, 240, 0.7);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 12px 32px rgba(251, 191, 36, 0.8);
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 26px 20px 80px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.6fr);
+      gap: 32px;
+      align-items: center;
+      padding: 26px 0 16px;
+    }
+
+    .hero-copy-eyebrow {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(2.1rem, 4vw, 2.8rem);
+      line-height: 1.05;
+      letter-spacing: 0.01em;
+      margin-bottom: 14px;
+    }
+
+    .hero-highlight {
+      background: linear-gradient(90deg, #fbbf24, #38bdf8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: var(--muted);
+      max-width: 32rem;
+      margin-bottom: 18px;
+    }
+
+    .hero-exclusive {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(251, 191, 36, 0.45);
+      background: radial-gradient(circle at left, #facc15, transparent 65%),
+        rgba(15, 23, 42, 0.92);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 18px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-exclusive label {
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 0.72rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
       margin-bottom: 10px;
     }
 
-    .win-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
+    .hero-footnote {
+      font-size: 0.75rem;
+      color: var(--muted);
     }
 
-    .btn-small {
-      margin-top: 8px;
-      padding: 7px 12px;
-      border-radius: 999px;
-      border: none;
-      font-size: 12px;
+    .hero-footnote span {
+      color: #e5e7eb;
       font-weight: 500;
-      cursor: pointer;
-      background: var(--accent-green);
-      color: #020304;
     }
 
-    .btn-small:hover {
-      filter: brightness(1.03);
+    .hero-visual {
+      border-radius: 24px;
+      background: radial-gradient(circle at top, #1d223a, #05060b);
+      padding: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      min-height: 240px;
     }
 
-    @media (max-width: 960px) {
-      #app {
-        flex-direction: column;
+    .hero-visual-inner {
+      position: relative;
+      height: 100%;
+      border-radius: 18px;
+      background: radial-gradient(circle at top left, #facc15, transparent 55%),
+        radial-gradient(circle at bottom right, #4f46e5, transparent 60%),
+        #020617;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .chip-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+
+    .chip {
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+    }
+
+    .chip strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .game-marquee {
+      background: rgba(15, 23, 42, 0.92);
+      border-radius: 16px;
+      padding: 10px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      display: grid;
+      grid-template-columns: 2fr 1.4fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .game-marquee-main {
+      font-size: 0.85rem;
+    }
+
+    .game-marquee-main h3 {
+      font-size: 0.9rem;
+      margin-bottom: 2px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .pill {
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .game-marquee-side {
+      font-size: 0.7rem;
+      text-align: right;
+      color: var(--muted);
+    }
+
+    .stat-strip {
+      display: flex;
+      margin-top: 10px;
+      gap: 10px;
+      font-size: 0.72rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .stat-pill span:first-child {
+      font-size: 0.86em;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+      margin-top: 34px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+    }
+
+    .section-kicker {
+      font-size: 0.76rem;
+      color: var(--muted);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .section-subtitle {
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    .card-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: radial-gradient(circle at top, #111827, #020617);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-soft);
+      padding: 16px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition-fast),
+        box-shadow var(--transition-fast), border-color var(--transition-fast),
+        background var(--transition-fast);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(
+        circle at top left,
+        rgba(251, 191, 36, 0.18),
+        transparent 55%
+      );
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 45px rgba(0, 0, 0, 0.7);
+      border-color: rgba(251, 191, 36, 0.5);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-tag-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .card-tag {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .card-meta span {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .card-desc {
+      font-size: 0.84rem;
+      color: #cbd5f5;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    .label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .pill-soft {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(251, 191, 36, 0.7);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+    }
+
+    .timeline {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top, #111827, #020617);
+      border: 1px solid var(--border-soft);
+      padding: 16px;
+      box-shadow: var(--shadow-soft);
+      margin-top: 16px;
+      font-size: 0.86rem;
+    }
+
+    .timeline-list {
+      list-style: none;
+      margin-top: 10px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .timeline-item:last-child {
+      border-bottom: none;
+    }
+
+    .timeline-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .timeline-body-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .timeline-body-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .availability {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top, #111827, #020617);
+      border: 1px solid var(--border-soft);
+      padding: 16px;
+      box-shadow: var(--shadow-soft);
+      margin-top: 34px;
+      display: grid;
+      gap: 14px;
+      font-size: 0.88rem;
+    }
+
+    .availability-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .availability-card {
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 0.82rem;
+    }
+
+    .availability-card strong {
+      font-size: 0.86rem;
+    }
+
+    .availability-footnote {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    footer {
+      border-top: 1px solid rgba(148, 163, 184, 0.3);
+      margin-top: 40px;
+      padding-top: 18px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    footer a {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      opacity: 0.95;
+    }
+
+    @media (max-width: 800px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
       }
-      .side-panel {
-        width: 100%;
-        flex-direction: column;
+
+      .hero-visual {
+        order: -1;
       }
-      .main-panel {
-        min-height: 420px;
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav {
+        padding-inline: 16px;
+      }
+
+      main {
+        padding-inline: 16px;
       }
     }
   </style>
 </head>
 <body>
-  <div id="app">
-    <!-- LEFT PANEL -->
-    <aside class="side-panel">
-      <div>
-        <h1>Paintball Frenzy</h1>
-        <p class="subtext">Stake-style dice + grid game with paintball reveal.</p>
-      </div>
-
-      <div class="field-group">
-        <span class="field-label">Bet Amount</span>
-        <div class="input-row">
-          <input id="betAmount" type="number" min="0" step="0.00000001" value="1.00" class="input" />
+  <!-- HEADER / NAV -->
+  <header>
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-mark" aria-hidden="true">
+          <span>₵</span>
         </div>
-      </div>
-
-      <div class="field-group">
-        <span class="field-label">Difficulty</span>
-        <select id="difficultySelect" class="select">
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
-          <option value="expert">Expert</option>
-          <option value="master">Master</option>
-          <option value="maniac">Maniac</option>
-        </select>
-      </div>
-
-      <button id="betBtn" class="btn-main">Bet</button>
-
-      <div class="secondary-actions">
-        <button id="multiplyBtn" class="btn-secondary" disabled>Multiply Wins</button>
-        <button id="shootBtn" class="btn-secondary" disabled>Shoot</button>
-      </div>
-
-      <p class="hint">
-        1) Place your bet & difficulty.<br />
-        2) Use <strong>Multiply Wins</strong> to risk a Limbo roll (1–100) that scales all multipliers.<br />
-        3) Hit <strong>Shoot</strong> and choose a tile to splat for your final win.
-      </p>
-    </aside>
-
-    <!-- MAIN PANEL -->
-    <main class="main-panel">
-      <!-- GRID -->
-      <div id="grid" class="grid"></div>
-
-      <!-- LIMBO DICE PANEL -->
-      <section class="dice-panel">
-        <div class="dice-title">Multiply Wins – Limbo Style</div>
-        <div id="diceDisplay" class="dice-display">
-          Roll: <span>–</span>
-        </div>
-
-        <div class="dice-fields">
-          <div class="dice-field">
-            <span class="dice-field-label">Target Multiplier</span>
-            <input id="targetMultiplier" type="number" min="1.10" max="1000.00" step="0.01" value="2.00" class="dice-input" />
-          </div>
-          <div class="dice-field">
-            <span class="dice-field-label">Estimated Win Chance</span>
-            <input id="targetChance" type="text" class="dice-input" value="≈ 48.51%" disabled />
+        <div>
+          <div>Insert A Penny</div>
+          <div style="font-size: 0.68rem; color: var(--muted); text-transform: none;">
+            Stake Exclusive Provider
           </div>
         </div>
+      </div>
 
-        <p class="dice-help">
-          When you click <strong>Multiply Wins</strong>, a number between 1 and 100 is rolled.
-          You win if the roll is below the threshold for your target multiplier and all tile multipliers are multiplied by it.
+      <div class="nav-links">
+        <a href="#games">Games</a>
+        <a href="#coming-soon">Coming soon</a>
+        <a href="#availability">Availability</a>
+      </div>
+
+      <div class="nav-cta">
+        <div class="badge-exclusive">
+          <span class="badge-dot"></span>
+          Stake Exclusive
+        </div>
+        <a
+          class="btn btn-primary"
+          href="https://stake.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Play on Stake.com →
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="hero-copy-eyebrow">Casino game provider</div>
+        <h1 id="hero-title">
+          Coin-powered thrills from
+          <span class="hero-highlight">Insert A Penny</span>
+          — built only for Stake.
+        </h1>
+
+        <p class="hero-subtitle">
+          Retro coin-op nostalgia meets modern crypto gameplay. Insert A Penny
+          delivers fast, high-volatility casino titles you’ll only find on
+          Stake.
         </p>
-      </section>
 
-      <div class="status-bar">
-        <span id="statusText">Place a bet to generate a new board.</span>
-        <span id="betSummary"></span>
+        <div class="hero-exclusive" aria-label="Stake exclusive availability">
+          <label>Stake exclusive</label>
+          Available on Stake.com &amp; Stake.us only
+        </div>
+
+        <div class="hero-actions">
+          <a
+            class="btn btn-primary"
+            href="https://stake.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Play on Stake.com →
+          </a>
+          <a
+            class="btn"
+            href="https://stake.us"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Play on Stake.us →
+          </a>
+        </div>
+
+        <p class="hero-footnote">
+          <span>18+ only.</span> Please gamble responsibly and follow all local
+          regulations.
+        </p>
       </div>
-    </main>
-  </div>
 
-  <!-- TOAST & MODAL -->
-  <div id="toast" class="toast"></div>
+      <!-- HERO VISUAL / FAKE LOBBY PREVIEW -->
+      <aside class="hero-visual" aria-label="Preview of Insert A Penny games">
+        <div class="hero-visual-inner">
+          <div class="chip-row">
+            <div class="chip">
+              <span>●</span>
+              <strong>Insert A Penny</strong>
+            </div>
+            <div class="chip">
+              Live on Stake
+            </div>
+          </div>
 
-  <div id="overlay" class="overlay">
-    <div class="win-modal">
-      <div class="win-label">Total Win</div>
-      <div id="modalMult" class="win-mult">0.00×</div>
-      <div id="modalAmount" class="win-amount">$0.00</div>
-      <button id="playAgainBtn" class="btn-small">Play Again</button>
-    </div>
-  </div>
+          <div class="game-marquee">
+            <div class="game-marquee-main">
+              <h3>Lucky Copper Spins</h3>
+              <div>High-volatility slot • Retro arcade feel</div>
+              <div class="pill-row">
+                <span class="pill">Stake Exclusive</span>
+                <span class="pill">Bonus Buys</span>
+                <span class="pill">1¢ Base Bet</span>
+              </div>
+            </div>
+            <div class="game-marquee-side">
+              RTP 96.3% • Max win 10,000x<br />
+              <span style="color: #e5e7eb;">Available only on Stake.com &amp; Stake.us</span>
+            </div>
+          </div>
+
+          <div class="stat-strip">
+            <div class="stat-pill">
+              <span>🪙</span>
+              <span>Penny-inspired mechanics</span>
+            </div>
+            <div class="stat-pill">
+              <span>⚡</span>
+              <span>Instant play on Stake</span>
+            </div>
+            <div class="stat-pill">
+              <span>🎮</span>
+              <span>Mobile-first experience</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- GAMES SECTION -->
+    <section id="games" class="grid" aria-labelledby="games-title">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Live games</div>
+          <h2 class="section-title" id="games-title">Featured titles on Stake</h2>
+        </div>
+        <p class="section-subtitle">
+          These games are exclusively available on
+          <strong>Stake.com</strong> and <strong>Stake.us</strong>.
+        </p>
+      </div>
+
+      <div class="card-row">
+        <!-- Game 1 -->
+        <article class="card">
+          <div class="card-tag-row">
+            <span class="card-tag">
+              <span>🪙</span>
+              <span>Stake Original Partner</span>
+            </span>
+            <span>Available now</span>
+          </div>
+          <h3 class="card-title">Lucky Copper Spins</h3>
+          <div class="card-meta">
+            <span>High-volatility slot</span>
+            <span>•</span>
+            <span>Max win 10,000x</span>
+          </div>
+          <p class="card-desc">
+            A classic penny-slot brought into the crypto era. Stack multipliers,
+            unlock cascading reels, and chase full-screen copper hits.
+          </p>
+          <div class="card-footer">
+            <span>Stake.com • Stake.us</span>
+            <span>Stake Exclusive</span>
+          </div>
+        </article>
+
+        <!-- Game 2 -->
+        <article class="card">
+          <div class="card-tag-row">
+            <span class="card-tag">
+              <span>🎰</span>
+              <span>Jackpot feature</span>
+            </span>
+            <span>Available now</span>
+          </div>
+          <h3 class="card-title">Penny Pusher Jackpots</h3>
+          <div class="card-meta">
+            <span>Push-style cascade</span>
+            <span>•</span>
+            <span>Progressive pots</span>
+          </div>
+          <p class="card-desc">
+            Inspired by arcade coin pushers. Drop your pennies, nudge the
+            stacks, and trigger cascading jackpot drops uniquely tuned for Stake
+            players.
+          </p>
+          <div class="card-footer">
+            <span>Stake.com • Stake.us</span>
+            <span>Stake Exclusive</span>
+          </div>
+        </article>
+
+        <!-- Game 3 -->
+        <article class="card">
+          <div class="card-tag-row">
+            <span class="card-tag">
+              <span>⚡</span>
+              <span>Turbo bonus mode</span>
+            </span>
+            <span>Available now</span>
+          </div>
+          <h3 class="card-title">Retro Arcade Reels</h3>
+          <div class="card-meta">
+            <span>Pixel art slot</span>
+            <span>•</span>
+            <span>Chain multipliers</span>
+          </div>
+          <p class="card-desc">
+            Neon pixels, CRT-style glow, and chain-reaction multipliers. Built
+            to feel like a coin-op cabinet with instant Stake integration.
+          </p>
+          <div class="card-footer">
+            <span>Stake.com • Stake.us</span>
+            <span>Stake Exclusive</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- COMING SOON SECTION -->
+    <section id="coming-soon" class="grid" aria-labelledby="coming-soon-title">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Roadmap</div>
+          <h2 class="section-title" id="coming-soon-title">Coming soon to Stake</h2>
+        </div>
+        <p class="section-subtitle">
+          All upcoming titles will launch <strong>exclusively</strong> on
+          Stake.com &amp; Stake.us.
+        </p>
+      </div>
+
+      <div class="card-row">
+        <!-- Upcoming 1 -->
+        <article class="card">
+          <div class="card-tag-row">
+            <span class="pill-soft">In development</span>
+            <span>Q1 2026</span>
+          </div>
+          <h3 class="card-title">One Cent Crash</h3>
+          <div class="card-meta">
+            <span>Crash game</span>
+            <span>•</span>
+            <span>Risk-reward ladder</span>
+          </div>
+          <p class="card-desc">
+            A penny-based crash experience where tiny bets can scale fast.
+            Built for streamers, with clean UI and rapid rounds optimized for
+            Stake.
+          </p>
+          <div class="card-footer">
+            <span>Stake.com • Stake.us</span>
+            <span>Stake Exclusive</span>
+          </div>
+        </article>
+
+        <!-- Upcoming 2 -->
+        <article class="card">
+          <div class="card-tag-row">
+            <span class="pill-soft">Concept locked</span>
+            <span>2026</span>
+          </div>
+          <h3 class="card-title">Coin Cascade Towers</h3>
+          <div class="card-meta">
+            <span>Multi-level bonus</span>
+            <span>•</span>
+            <span>Unlockable floors</span>
+          </div>
+          <p class="card-desc">
+            Climb stacked bonus levels with every coin you drop. Hit tower
+            milestones, unlock themed floors, and escalate multipliers.
+          </p>
+          <div class="card-footer">
+            <span>Stake.com • Stake.us</span>
+            <span>Stake Exclusive</span>
+          </div>
+        </article>
+
+        <!-- Upcoming 3 -->
+        <article class="card">
+          <div class="card-tag-row">
+            <span class="pill-soft">Early concept</span>
+            <span>TBA</span>
+          </div>
+          <h3 class="card-title">Penny Vault Megaways*</h3>
+          <div class="card-meta">
+            <span>Expanding reels</span>
+            <span>•</span>
+            <span>Lock &amp; spin feature</span>
+          </div>
+          <p class="card-desc">
+            A vault-themed experience with expanding reel configurations, lock-in
+            coins, and escalating vault multipliers.
+          </p>
+          <div class="card-footer">
+            <span style="font-size: 0.7rem;">*Working title &amp; features subject to change.</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="timeline" aria-label="Insert A Penny release timeline">
+        <div class="section-kicker">Launch cadence</div>
+        <p>
+          Insert A Penny is designing a steady stream of Stake-first
+          experiences, tuned for <strong>crypto players</strong>, streamers,
+          and mobile.
+        </p>
+        <ul class="timeline-list">
+          <li class="timeline-item">
+            <div class="timeline-label">Now</div>
+            <div>
+              <div class="timeline-body-title">Core lineup live on Stake</div>
+              <div class="timeline-body-sub">
+                Lucky Copper Spins, Penny Pusher Jackpots, and Retro Arcade
+                Reels are already playable on Stake.com and Stake.us.
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-label">Next</div>
+            <div>
+              <div class="timeline-body-title">Crash &amp; arcade-hybrid titles</div>
+              <div class="timeline-body-sub">
+                One Cent Crash and Coin Cascade Towers are next in the
+                pipeline, with Stake integration from day one.
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-label">Later</div>
+            <div>
+              <div class="timeline-body-title">Branded &amp; co-created releases</div>
+              <div class="timeline-body-sub">
+                Collaborations with Stake creators, streamers, and communities
+                to bring custom penny-themed mechanics to life.
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- AVAILABILITY / STAKE EXCLUSIVE CALLOUT -->
+    <section id="availability" class="availability" aria-labelledby="availability-title">
+      <div class="section-header" style="margin-bottom: 0;">
+        <div>
+          <div class="section-kicker">Availability</div>
+          <h2 class="section-title" id="availability-title">
+            Stake Exclusive – only on Stake.com &amp; Stake.us
+          </h2>
+        </div>
+      </div>
+
+      <p>
+        Insert A Penny is built <strong>for Stake</strong>. Our games are not
+        available on any other casino, brand, or platform. To play, you must
+        have an account with Stake.com or Stake.us, depending on your region
+        and local regulations.
+      </p>
+
+      <div class="availability-grid">
+        <div class="availability-card">
+          <strong>Stake.com</strong>
+          <span>Global crypto casino</span>
+          <span>Players in eligible regions can access Insert A Penny titles directly from the Stake lobby.</span>
+        </div>
+        <div class="availability-card">
+          <strong>Stake.us</strong>
+          <span>Social casino platform</span>
+          <span>US-based players (where allowed) can enjoy dedicated Insert A Penny experiences tailored for Stake.us.</span>
+        </div>
+      </div>
+
+      <p class="availability-footnote">
+        Availability is subject to your jurisdiction’s rules &amp; Stake’s
+        terms of service. Always make sure you comply with local laws and age
+        requirements before playing.
+      </p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div>
+        © <span id="year"></span> Insert A Penny. All rights reserved. Stake
+        Exclusive Casino Game Provider.
+      </div>
+      <div>
+        18+ only • Gamble responsibly • For support visit your local
+        helpline or <a href="https://www.begambleaware.org" target="_blank" rel="noopener noreferrer">BeGambleAware</a>.
+      </div>
+    </footer>
+  </main>
 
   <script>
-    // ========= BASIC STATE =========
-    const GRID_ROWS = 7;
-    const GRID_COLS = 8;
-    const TILE_COUNT = GRID_ROWS * GRID_COLS;
-
-    const betAmountInput = document.getElementById("betAmount");
-    const difficultySelect = document.getElementById("difficultySelect");
-    const betBtn = document.getElementById("betBtn");
-    const multiplyBtn = document.getElementById("multiplyBtn");
-    const shootBtn = document.getElementById("shootBtn");
-
-    const gridEl = document.getElementById("grid");
-    const statusText = document.getElementById("statusText");
-    const betSummary = document.getElementById("betSummary");
-
-    const diceDisplay = document.getElementById("diceDisplay");
-    const diceDisplayValue = diceDisplay.querySelector("span");
-    const targetMultiplierInput = document.getElementById("targetMultiplier");
-    const targetChanceInput = document.getElementById("targetChance");
-
-    const toastEl = document.getElementById("toast");
-    const overlayEl = document.getElementById("overlay");
-    const modalMultEl = document.getElementById("modalMult");
-    const modalAmountEl = document.getElementById("modalAmount");
-    const playAgainBtn = document.getElementById("playAgainBtn");
-
-    let gameState = {
-      bet: 0,
-      difficulty: "easy",
-      multipliers: [],
-      revealed: [],
-      chosenTileIndex: null,
-      hasBet: false,
-      canMultiply: false,
-      canShoot: false,
-      inReveal: false,
-      lastRoll: null
-    };
-
-    // ========= UTILS =========
-    function randBetween(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
-    function formatMult(x) {
-      return x.toFixed(2) + "×";
-    }
-
-    function formatMoney(x) {
-      return "$" + x.toFixed(2);
-    }
-
-    function showToast(message, type = "info", duration = 1800) {
-      toastEl.textContent = message;
-      toastEl.className = "toast " + (type === "success" ? "success" : type === "error" ? "error" : "");
-      toastEl.style.display = "block";
-      setTimeout(() => {
-        toastEl.style.display = "none";
-      }, duration);
-    }
-
-    function resetGridDom() {
-      gridEl.innerHTML = "";
-      for (let i = 0; i < TILE_COUNT; i++) {
-        const tile = document.createElement("div");
-        tile.className = "tile";
-        tile.dataset.index = i;
-        tile.textContent = "0.00×";
-        gridEl.appendChild(tile);
-      }
-    }
-
-    // ========= MULTIPLIER GENERATION BY DIFFICULTY =========
-    function generateMultipliers(difficulty) {
-      const arr = [];
-      for (let i = 0; i < TILE_COUNT; i++) {
-        let value = 0;
-        const r = Math.random();
-
-        switch (difficulty) {
-          case "easy":
-            if (r < 0.6) value = randBetween(0.20, 1.20);
-            else if (r < 0.9) value = randBetween(1.20, 4.0);
-            else value = randBetween(4.0, 7.0);
-            break;
-          case "medium":
-            if (r < 0.25) value = 0;
-            else if (r < 0.7) value = randBetween(0.20, 2.0);
-            else if (r < 0.93) value = randBetween(2.0, 7.5);
-            else value = randBetween(7.5, 15.0);
-            break;
-          case "hard":
-            if (r < 0.45) value = 0;
-            else if (r < 0.8) value = randBetween(0.20, 2.0);
-            else if (r < 0.95) value = randBetween(2.0, 8.0);
-            else value = randBetween(8.0, 25.0);
-            break;
-          case "expert":
-            if (r < 0.65) value = 0;
-            else if (r < 0.9) value = randBetween(0.20, 2.0);
-            else if (r < 0.97) value = randBetween(2.0, 16.0);
-            else value = randBetween(16.0, 50.0);
-            break;
-          case "master":
-            if (r < 0.8) value = 0;
-            else if (r < 0.95) value = randBetween(0.20, 4.0);
-            else value = randBetween(8.0, 30.0);
-            break;
-          case "maniac":
-            // Close to your degenerate profile: 48 zeros, 8 strong tiles
-            if (i < 48) value = 0;
-            else {
-              const special = [2, 2.3, 3, 4, 5, 6, 8, 24];
-              value = special[i - 48];
-            }
-            break;
-        }
-
-        arr.push(parseFloat(value.toFixed(2)));
-      }
-
-      // Shuffle to distribute highs
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
-
-    function updateGridDisplay(hideValues = true) {
-      const tiles = gridEl.querySelectorAll(".tile");
-      tiles.forEach((tile, idx) => {
-        const mult = gameState.multipliers[idx] || 0;
-        tile.className = "tile";
-        tile.textContent = hideValues ? "0.00×" : formatMult(mult);
-        if (!hideValues) {
-          tile.classList.add("revealed");
-          if (mult === 0) tile.classList.add("zero");
-        }
-      });
-    }
-
-    // ========= LIMBO MATH =========
-    function updateChanceFromMultiplier() {
-      let mult = parseFloat(targetMultiplierInput.value) || 2.0;
-      if (mult < 1.10) mult = 1.10;
-      if (mult > 1000) mult = 1000;
-      targetMultiplierInput.value = mult.toFixed(2);
-
-      // Simple limbo-style approx: chance ~ (99 / mult) with 1% edge
-      let chance = (99 / mult) * 0.99;
-      if (chance < 0.01) chance = 0.01;
-      if (chance > 99) chance = 99;
-      targetChanceInput.value = "≈ " + chance.toFixed(2) + "%";
-      return chance;
-    }
-
-    function performLimboRoll() {
-      const roll = randBetween(1, 100);
-      gameState.lastRoll = roll;
-      diceDisplayValue.textContent = roll.toFixed(2);
-      return roll;
-    }
-
-    // ========= GAME LOGIC =========
-    function resetGameState(soft = false) {
-      gameState.bet = soft ? gameState.bet : 0;
-      gameState.difficulty = difficultySelect.value;
-      gameState.multipliers = [];
-      gameState.revealed = Array(TILE_COUNT).fill(false);
-      gameState.chosenTileIndex = null;
-      gameState.hasBet = false;
-      gameState.canMultiply = false;
-      gameState.canShoot = false;
-      gameState.inReveal = false;
-      gameState.lastRoll = null;
-
-      statusText.textContent = "Place a bet to generate a new board.";
-      betSummary.textContent = "";
-
-      multiplyBtn.disabled = true;
-      shootBtn.disabled = true;
-      betBtn.disabled = false;
-
-      diceDisplayValue.textContent = "–";
-      updateChanceFromMultiplier();
-      resetGridDom();
-    }
-
-    function handleBet() {
-      const bet = parseFloat(betAmountInput.value);
-      if (!bet || bet <= 0) {
-        showToast("Enter a valid bet amount.", "error");
-        return;
-      }
-
-      gameState.bet = bet;
-      gameState.difficulty = difficultySelect.value;
-      gameState.multipliers = generateMultipliers(gameState.difficulty);
-      gameState.revealed = Array(TILE_COUNT).fill(false);
-      gameState.chosenTileIndex = null;
-      gameState.hasBet = true;
-      gameState.canMultiply = true;
-      gameState.canShoot = true;
-      gameState.inReveal = false;
-
-      updateGridDisplay(true);
-
-      statusText.textContent = "Board generated. Multiply your wins or shoot when ready.";
-      betSummary.textContent = `Bet: ${formatMoney(bet)} • Difficulty: ${gameState.difficulty.toUpperCase()}`;
-      multiplyBtn.disabled = false;
-      shootBtn.disabled = false;
-      betBtn.disabled = true;
-
-      showToast("New board ready. Good luck!", "success");
-    }
-
-    function handleMultiplyWins() {
-      if (!gameState.hasBet || !gameState.canMultiply || gameState.inReveal) return;
-
-      const chance = updateChanceFromMultiplier();
-      const multiplier = parseFloat(targetMultiplierInput.value);
-      const roll = performLimboRoll();
-
-      const threshold = (chance / 100) * 100; // conceptually same, but we just use chance %
-
-      // In limbo style, win if roll < threshold
-      if (roll >= threshold) {
-        showToast("Limbo roll lost. Game over!", "error", 2200);
-        statusText.textContent = "Limbo roll lost. Your paintball jammed. Place a new bet.";
-        multiplyBtn.disabled = true;
-        shootBtn.disabled = true;
-        betBtn.disabled = false;
-        return;
-      }
-
-      // scale all multipliers
-      gameState.multipliers = gameState.multipliers.map((m) =>
-        parseFloat((m * multiplier).toFixed(2))
-      );
-
-      showToast(
-        `Limbo hit! All tiles multiplied by ×${multiplier.toFixed(2)}.`,
-        "success",
-        2200
-      );
-      statusText.textContent = `Multipliers boosted by ×${multiplier.toFixed(
-        2
-      )}. You can multiply again or shoot.`;
-    }
-
-    function handleShoot() {
-      if (!gameState.hasBet || !gameState.canShoot || gameState.inReveal) return;
-
-      statusText.textContent = "Choose a tile to splat. Your tile will reveal last.";
-      const tiles = gridEl.querySelectorAll(".tile");
-      tiles.forEach((t) => {
-        t.classList.add("hoverable");
-        t.onclick = onTileChosen;
-      });
-    }
-
-    function onTileChosen(e) {
-      if (gameState.inReveal) return;
-
-      const index = parseInt(e.currentTarget.dataset.index, 10);
-      gameState.chosenTileIndex = index;
-      gameState.inReveal = true;
-      gameState.canMultiply = false;
-      gameState.canShoot = false;
-
-      const tiles = gridEl.querySelectorAll(".tile");
-      tiles.forEach((t) => {
-        t.classList.remove("hoverable");
-        t.onclick = null;
-      });
-
-      const chosenTile = gridEl.querySelector(`.tile[data-index="${index}"]`);
-      chosenTile.classList.add("highlight");
-
-      statusText.textContent = "Revealing tiles...";
-      revealTilesSequence();
-    }
-
-    function revealTilesSequence() {
-      const order = [];
-      for (let i = 0; i < TILE_COUNT; i++) order.push(i);
-
-      const chosen = gameState.chosenTileIndex;
-      const idx = order.indexOf(chosen);
-      if (idx !== -1) order.splice(idx, 1);
-
-      // shuffle others
-      for (let i = order.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [order[i], order[j]] = [order[j], order[i]];
-      }
-      order.push(chosen); // chosen last
-
-      let pointer = 0;
-
-      const interval = setInterval(() => {
-        const remaining = order.length - pointer;
-        const batchSize = Math.min(Math.floor(randBetween(4, 9)), remaining);
-        const toReveal = order.slice(pointer, pointer + batchSize);
-        pointer += batchSize;
-
-        toReveal.forEach((tileIndex) => {
-          const tile = gridEl.querySelector(`.tile[data-index="${tileIndex}"]`);
-          const mult = gameState.multipliers[tileIndex];
-          tile.classList.add("revealed");
-          if (mult === 0) tile.classList.add("zero");
-          tile.textContent = formatMult(mult);
-        });
-
-        if (pointer >= order.length) {
-          clearInterval(interval);
-          finishRound();
-        }
-      }, 450);
-    }
-
-    function finishRound() {
-      const chosenIdx = gameState.chosenTileIndex;
-      const chosenMult = gameState.multipliers[chosenIdx] || 0;
-      const winAmount = gameState.bet * chosenMult;
-
-      statusText.textContent = `Your tile hit ${formatMult(chosenMult)}.`;
-      showToast(
-        `You hit ${formatMult(chosenMult)}!`,
-        chosenMult > 0 ? "success" : "error",
-        2500
-      );
-
-      modalMultEl.textContent = formatMult(chosenMult);
-      modalAmountEl.textContent = formatMoney(winAmount);
-      overlayEl.style.display = "flex";
-
-      multiplyBtn.disabled = true;
-      shootBtn.disabled = true;
-      betBtn.disabled = false;
-      gameState.inReveal = false;
-    }
-
-    // ========= EVENT HOOKS =========
-    betBtn.addEventListener("click", handleBet);
-    multiplyBtn.addEventListener("click", handleMultiplyWins);
-    shootBtn.addEventListener("click", handleShoot);
-
-    targetMultiplierInput.addEventListener("input", updateChanceFromMultiplier);
-
-    playAgainBtn.addEventListener("click", () => {
-      overlayEl.style.display = "none";
-      resetGameState(false);
-    });
-
-    // INIT
-    resetGridDom();
-    updateChanceFromMultiplier();
+    // Simple helper: keep footer year up-to-date
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
