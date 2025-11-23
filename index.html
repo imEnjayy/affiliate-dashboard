@@ -6,20 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="Insert A Penny is a Stake Exclusive casino game provider. Play our games only on Stake.com and Stake.us."
+    content="Insert A Penny – arcade & video game themed house games made by house game enjoyers. Built on the Stake engine with time, energy and care."
   />
   <style>
     :root {
-      --bg-dark: #05060b;
-      --bg-card: #111320;
-      --bg-card-soft: #181b2e;
-      --accent: #fbbf24;
-      --accent-soft: rgba(251, 191, 36, 0.16);
-      --muted: #a0aec0;
-      --text: #f7fafc;
-      --border-soft: rgba(255, 255, 255, 0.06);
+      --bg-dark: #030112;
+      --bg-card: #0b061c;
+      --bg-card-soft: #12092b;
+      --accent: #ff4ecd; /* neon pink */
+      --accent-soft: rgba(255, 78, 205, 0.16);
+      --accent-cyan: #22d3ee;
+      --accent-green: #22c55e;
+      --muted: #a5b4fc;
+      --text: #f9fafb;
+      --border-soft: rgba(129, 140, 248, 0.4);
       --radius-xl: 18px;
-      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.4);
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.65);
       --transition-fast: 180ms ease-out;
     }
 
@@ -32,7 +34,10 @@
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #1a1f3a 0, #05060b 55%, #000 100%);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), transparent 55%),
+        radial-gradient(circle at top right, rgba(244, 114, 182, 0.18), transparent 55%),
+        radial-gradient(circle at bottom, rgba(59, 130, 246, 0.25), #020617 70%);
       color: var(--text);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
@@ -47,14 +52,14 @@
       position: sticky;
       top: 0;
       z-index: 40;
-      backdrop-filter: blur(16px);
+      backdrop-filter: blur(18px);
       background: linear-gradient(
         to bottom,
-        rgba(5, 6, 11, 0.92),
-        rgba(5, 6, 11, 0.7),
+        rgba(3, 1, 18, 0.96),
+        rgba(3, 1, 18, 0.82),
         transparent
       );
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(129, 140, 248, 0.4);
     }
 
     .nav {
@@ -81,16 +86,20 @@
       width: 30px;
       height: 30px;
       border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #fbbf24, #a855f7);
+      background:
+        radial-gradient(circle at 20% 10%, #f97316, transparent 55%),
+        radial-gradient(circle at 80% 90%, #22d3ee, transparent 60%),
+        radial-gradient(circle at 50% 50%, #8b5cf6, #0b061c);
       display: grid;
       place-items: center;
-      box-shadow: 0 0 24px rgba(251, 191, 36, 0.4);
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.7);
       font-size: 0.9rem;
     }
 
     .logo-mark span {
       font-weight: 900;
-      color: #05060b;
+      color: #f9fafb;
+      text-shadow: 0 0 6px rgba(15, 23, 42, 0.9);
     }
 
     .nav-links {
@@ -100,7 +109,7 @@
     }
 
     .nav-links a {
-      opacity: 0.85;
+      opacity: 0.8;
       padding: 6px 0;
       border-bottom: 2px solid transparent;
       transition: opacity var(--transition-fast),
@@ -126,20 +135,21 @@
       letter-spacing: 0.08em;
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(129, 140, 248, 0.8);
       color: var(--muted);
       display: flex;
       align-items: center;
       gap: 6px;
+      box-shadow: 0 0 16px rgba(79, 70, 229, 0.7);
     }
 
     .badge-dot {
       width: 6px;
       height: 6px;
       border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+      background: var(--accent-green);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
     }
 
     .btn {
@@ -148,32 +158,41 @@
       justify-content: center;
       padding: 7px 14px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.35);
+      border: 1px solid rgba(129, 140, 248, 0.7);
       font-size: 0.82rem;
       gap: 6px;
       cursor: pointer;
-      background: rgba(15, 23, 42, 0.92);
+      background: radial-gradient(circle at top left, #0b061c, #020617);
       transition: background var(--transition-fast),
         transform var(--transition-fast), box-shadow var(--transition-fast),
         border-color var(--transition-fast);
       white-space: nowrap;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
     }
 
     .btn-primary {
-      background: linear-gradient(to right, #fbbf24, #f97316);
-      color: #05060b;
+      background:
+        radial-gradient(circle at 0% 0%, #22d3ee, transparent 55%),
+        radial-gradient(circle at 100% 100%, #ff4ecd, transparent 65%),
+        linear-gradient(90deg, #6366f1, #22c55e);
+      color: #020617;
       border-color: transparent;
-      box-shadow: 0 0 22px rgba(251, 191, 36, 0.6);
+      box-shadow:
+        0 0 24px rgba(56, 189, 248, 0.8),
+        0 0 16px rgba(255, 78, 205, 0.7);
+      font-weight: 600;
     }
 
     .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.7);
-      border-color: rgba(226, 232, 240, 0.7);
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.9);
+      border-color: rgba(191, 219, 254, 0.9);
     }
 
     .btn-primary:hover {
-      box-shadow: 0 12px 32px rgba(251, 191, 36, 0.8);
+      box-shadow:
+        0 0 32px rgba(56, 189, 248, 1),
+        0 0 28px rgba(255, 78, 205, 1);
     }
 
     main {
@@ -199,14 +218,17 @@
     }
 
     .hero-copy h1 {
-      font-size: clamp(2.1rem, 4vw, 2.8rem);
-      line-height: 1.05;
-      letter-spacing: 0.01em;
-      margin-bottom: 14px;
+      font-size: clamp(2.4rem, 4.4vw, 3.1rem);
+      line-height: 1;
+      letter-spacing: 0.03em;
+      margin-bottom: 10px;
+      text-shadow:
+        0 0 16px rgba(56, 189, 248, 0.6),
+        0 0 22px rgba(168, 85, 247, 0.7);
     }
 
     .hero-highlight {
-      background: linear-gradient(90deg, #fbbf24, #38bdf8);
+      background: linear-gradient(120deg, #22d3ee, #a855f7, #ff4ecd);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -225,21 +247,25 @@
       gap: 8px;
       padding: 7px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(251, 191, 36, 0.45);
-      background: radial-gradient(circle at left, #facc15, transparent 65%),
-        rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(56, 189, 248, 0.8);
+      background:
+        radial-gradient(circle at left, rgba(34, 197, 94, 0.4), transparent 60%),
+        radial-gradient(circle at right, rgba(255, 78, 205, 0.35), transparent 60%),
+        rgba(15, 23, 42, 0.98);
       font-size: 0.76rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       margin-bottom: 18px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+      box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.9),
+        0 0 24px rgba(34, 197, 94, 0.6);
     }
 
     .hero-exclusive label {
       padding: 3px 7px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(129, 140, 248, 0.8);
       font-size: 0.72rem;
     }
 
@@ -263,9 +289,11 @@
 
     .hero-visual {
       border-radius: 24px;
-      background: radial-gradient(circle at top, #1d223a, #05060b);
+      background:
+        radial-gradient(circle at top, rgba(56, 189, 248, 0.24), transparent 55%),
+        radial-gradient(circle at bottom, rgba(129, 140, 248, 0.35), #020617);
       padding: 16px;
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(129, 140, 248, 0.7);
       box-shadow: var(--shadow-soft);
       position: relative;
       overflow: hidden;
@@ -276,8 +304,9 @@
       position: relative;
       height: 100%;
       border-radius: 18px;
-      background: radial-gradient(circle at top left, #facc15, transparent 55%),
-        radial-gradient(circle at bottom right, #4f46e5, transparent 60%),
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.4), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(255, 78, 205, 0.5), transparent 60%),
         #020617;
       padding: 16px;
       display: flex;
@@ -296,12 +325,13 @@
     .chip {
       padding: 4px 9px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(129, 140, 248, 0.7);
       display: inline-flex;
       align-items: center;
       gap: 6px;
       color: var(--muted);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
     }
 
     .chip strong {
@@ -310,14 +340,15 @@
     }
 
     .game-marquee {
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(15, 23, 42, 0.96);
       border-radius: 16px;
       padding: 10px 12px;
-      border: 1px solid rgba(148, 163, 184, 0.3);
+      border: 1px solid rgba(129, 140, 248, 0.7);
       display: grid;
       grid-template-columns: 2fr 1.4fr;
       gap: 10px;
       align-items: center;
+      box-shadow: 0 0 22px rgba(129, 140, 248, 0.8);
     }
 
     .game-marquee-main {
@@ -325,8 +356,9 @@
     }
 
     .game-marquee-main h3 {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       margin-bottom: 2px;
+      color: #f9fafb;
     }
 
     .pill-row {
@@ -339,10 +371,11 @@
     .pill {
       padding: 3px 7px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.8);
       font-size: 0.7rem;
-      color: var(--muted);
+      color: var(--accent-cyan);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.8);
     }
 
     .game-marquee-side {
@@ -362,11 +395,12 @@
     .stat-pill {
       padding: 5px 8px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(129, 140, 248, 0.6);
       display: flex;
       align-items: center;
       gap: 4px;
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.7);
     }
 
     .stat-pill span:first-child {
@@ -405,16 +439,19 @@
 
     .card-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 16px;
     }
 
     .card {
-      background: radial-gradient(circle at top, #111827, #020617);
+      background:
+        radial-gradient(circle at top, rgba(56, 189, 248, 0.2), transparent 55%),
+        radial-gradient(circle at bottom, rgba(255, 78, 205, 0.25), transparent 60%),
+        #020617;
       border-radius: var(--radius-xl);
       border: 1px solid var(--border-soft);
       padding: 16px;
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.8);
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -431,8 +468,8 @@
       inset: -40%;
       background: radial-gradient(
         circle at top left,
-        rgba(251, 191, 36, 0.18),
-        transparent 55%
+        rgba(255, 78, 205, 0.3),
+        transparent 60%
       );
       opacity: 0;
       transition: opacity var(--transition-fast);
@@ -441,8 +478,10 @@
 
     .card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 24px 45px rgba(0, 0, 0, 0.7);
-      border-color: rgba(251, 191, 36, 0.5);
+      box-shadow:
+        0 24px 45px rgba(0, 0, 0, 0.95),
+        0 0 26px rgba(56, 189, 248, 0.9);
+      border-color: rgba(255, 78, 205, 0.8);
     }
 
     .card:hover::before {
@@ -461,15 +500,16 @@
     .card-tag {
       padding: 4px 8px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(129, 140, 248, 0.8);
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      box-shadow: 0 0 14px rgba(94, 234, 212, 0.7);
     }
 
     .card-title {
-      font-size: 0.98rem;
+      font-size: 1rem;
       font-weight: 600;
     }
 
@@ -487,7 +527,7 @@
 
     .card-desc {
       font-size: 0.84rem;
-      color: #cbd5f5;
+      color: #e5e7eb;
     }
 
     .card-footer {
@@ -499,18 +539,11 @@
       color: var(--muted);
     }
 
-    .label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--muted);
-    }
-
     .pill-soft {
       padding: 3px 8px;
       border-radius: 999px;
       background: var(--accent-soft);
-      border: 1px solid rgba(251, 191, 36, 0.7);
+      border: 1px solid rgba(255, 78, 205, 0.8);
       font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.16em;
@@ -519,7 +552,9 @@
 
     .timeline {
       border-radius: var(--radius-xl);
-      background: radial-gradient(circle at top, #111827, #020617);
+      background:
+        radial-gradient(circle at top, rgba(56, 189, 248, 0.15), transparent 55%),
+        #020617;
       border: 1px solid var(--border-soft);
       padding: 16px;
       box-shadow: var(--shadow-soft);
@@ -537,7 +572,7 @@
       grid-template-columns: auto 1fr;
       gap: 8px 12px;
       padding: 8px 0;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      border-bottom: 1px solid rgba(129, 140, 248, 0.35);
     }
 
     .timeline-item:last-child {
@@ -563,7 +598,9 @@
 
     .availability {
       border-radius: var(--radius-xl);
-      background: radial-gradient(circle at top, #111827, #020617);
+      background:
+        radial-gradient(circle at top, rgba(79, 70, 229, 0.25), transparent 55%),
+        #020617;
       border: 1px solid var(--border-soft);
       padding: 16px;
       box-shadow: var(--shadow-soft);
@@ -582,12 +619,13 @@
     .availability-card {
       border-radius: 14px;
       padding: 10px 12px;
-      background: rgba(15, 23, 42, 0.92);
-      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(129, 140, 248, 0.7);
       display: flex;
       flex-direction: column;
       gap: 3px;
       font-size: 0.82rem;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.5);
     }
 
     .availability-card strong {
@@ -600,7 +638,7 @@
     }
 
     footer {
-      border-top: 1px solid rgba(148, 163, 184, 0.3);
+      border-top: 1px solid rgba(129, 140, 248, 0.5);
       margin-top: 40px;
       padding-top: 18px;
       font-size: 0.78rem;
@@ -683,17 +721,15 @@
     <!-- HERO -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <div class="hero-copy-eyebrow">Casino game provider</div>
+        <div class="hero-copy-eyebrow">Stake-exclusive house games</div>
+
         <h1 id="hero-title">
-          Coin-powered thrills from
           <span class="hero-highlight">Insert A Penny</span>
-          — built only for Stake.
         </h1>
 
         <p class="hero-subtitle">
-          Retro coin-op nostalgia meets modern crypto gameplay. Insert A Penny
-          delivers fast, high-volatility casino titles you’ll only find on
-          Stake.
+          Arcade &amp; video game themed house games made by house game enjoyers.
+          Built on the Stake engine with time, energy and care.
         </p>
 
         <div class="hero-exclusive" aria-label="Stake exclusive availability">
@@ -726,47 +762,47 @@
         </p>
       </div>
 
-      <!-- HERO VISUAL / FAKE LOBBY PREVIEW -->
-      <aside class="hero-visual" aria-label="Preview of Insert A Penny games">
+      <!-- HERO VISUAL / EMERALD MINES PREVIEW -->
+      <aside class="hero-visual" aria-label="Preview of Insert A Penny game Emerald Mines">
         <div class="hero-visual-inner">
           <div class="chip-row">
             <div class="chip">
-              <span>●</span>
+              <span>🕹️</span>
               <strong>Insert A Penny</strong>
             </div>
             <div class="chip">
-              Live on Stake
+              Stake Engine • Live
             </div>
           </div>
 
           <div class="game-marquee">
             <div class="game-marquee-main">
-              <h3>Lucky Copper Spins</h3>
-              <div>High-volatility slot • Retro arcade feel</div>
+              <h3>Emerald Mines</h3>
+              <div>A classic diamond &amp; bomb game.</div>
               <div class="pill-row">
-                <span class="pill">Stake Exclusive</span>
-                <span class="pill">Bonus Buys</span>
-                <span class="pill">1¢ Base Bet</span>
+                <span class="pill">Max Win: 10,000,000x</span>
+                <span class="pill">25 / 36 / 49 / 64 tiles</span>
+                <span class="pill">Click &amp; cashout or autobet</span>
               </div>
             </div>
             <div class="game-marquee-side">
-              RTP 96.3% • Max win 10,000x<br />
-              <span style="color: #e5e7eb;">Available only on Stake.com &amp; Stake.us</span>
+              High-volatility • Stream-ready<br />
+              <span style="color: #fefce8; font-weight: 500;">Exclusive to Stake.com &amp; Stake.us</span>
             </div>
           </div>
 
           <div class="stat-strip">
             <div class="stat-pill">
-              <span>🪙</span>
-              <span>Penny-inspired mechanics</span>
+              <span>🌌</span>
+              <span>Neon arcade aesthetic</span>
             </div>
             <div class="stat-pill">
               <span>⚡</span>
-              <span>Instant play on Stake</span>
+              <span>Fast rounds for sessions &amp; streams</span>
             </div>
             <div class="stat-pill">
-              <span>🎮</span>
-              <span>Mobile-first experience</span>
+              <span>📱</span>
+              <span>Optimized for mobile &amp; desktop</span>
             </div>
           </div>
         </div>
@@ -777,85 +813,32 @@
     <section id="games" class="grid" aria-labelledby="games-title">
       <div class="section-header">
         <div>
-          <div class="section-kicker">Live games</div>
-          <h2 class="section-title" id="games-title">Featured titles on Stake</h2>
+          <div class="section-kicker">Featured titles</div>
+          <h2 class="section-title" id="games-title">Live on Stake</h2>
         </div>
         <p class="section-subtitle">
-          These games are exclusively available on
+          Insert A Penny games are playable only on
           <strong>Stake.com</strong> and <strong>Stake.us</strong>.
         </p>
       </div>
 
       <div class="card-row">
-        <!-- Game 1 -->
+        <!-- Emerald Mines – single published game -->
         <article class="card">
           <div class="card-tag-row">
             <span class="card-tag">
-              <span>🪙</span>
-              <span>Stake Original Partner</span>
+              <span>💎</span>
+              <span>Emerald Mines</span>
             </span>
             <span>Available now</span>
           </div>
-          <h3 class="card-title">Lucky Copper Spins</h3>
+          <h3 class="card-title">Emerald Mines</h3>
           <div class="card-meta">
-            <span>High-volatility slot</span>
-            <span>•</span>
-            <span>Max win 10,000x</span>
+            <span>Max Win Potential: 10,000,000x</span>
           </div>
           <p class="card-desc">
-            A classic penny-slot brought into the crypto era. Stack multipliers,
-            unlock cascading reels, and chase full-screen copper hits.
-          </p>
-          <div class="card-footer">
-            <span>Stake.com • Stake.us</span>
-            <span>Stake Exclusive</span>
-          </div>
-        </article>
-
-        <!-- Game 2 -->
-        <article class="card">
-          <div class="card-tag-row">
-            <span class="card-tag">
-              <span>🎰</span>
-              <span>Jackpot feature</span>
-            </span>
-            <span>Available now</span>
-          </div>
-          <h3 class="card-title">Penny Pusher Jackpots</h3>
-          <div class="card-meta">
-            <span>Push-style cascade</span>
-            <span>•</span>
-            <span>Progressive pots</span>
-          </div>
-          <p class="card-desc">
-            Inspired by arcade coin pushers. Drop your pennies, nudge the
-            stacks, and trigger cascading jackpot drops uniquely tuned for Stake
-            players.
-          </p>
-          <div class="card-footer">
-            <span>Stake.com • Stake.us</span>
-            <span>Stake Exclusive</span>
-          </div>
-        </article>
-
-        <!-- Game 3 -->
-        <article class="card">
-          <div class="card-tag-row">
-            <span class="card-tag">
-              <span>⚡</span>
-              <span>Turbo bonus mode</span>
-            </span>
-            <span>Available now</span>
-          </div>
-          <h3 class="card-title">Retro Arcade Reels</h3>
-          <div class="card-meta">
-            <span>Pixel art slot</span>
-            <span>•</span>
-            <span>Chain multipliers</span>
-          </div>
-          <p class="card-desc">
-            Neon pixels, CRT-style glow, and chain-reaction multipliers. Built
-            to feel like a coin-op cabinet with instant Stake integration.
+            A classic diamond &amp; bomb game with boards ranging from 25, 36, 49 &amp; 64 tiles.
+            Click and cashout when you’re ready — or try your luck with carefully tuned autobets.
           </p>
           <div class="card-footer">
             <span>Stake.com • Stake.us</span>
@@ -873,75 +856,28 @@
           <h2 class="section-title" id="coming-soon-title">Coming soon to Stake</h2>
         </div>
         <p class="section-subtitle">
-          All upcoming titles will launch <strong>exclusively</strong> on
-          Stake.com &amp; Stake.us.
+          Future titles are in development and will be announced in collaboration with Stake.
         </p>
       </div>
 
       <div class="card-row">
-        <!-- Upcoming 1 -->
+        <!-- Single undisclosed upcoming game -->
         <article class="card">
           <div class="card-tag-row">
-            <span class="pill-soft">In development</span>
-            <span>Q1 2026</span>
-          </div>
-          <h3 class="card-title">One Cent Crash</h3>
-          <div class="card-meta">
-            <span>Crash game</span>
-            <span>•</span>
-            <span>Risk-reward ladder</span>
-          </div>
-          <p class="card-desc">
-            A penny-based crash experience where tiny bets can scale fast.
-            Built for streamers, with clean UI and rapid rounds optimized for
-            Stake.
-          </p>
-          <div class="card-footer">
-            <span>Stake.com • Stake.us</span>
-            <span>Stake Exclusive</span>
-          </div>
-        </article>
-
-        <!-- Upcoming 2 -->
-        <article class="card">
-          <div class="card-tag-row">
-            <span class="pill-soft">Concept locked</span>
-            <span>2026</span>
-          </div>
-          <h3 class="card-title">Coin Cascade Towers</h3>
-          <div class="card-meta">
-            <span>Multi-level bonus</span>
-            <span>•</span>
-            <span>Unlockable floors</span>
-          </div>
-          <p class="card-desc">
-            Climb stacked bonus levels with every coin you drop. Hit tower
-            milestones, unlock themed floors, and escalate multipliers.
-          </p>
-          <div class="card-footer">
-            <span>Stake.com • Stake.us</span>
-            <span>Stake Exclusive</span>
-          </div>
-        </article>
-
-        <!-- Upcoming 3 -->
-        <article class="card">
-          <div class="card-tag-row">
-            <span class="pill-soft">Early concept</span>
+            <span class="pill-soft">Coming soon</span>
             <span>TBA</span>
           </div>
-          <h3 class="card-title">Penny Vault Megaways*</h3>
+          <h3 class="card-title">Undisclosed Game</h3>
           <div class="card-meta">
-            <span>Expanding reels</span>
-            <span>•</span>
-            <span>Lock &amp; spin feature</span>
+            <span>Undisclosed Description</span>
           </div>
           <p class="card-desc">
-            A vault-themed experience with expanding reel configurations, lock-in
-            coins, and escalating vault multipliers.
+            More arcade &amp; video game inspired house games are in the works.
+            Details will be revealed as we get closer to launch in partnership with Stake.
           </p>
           <div class="card-footer">
-            <span style="font-size: 0.7rem;">*Working title &amp; features subject to change.</span>
+            <span>Planned for Stake.com &amp; Stake.us</span>
+            <span>Stake Exclusive</span>
           </div>
         </article>
       </div>
@@ -949,38 +885,37 @@
       <div class="timeline" aria-label="Insert A Penny release timeline">
         <div class="section-kicker">Launch cadence</div>
         <p>
-          Insert A Penny is designing a steady stream of Stake-first
-          experiences, tuned for <strong>crypto players</strong>, streamers,
-          and mobile.
+          Insert A Penny is focused on building a tight lineup of arcade-styled house games,
+          tuned for <strong>Stake engine</strong> and real players who enjoy game-feel as much as potential.
         </p>
         <ul class="timeline-list">
           <li class="timeline-item">
             <div class="timeline-label">Now</div>
             <div>
-              <div class="timeline-body-title">Core lineup live on Stake</div>
+              <div class="timeline-body-title">Emerald Mines live on Stake</div>
               <div class="timeline-body-sub">
-                Lucky Copper Spins, Penny Pusher Jackpots, and Retro Arcade
-                Reels are already playable on Stake.com and Stake.us.
+                Emerald Mines is available exclusively on Stake.com and Stake.us, with high max win potential
+                and multi-size boards for different risk appetites.
               </div>
             </div>
           </li>
           <li class="timeline-item">
             <div class="timeline-label">Next</div>
             <div>
-              <div class="timeline-body-title">Crash &amp; arcade-hybrid titles</div>
+              <div class="timeline-body-title">New undisclosed titles</div>
               <div class="timeline-body-sub">
-                One Cent Crash and Coin Cascade Towers are next in the
-                pipeline, with Stake integration from day one.
+                Additional Insert A Penny games are being developed with the same focus on arcade feel,
+                readable game states, and clean Stake integration.
               </div>
             </div>
           </li>
           <li class="timeline-item">
             <div class="timeline-label">Later</div>
             <div>
-              <div class="timeline-body-title">Branded &amp; co-created releases</div>
+              <div class="timeline-body-title">Creator-focused experiences</div>
               <div class="timeline-body-sub">
-                Collaborations with Stake creators, streamers, and communities
-                to bring custom penny-themed mechanics to life.
+                Roadmap includes potential creator or community driven collabs to make games that are fun to
+                both stream and play.
               </div>
             </div>
           </li>
@@ -1000,7 +935,7 @@
       </div>
 
       <p>
-        Insert A Penny is built <strong>for Stake</strong>. Our games are not
+        Insert A Penny is built <strong>on the Stake engine</strong>. Our games are not
         available on any other casino, brand, or platform. To play, you must
         have an account with Stake.com or Stake.us, depending on your region
         and local regulations.
@@ -1015,7 +950,7 @@
         <div class="availability-card">
           <strong>Stake.us</strong>
           <span>Social casino platform</span>
-          <span>US-based players (where allowed) can enjoy dedicated Insert A Penny experiences tailored for Stake.us.</span>
+          <span>US-based players (where allowed) can enjoy Insert A Penny experiences tailored for Stake.us.</span>
         </div>
       </div>
 
