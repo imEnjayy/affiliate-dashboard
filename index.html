@@ -13,7 +13,7 @@
       --bg-dark: #030112;
       --bg-card: #050818;
       --bg-card-soft: #0c1024;
-      --accent: #ff4ecd; /* neon pink */
+      --accent: #ff4ecd;
       --accent-soft: rgba(255, 78, 205, 0.11);
       --accent-cyan: #22d3ee;
       --accent-green: #22c55e;
@@ -34,7 +34,6 @@
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
-      /* background unchanged (you liked this) */
       background:
         radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), transparent 55%),
         radial-gradient(circle at top right, rgba(244, 114, 182, 0.18), transparent 55%),
@@ -100,8 +99,7 @@
     .logo-mark span {
       font-weight: 900;
       color: #f9fafb;
-      text-shadow:
-        0 0 2px rgba(15, 23, 42, 0.8);
+      text-shadow: 0 0 2px rgba(15, 23, 42, 0.8);
     }
 
     .nav-links {
@@ -201,7 +199,7 @@
     main {
       max-width: 1120px;
       margin: 0 auto;
-      padding: 26px 20px 80px;
+      padding: 24px 20px 72px;
     }
 
     .hero {
@@ -209,7 +207,7 @@
       grid-template-columns: minmax(0, 3fr) minmax(0, 2.6fr);
       gap: 32px;
       align-items: center;
-      padding: 26px 0 16px;
+      padding: 22px 0 8px;
     }
 
     .hero-copy-eyebrow {
@@ -221,28 +219,26 @@
     }
 
     .hero-copy h1 {
-  font-size: clamp(2.4rem, 4.4vw, 3.1rem);
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 10px;
+      font-size: clamp(2.4rem, 4.4vw, 3.1rem);
+      line-height: 1;
+      letter-spacing: 0.03em;
+      margin-bottom: 10px;
+      color: #ffffff;
+      text-shadow:
+        0 0 3px rgba(0, 0, 0, 1),
+        0 0 12px rgba(59, 130, 246, 1),
+        0 0 22px rgba(139, 92, 246, 1),
+        0 0 30px rgba(236, 72, 153, 1);
+    }
 
-  text-shadow:
-    0 0 3px rgba(0, 0, 0, 1),
-    0 0 12px rgba(59, 130, 246, 1),
-    0 0 22px rgba(139, 92, 246, 1),
-    0 0 30px rgba(236, 72, 153, 1);
-}
-
-.hero-highlight {
-  color: #ffffff;
-
-  text-shadow:
-    0 0 2px rgba(0,0,0,1),
-    0 0 10px rgba(59,130,246,1),
-    0 0 18px rgba(139,92,246,1),
-    0 0 26px rgba(236,72,153,1);
-}
-
+    .hero-highlight {
+      color: #ffffff;
+      text-shadow:
+        0 0 2px rgba(0, 0, 0, 1),
+        0 0 10px rgba(59, 130, 246, 1),
+        0 0 18px rgba(139, 92, 246, 1),
+        0 0 26px rgba(236, 72, 153, 1);
+    }
 
     .hero-subtitle {
       font-size: 0.98rem;
@@ -299,7 +295,6 @@
 
     .hero-visual {
       border-radius: 24px;
-      /* Background same idea but a tad darker */
       background:
         radial-gradient(circle at top, rgba(56, 189, 248, 0.18), transparent 55%),
         radial-gradient(circle at bottom, rgba(129, 140, 248, 0.25), #020617);
@@ -428,7 +423,7 @@
     .grid {
       display: grid;
       gap: 18px;
-      margin-top: 34px;
+      margin-top: 26px; /* slightly tighter than before */
     }
 
     .section-header {
@@ -436,7 +431,7 @@
       justify-content: space-between;
       gap: 12px;
       align-items: baseline;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .section-title {
@@ -635,7 +630,7 @@
       border: 1px solid var(--border-soft);
       padding: 16px;
       box-shadow: var(--shadow-soft);
-      margin-top: 34px;
+      margin-top: 30px;
       display: grid;
       gap: 14px;
       font-size: 0.88rem;
@@ -672,7 +667,7 @@
 
     footer {
       border-top: 1px solid rgba(129, 140, 248, 0.5);
-      margin-top: 40px;
+      margin-top: 32px;
       padding-top: 18px;
       font-size: 0.78rem;
       color: var(--muted);
@@ -798,67 +793,59 @@
 
       <!-- HERO VISUAL / EMERALD MINES PREVIEW -->
       <aside class="hero-visual" aria-label="Preview of Insert A Penny game Emerald Mines">
-  <div class="hero-visual-inner">
-    
-    <div class="chip-row">
-      <div class="chip">
-        <span>🔥</span>
-        <strong>Most Popular</strong>
-      </div>
+        <div class="hero-visual-inner">
+          <div class="chip-row">
+            <div class="chip">
+              <span>🔥</span>
+              <strong>Most Popular</strong>
+            </div>
+            <div class="chip">
+              Stake Engine • Live
+            </div>
+          </div>
 
-      <div class="chip">
-        Stake Engine • Live
-      </div>
-    </div>
+          <div class="game-marquee">
+            <div class="game-marquee-main">
+              <h3>Emerald Mines</h3>
+              <div>A classic diamond &amp; bomb game.</div>
 
-    <div class="game-marquee">
-      <div class="game-marquee-main">
-        <h3>Emerald Mines</h3>
-        <div>A classic diamond &amp; bomb game.</div>
+              <div class="pill-row">
+                <span class="pill">Max Win: 10,000,000x</span>
+              </div>
+              <div class="pill-row">
+                <span class="pill">5×5</span>
+                <span class="pill">6×6</span>
+                <span class="pill">7×7</span>
+                <span class="pill">8×8</span>
+              </div>
+              <div class="pill-row">
+                <span class="pill">Click &amp; Cashout</span>
+                <span class="pill">Autobets</span>
+              </div>
+            </div>
 
-        <div class="pill-row">
-          <span class="pill">Max Win: 10,000,000x</span>
+            <div class="game-marquee-side">
+              <strong style="color:#ffffff;">Built on Stake Engine</strong>
+            </div>
+          </div>
+
+          <div class="stat-strip">
+            <div class="stat-pill">
+              <span>🌌</span>
+              <span>Neon arcade aesthetic</span>
+            </div>
+            <div class="stat-pill">
+              <span>⚡</span>
+              <span>Fast rounds</span>
+            </div>
+            <div class="stat-pill">
+              <span>📱</span>
+              <span>Optimized for mobile &amp; desktop</span>
+            </div>
+          </div>
         </div>
-
-        <div class="pill-row">
-          <span class="pill">5×5</span>
-          <span class="pill">6×6</span>
-          <span class="pill">7×7</span>
-          <span class="pill">8×8</span>
-        </div>
-
-        <div class="pill-row">
-          <span class="pill">Click &amp; Cashout</span>
-          <span class="pill">Autobets</span>
-        </div>
-
-      </div>
-
-      <div class="game-marquee-side" style="text-align:right;">
-        <strong style="color:#fff;">Built on Stake Engine</strong>
-      </div>
-    </div>
-
-    <div class="stat-strip">
-      <div class="stat-pill">
-        <span>🌌</span>
-        <span>Neon arcade aesthetic</span>
-      </div>
-
-      <div class="stat-pill">
-        <span>⚡</span>
-        <span>Fast rounds</span>
-      </div>
-
-      <div class="stat-pill">
-        <span>📱</span>
-        <span>Optimized for mobile &amp; desktop</span>
-      </div>
-    </div>
-
-  </div>
-</aside>
-
+      </aside>
+    </section>
 
     <!-- GAMES SECTION -->
     <section id="games" class="grid" aria-labelledby="games-title">
@@ -887,10 +874,10 @@
           <div class="card-meta">
             <span>Max Win Potential: 10,000,000x</span>
             <span>•</span>
-            <span>5x5 6x6 7x7 &amp; 8x8 board</span>
+            <span>5×5 6×6 7×7 &amp; 8×8 board</span>
           </div>
           <p class="card-desc">
-            A classic diamond &amp; bomb game with board sizes ranging from 5x5 to 8x8.
+            A classic diamond &amp; bomb game with board sizes ranging from 5×5 to 8×8.
             Click and cashout when you’re ready — or try your luck with carefully tuned autobets.
           </p>
           <div class="card-footer">
@@ -939,7 +926,7 @@
         <div class="section-kicker">Launch cadence</div>
         <p>
           Insert A Penny is focused on building a tight lineup of arcade-styled house games,
-          tuned for <strong>Stake engine</strong> and real players who enjoy game-feel as much as potential.
+          tuned for <strong>Stake Engine</strong> and real players who enjoy game-feel as much as potential.
         </p>
         <ul class="timeline-list">
           <li class="timeline-item">
@@ -958,7 +945,7 @@
               <div class="timeline-body-title">New undisclosed titles</div>
               <div class="timeline-body-sub">
                 Additional Insert A Penny games are being developed with the same focus on arcade feel,
-                readable game states, and clean Stake integration.
+                readable game states, and clean Stake Engine integration.
               </div>
             </div>
           </li>
@@ -978,7 +965,7 @@
       </div>
 
       <p>
-        Insert A Penny is built <strong>on the Stake engine</strong>. Our games are not
+        Insert A Penny is built <strong>on the Stake Engine</strong>. Our games are not
         available on any other casino, brand, or platform. To play, you must
         have an account with Stake.com or Stake.us, depending on your region
         and local regulations.
@@ -1018,7 +1005,6 @@
   </main>
 
   <script>
-    // Simple helper: keep footer year up-to-date
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
