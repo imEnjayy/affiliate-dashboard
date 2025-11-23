@@ -11,17 +11,17 @@
   <style>
     :root {
       --bg-dark: #030112;
-      --bg-card: #0b061c;
-      --bg-card-soft: #12092b;
+      --bg-card: #050818;
+      --bg-card-soft: #0c1024;
       --accent: #ff4ecd; /* neon pink */
-      --accent-soft: rgba(255, 78, 205, 0.16);
+      --accent-soft: rgba(255, 78, 205, 0.11);
       --accent-cyan: #22d3ee;
       --accent-green: #22c55e;
-      --muted: #a5b4fc;
+      --muted: #9ca3ff;
       --text: #f9fafb;
-      --border-soft: rgba(129, 140, 248, 0.4);
+      --border-soft: rgba(129, 140, 248, 0.35);
       --radius-xl: 18px;
-      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.65);
+      --shadow-soft: 0 14px 30px rgba(0, 0, 0, 0.65);
       --transition-fast: 180ms ease-out;
     }
 
@@ -34,6 +34,7 @@
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
+      /* background unchanged (you liked this) */
       background:
         radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), transparent 55%),
         radial-gradient(circle at top right, rgba(244, 114, 182, 0.18), transparent 55%),
@@ -59,7 +60,7 @@
         rgba(3, 1, 18, 0.82),
         transparent
       );
-      border-bottom: 1px solid rgba(129, 140, 248, 0.4);
+      border-bottom: 1px solid rgba(129, 140, 248, 0.25);
     }
 
     .nav {
@@ -92,14 +93,15 @@
         radial-gradient(circle at 50% 50%, #8b5cf6, #0b061c);
       display: grid;
       place-items: center;
-      box-shadow: 0 0 24px rgba(56, 189, 248, 0.7);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
       font-size: 0.9rem;
     }
 
     .logo-mark span {
       font-weight: 900;
       color: #f9fafb;
-      text-shadow: 0 0 6px rgba(15, 23, 42, 0.9);
+      text-shadow:
+        0 0 2px rgba(15, 23, 42, 0.8);
     }
 
     .nav-links {
@@ -135,13 +137,13 @@
       letter-spacing: 0.08em;
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(129, 140, 248, 0.8);
+      background: rgba(11, 15, 35, 0.96);
+      border: 1px solid rgba(129, 140, 248, 0.7);
       color: var(--muted);
       display: flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 0 16px rgba(79, 70, 229, 0.7);
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.8);
     }
 
     .badge-dot {
@@ -149,7 +151,7 @@
       height: 6px;
       border-radius: 999px;
       background: var(--accent-green);
-      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.7);
     }
 
     .btn {
@@ -162,37 +164,38 @@
       font-size: 0.82rem;
       gap: 6px;
       cursor: pointer;
-      background: radial-gradient(circle at top left, #0b061c, #020617);
+      background: radial-gradient(circle at top left, #050818, #020617);
       transition: background var(--transition-fast),
         transform var(--transition-fast), box-shadow var(--transition-fast),
         border-color var(--transition-fast);
       white-space: nowrap;
-      box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.85);
+      color: #e5e7eb;
     }
 
     .btn-primary {
       background:
         radial-gradient(circle at 0% 0%, #22d3ee, transparent 55%),
         radial-gradient(circle at 100% 100%, #ff4ecd, transparent 65%),
-        linear-gradient(90deg, #6366f1, #22c55e);
+        linear-gradient(90deg, #4f46e5, #22c55e);
       color: #020617;
       border-color: transparent;
       box-shadow:
-        0 0 24px rgba(56, 189, 248, 0.8),
-        0 0 16px rgba(255, 78, 205, 0.7);
+        0 0 18px rgba(56, 189, 248, 0.6),
+        0 0 12px rgba(255, 78, 205, 0.5);
       font-weight: 600;
     }
 
     .btn:hover {
-      transform: translateY(-1px) scale(1.01);
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.9);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9);
       border-color: rgba(191, 219, 254, 0.9);
     }
 
     .btn-primary:hover {
       box-shadow:
-        0 0 32px rgba(56, 189, 248, 1),
-        0 0 28px rgba(255, 78, 205, 1);
+        0 0 22px rgba(56, 189, 248, 0.8),
+        0 0 18px rgba(255, 78, 205, 0.7);
     }
 
     main {
@@ -222,9 +225,11 @@
       line-height: 1;
       letter-spacing: 0.03em;
       margin-bottom: 10px;
+      /* Softer glow + subtle outline for readability */
       text-shadow:
-        0 0 16px rgba(56, 189, 248, 0.6),
-        0 0 22px rgba(168, 85, 247, 0.7);
+        0 0 1px rgba(15, 23, 42, 0.9),
+        0 0 10px rgba(56, 189, 248, 0.35),
+        0 0 18px rgba(129, 140, 248, 0.35);
     }
 
     .hero-highlight {
@@ -236,9 +241,10 @@
 
     .hero-subtitle {
       font-size: 0.98rem;
-      color: var(--muted);
+      color: #e5e7eb;
       max-width: 32rem;
       margin-bottom: 18px;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.75);
     }
 
     .hero-exclusive {
@@ -247,25 +253,23 @@
       gap: 8px;
       padding: 7px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(56, 189, 248, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.7);
       background:
-        radial-gradient(circle at left, rgba(34, 197, 94, 0.4), transparent 60%),
-        radial-gradient(circle at right, rgba(255, 78, 205, 0.35), transparent 60%),
-        rgba(15, 23, 42, 0.98);
+        radial-gradient(circle at left, rgba(34, 197, 94, 0.25), transparent 60%),
+        radial-gradient(circle at right, rgba(255, 78, 205, 0.25), transparent 60%),
+        rgba(8, 11, 30, 0.98);
       font-size: 0.76rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       margin-bottom: 18px;
-      box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.9),
-        0 0 24px rgba(34, 197, 94, 0.6);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.9);
     }
 
     .hero-exclusive label {
       padding: 3px 7px;
       border-radius: 999px;
       background: rgba(15, 23, 42, 0.98);
-      border: 1px solid rgba(129, 140, 248, 0.8);
+      border: 1px solid rgba(129, 140, 248, 0.7);
       font-size: 0.72rem;
     }
 
@@ -280,6 +284,7 @@
     .hero-footnote {
       font-size: 0.75rem;
       color: var(--muted);
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.85);
     }
 
     .hero-footnote span {
@@ -289,11 +294,12 @@
 
     .hero-visual {
       border-radius: 24px;
+      /* Background same idea but a tad darker */
       background:
-        radial-gradient(circle at top, rgba(56, 189, 248, 0.24), transparent 55%),
-        radial-gradient(circle at bottom, rgba(129, 140, 248, 0.35), #020617);
+        radial-gradient(circle at top, rgba(56, 189, 248, 0.18), transparent 55%),
+        radial-gradient(circle at bottom, rgba(129, 140, 248, 0.25), #020617);
       padding: 16px;
-      border: 1px solid rgba(129, 140, 248, 0.7);
+      border: 1px solid rgba(129, 140, 248, 0.55);
       box-shadow: var(--shadow-soft);
       position: relative;
       overflow: hidden;
@@ -305,8 +311,8 @@
       height: 100%;
       border-radius: 18px;
       background:
-        radial-gradient(circle at top left, rgba(56, 189, 248, 0.4), transparent 60%),
-        radial-gradient(circle at bottom right, rgba(255, 78, 205, 0.5), transparent 60%),
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.3), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(255, 78, 205, 0.35), transparent 60%),
         #020617;
       padding: 16px;
       display: flex;
@@ -325,13 +331,13 @@
     .chip {
       padding: 4px 9px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(9, 11, 32, 0.95);
       border: 1px solid rgba(129, 140, 248, 0.7);
       display: inline-flex;
       align-items: center;
       gap: 6px;
       color: var(--muted);
-      box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.85);
     }
 
     .chip strong {
@@ -340,25 +346,28 @@
     }
 
     .game-marquee {
-      background: rgba(15, 23, 42, 0.96);
+      background: rgba(7, 10, 28, 0.98);
       border-radius: 16px;
       padding: 10px 12px;
-      border: 1px solid rgba(129, 140, 248, 0.7);
+      border: 1px solid rgba(129, 140, 248, 0.65);
       display: grid;
       grid-template-columns: 2fr 1.4fr;
       gap: 10px;
       align-items: center;
-      box-shadow: 0 0 22px rgba(129, 140, 248, 0.8);
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.9);
     }
 
     .game-marquee-main {
       font-size: 0.85rem;
+      color: #e5e7eb;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.75);
     }
 
     .game-marquee-main h3 {
       font-size: 0.95rem;
       margin-bottom: 2px;
       color: #f9fafb;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.9);
     }
 
     .pill-row {
@@ -371,17 +380,19 @@
     .pill {
       padding: 3px 7px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(56, 189, 248, 0.8);
+      background: rgba(8, 11, 30, 0.98);
+      border: 1px solid rgba(56, 189, 248, 0.7);
       font-size: 0.7rem;
       color: var(--accent-cyan);
-      box-shadow: 0 0 14px rgba(56, 189, 248, 0.8);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.8);
     }
 
     .game-marquee-side {
       font-size: 0.7rem;
       text-align: right;
-      color: var(--muted);
+      color: #d1d5db;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.8);
     }
 
     .stat-strip {
@@ -395,12 +406,14 @@
     .stat-pill {
       padding: 5px 8px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(8, 11, 30, 0.96);
       border: 1px solid rgba(129, 140, 248, 0.6);
       display: flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 0 16px rgba(168, 85, 247, 0.7);
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.85);
+      color: #e5e7eb;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.85);
     }
 
     .stat-pill span:first-child {
@@ -423,6 +436,7 @@
 
     .section-title {
       font-size: 1.1rem;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.9);
     }
 
     .section-kicker {
@@ -430,11 +444,14 @@
       color: var(--muted);
       letter-spacing: 0.16em;
       text-transform: uppercase;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.85);
     }
 
     .section-subtitle {
       font-size: 0.84rem;
-      color: var(--muted);
+      color: #d1d5db;
+      max-width: 20rem;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.8);
     }
 
     .card-row {
@@ -445,13 +462,13 @@
 
     .card {
       background:
-        radial-gradient(circle at top, rgba(56, 189, 248, 0.2), transparent 55%),
-        radial-gradient(circle at bottom, rgba(255, 78, 205, 0.25), transparent 60%),
-        #020617;
+        radial-gradient(circle at top, rgba(56, 189, 248, 0.14), transparent 55%),
+        radial-gradient(circle at bottom, rgba(255, 78, 205, 0.16), transparent 60%),
+        var(--bg-card);
       border-radius: var(--radius-xl);
       border: 1px solid var(--border-soft);
       padding: 16px;
-      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7);
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -468,7 +485,7 @@
       inset: -40%;
       background: radial-gradient(
         circle at top left,
-        rgba(255, 78, 205, 0.3),
+        rgba(255, 78, 205, 0.22),
         transparent 60%
       );
       opacity: 0;
@@ -477,11 +494,11 @@
     }
 
     .card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-3px);
       box-shadow:
-        0 24px 45px rgba(0, 0, 0, 0.95),
-        0 0 26px rgba(56, 189, 248, 0.9);
-      border-color: rgba(255, 78, 205, 0.8);
+        0 20px 40px rgba(0, 0, 0, 0.9),
+        0 0 18px rgba(56, 189, 248, 0.55);
+      border-color: rgba(255, 78, 205, 0.6);
     }
 
     .card:hover::before {
@@ -500,17 +517,20 @@
     .card-tag {
       padding: 4px 8px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(129, 140, 248, 0.8);
+      background: rgba(8, 11, 30, 0.96);
+      border: 1px solid rgba(129, 140, 248, 0.7);
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 0 14px rgba(94, 234, 212, 0.7);
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.85);
+      color: #e5e7eb;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.85);
     }
 
     .card-title {
       font-size: 1rem;
       font-weight: 600;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.85);
     }
 
     .card-meta {
@@ -522,12 +542,14 @@
 
     .card-meta span {
       font-size: 0.74rem;
-      color: var(--muted);
+      color: #e5e7eb;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.85);
     }
 
     .card-desc {
       font-size: 0.84rem;
       color: #e5e7eb;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.9);
     }
 
     .card-footer {
@@ -537,29 +559,33 @@
       margin-top: 8px;
       font-size: 0.76rem;
       color: var(--muted);
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.85);
     }
 
     .pill-soft {
       padding: 3px 8px;
       border-radius: 999px;
       background: var(--accent-soft);
-      border: 1px solid rgba(255, 78, 205, 0.8);
+      border: 1px solid rgba(255, 78, 205, 0.75);
       font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.16em;
       color: var(--accent);
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.9);
     }
 
     .timeline {
       border-radius: var(--radius-xl);
       background:
-        radial-gradient(circle at top, rgba(56, 189, 248, 0.15), transparent 55%),
+        radial-gradient(circle at top, rgba(56, 189, 248, 0.12), transparent 55%),
         #020617;
       border: 1px solid var(--border-soft);
       padding: 16px;
       box-shadow: var(--shadow-soft);
       margin-top: 16px;
       font-size: 0.86rem;
+      color: #e5e7eb;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.85);
     }
 
     .timeline-list {
@@ -572,7 +598,7 @@
       grid-template-columns: auto 1fr;
       gap: 8px 12px;
       padding: 8px 0;
-      border-bottom: 1px solid rgba(129, 140, 248, 0.35);
+      border-bottom: 1px solid rgba(129, 140, 248, 0.3);
     }
 
     .timeline-item:last-child {
@@ -593,13 +619,13 @@
 
     .timeline-body-sub {
       font-size: 0.8rem;
-      color: var(--muted);
+      color: #d1d5db;
     }
 
     .availability {
       border-radius: var(--radius-xl);
       background:
-        radial-gradient(circle at top, rgba(79, 70, 229, 0.25), transparent 55%),
+        radial-gradient(circle at top, rgba(79, 70, 229, 0.18), transparent 55%),
         #020617;
       border: 1px solid var(--border-soft);
       padding: 16px;
@@ -608,6 +634,8 @@
       display: grid;
       gap: 14px;
       font-size: 0.88rem;
+      color: #e5e7eb;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.9);
     }
 
     .availability-grid {
@@ -619,13 +647,13 @@
     .availability-card {
       border-radius: 14px;
       padding: 10px 12px;
-      background: rgba(15, 23, 42, 0.96);
+      background: rgba(7, 10, 28, 0.98);
       border: 1px solid rgba(129, 140, 248, 0.7);
       display: flex;
       flex-direction: column;
       gap: 3px;
       font-size: 0.82rem;
-      box-shadow: 0 0 18px rgba(56, 189, 248, 0.5);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
     }
 
     .availability-card strong {
@@ -647,6 +675,7 @@
       flex-wrap: wrap;
       justify-content: space-between;
       gap: 10px;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.85);
     }
 
     footer a {
@@ -781,7 +810,7 @@
               <div>A classic diamond &amp; bomb game.</div>
               <div class="pill-row">
                 <span class="pill">Max Win: 10,000,000x</span>
-                <span class="pill">25 / 36 / 49 / 64 tiles</span>
+                <span class="pill">5x5 6x6 7x7 &amp; 8x8 board</span>
                 <span class="pill">Click &amp; cashout or autobet</span>
               </div>
             </div>
@@ -835,9 +864,11 @@
           <h3 class="card-title">Emerald Mines</h3>
           <div class="card-meta">
             <span>Max Win Potential: 10,000,000x</span>
+            <span>•</span>
+            <span>5x5 6x6 7x7 &amp; 8x8 board</span>
           </div>
           <p class="card-desc">
-            A classic diamond &amp; bomb game with boards ranging from 25, 36, 49 &amp; 64 tiles.
+            A classic diamond &amp; bomb game with board sizes ranging from 5x5 to 8x8.
             Click and cashout when you’re ready — or try your luck with carefully tuned autobets.
           </p>
           <div class="card-footer">
@@ -895,7 +926,7 @@
               <div class="timeline-body-title">Emerald Mines live on Stake</div>
               <div class="timeline-body-sub">
                 Emerald Mines is available exclusively on Stake.com and Stake.us, with high max win potential
-                and multi-size boards for different risk appetites.
+                and multiple board sizes for different risk appetites.
               </div>
             </div>
           </li>
@@ -906,16 +937,6 @@
               <div class="timeline-body-sub">
                 Additional Insert A Penny games are being developed with the same focus on arcade feel,
                 readable game states, and clean Stake integration.
-              </div>
-            </div>
-          </li>
-          <li class="timeline-item">
-            <div class="timeline-label">Later</div>
-            <div>
-              <div class="timeline-body-title">Creator-focused experiences</div>
-              <div class="timeline-body-sub">
-                Roadmap includes potential creator or community driven collabs to make games that are fun to
-                both stream and play.
               </div>
             </div>
           </li>
