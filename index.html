@@ -312,21 +312,22 @@
         radial-gradient(circle at top left, rgba(56, 189, 248, 0.3), transparent 60%),
         radial-gradient(circle at bottom right, rgba(255, 78, 205, 0.35), transparent 60%),
         #020617;
-      padding: 12px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      aspect-ratio: 1 / 1; /* makes the card area square-ish */
     }
 
     .chip-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
     }
 
     .chip {
-      padding: 4px 9px;
+      padding: 4px 10px;
       border-radius: 999px;
       background: rgba(9, 11, 32, 0.95);
       border: 1px solid rgba(129, 140, 248, 0.7);
@@ -344,8 +345,8 @@
 
     .game-marquee {
       background: rgba(7, 10, 28, 0.98);
-      border-radius: 14px;
-      padding: 10px 12px;
+      border-radius: 16px;
+      padding: 12px 14px;
       border: 1px solid rgba(129, 140, 248, 0.65);
       display: grid;
       grid-template-columns: 1fr;
@@ -353,17 +354,20 @@
       align-items: center;
       box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
       text-align: center;
+      justify-items: center;
+      flex: 1;
     }
 
     .game-marquee-main {
-      font-size: 0.84rem;
+      font-size: 0.96rem;
       color: #e5e7eb;
       text-shadow: 0 0 1px rgba(3, 7, 18, 0.75);
+      max-width: 80%;
     }
 
     .game-marquee-main h3 {
-      font-size: 0.95rem;
-      margin-bottom: 2px;
+      font-size: 1.15rem;
+      margin-bottom: 4px;
       color: #f9fafb;
       text-shadow: 0 0 1px rgba(3, 7, 18, 0.9);
     }
@@ -371,34 +375,35 @@
     .pill-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
+      gap: 8px;
+      margin-top: 6px;
       justify-content: center;
     }
 
     .pill {
-      padding: 3px 9px;
+      padding: 4px 12px;
       border-radius: 999px;
       background: rgba(8, 11, 30, 0.98);
       border: 1px solid rgba(56, 189, 248, 0.7);
-      font-size: 0.7rem;
+      font-size: 0.78rem;
       color: var(--accent-cyan);
       box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
       text-shadow: 0 0 1px rgba(3, 7, 18, 0.8);
+      white-space: nowrap;
     }
 
     .stat-strip {
       display: flex;
-      margin-top: 6px;
+      margin-top: 10px;
       gap: 8px;
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       flex-wrap: wrap;
       justify-content: center;
       text-align: center;
     }
 
     .stat-pill {
-      padding: 4px 8px;
+      padding: 4px 9px;
       border-radius: 999px;
       background: rgba(8, 11, 30, 0.96);
       border: 1px solid rgba(129, 140, 248, 0.6);
@@ -411,13 +416,13 @@
     }
 
     .stat-pill span:first-child {
-      font-size: 0.86em;
+      font-size: 0.9em;
     }
 
     .grid {
       display: grid;
       gap: 18px;
-      margin-top: 18px; /* tighter gap under hero */
+      margin-top: 18px; /* tighter under hero */
     }
 
     .section-header {
