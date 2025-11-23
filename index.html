@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="Insert A Penny – arcade & video game themed house games made by house game enjoyers. Built on the Stake engine with time, energy and care."
+    content="Insert A Penny – arcade & video game themed house games made by house game enjoyers. Built on the Stake Engine with time, energy and care."
   />
   <style>
     :root {
@@ -348,13 +348,14 @@
     .game-marquee {
       background: rgba(7, 10, 28, 0.98);
       border-radius: 16px;
-      padding: 10px 12px;
+      padding: 12px 14px;
       border: 1px solid rgba(129, 140, 248, 0.65);
       display: grid;
-      grid-template-columns: 2fr 1.4fr;
-      gap: 10px;
+      grid-template-columns: 1fr; /* center layout */
+      gap: 8px;
       align-items: center;
       box-shadow: 0 10px 20px rgba(15, 23, 42, 0.9);
+      text-align: center;
     }
 
     .game-marquee-main {
@@ -375,10 +376,11 @@
       flex-wrap: wrap;
       gap: 6px;
       margin-top: 4px;
+      justify-content: center; /* center pills */
     }
 
     .pill {
-      padding: 3px 7px;
+      padding: 3px 9px;
       border-radius: 999px;
       background: rgba(8, 11, 30, 0.98);
       border: 1px solid rgba(56, 189, 248, 0.7);
@@ -388,19 +390,14 @@
       text-shadow: 0 0 1px rgba(3, 7, 18, 0.8);
     }
 
-    .game-marquee-side {
-      font-size: 0.7rem;
-      text-align: right;
-      color: #d1d5db;
-      text-shadow: 0 0 1px rgba(3, 7, 18, 0.8);
-    }
-
     .stat-strip {
       display: flex;
       margin-top: 10px;
       gap: 10px;
       font-size: 0.72rem;
       flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
     }
 
     .stat-pill {
@@ -423,7 +420,7 @@
     .grid {
       display: grid;
       gap: 18px;
-      margin-top: 26px; /* slightly tighter than before */
+      margin-top: 26px;
     }
 
     .section-header {
@@ -758,7 +755,7 @@
 
         <p class="hero-subtitle">
           Arcade &amp; video game themed house games made by house game enjoyers.
-          Built on the Stake engine with time, energy and care.
+          Built on the Stake Engine with time, energy and care.
         </p>
 
         <div class="hero-exclusive" aria-label="Stake exclusive availability">
@@ -810,37 +807,30 @@
               <div>A classic diamond &amp; bomb game.</div>
 
               <div class="pill-row">
-                <span class="pill">Max Win: 10,000,000x</span>
+                <span class="pill">Max Win Potential: 10,000,000</span>
               </div>
               <div class="pill-row">
-                <span class="pill">5×5</span>
-                <span class="pill">6×6</span>
-                <span class="pill">7×7</span>
-                <span class="pill">8×8</span>
+                <span class="pill">Board Types: 5×5 | 6×6 | 7×7 | 8×8</span>
               </div>
               <div class="pill-row">
                 <span class="pill">Click &amp; Cashout</span>
                 <span class="pill">Autobets</span>
               </div>
             </div>
-
-            <div class="game-marquee-side">
-              <strong style="color:#ffffff;">Built on Stake Engine</strong>
-            </div>
           </div>
 
           <div class="stat-strip">
             <div class="stat-pill">
-              <span>🌌</span>
-              <span>Neon arcade aesthetic</span>
+              <span>🧱</span>
+              <span>Minecraft Theme</span>
             </div>
             <div class="stat-pill">
               <span>⚡</span>
               <span>Fast rounds</span>
             </div>
             <div class="stat-pill">
-              <span>📱</span>
-              <span>Optimized for mobile &amp; desktop</span>
+              <span>🛠️</span>
+              <span>Stake Engine</span>
             </div>
           </div>
         </div>
@@ -872,9 +862,9 @@
           </div>
           <h3 class="card-title">Emerald Mines</h3>
           <div class="card-meta">
-            <span>Max Win Potential: 10,000,000x</span>
+            <span>Max Win Potential: 10,000,000</span>
             <span>•</span>
-            <span>5×5 6×6 7×7 &amp; 8×8 board</span>
+            <span>Board Types: 5×5 | 6×6 | 7×7 | 8×8</span>
           </div>
           <p class="card-desc">
             A classic diamond &amp; bomb game with board sizes ranging from 5×5 to 8×8.
@@ -935,7 +925,7 @@
               <div class="timeline-body-title">Emerald Mines live on Stake</div>
               <div class="timeline-body-sub">
                 Emerald Mines is available exclusively on Stake.com and Stake.us, with high max win potential
-                and multiple board sizes for different risk appetites.
+                and multiple board types for different risk appetites.
               </div>
             </div>
           </li>
