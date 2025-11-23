@@ -199,15 +199,15 @@
     main {
       max-width: 1120px;
       margin: 0 auto;
-      padding: 24px 20px 72px;
+      padding: 20px 20px 64px;
     }
 
     .hero {
       display: grid;
       grid-template-columns: minmax(0, 3fr) minmax(0, 2.6fr);
-      gap: 32px;
-      align-items: center;
-      padding: 22px 0 8px;
+      gap: 26px;
+      align-items: flex-start;
+      padding: 18px 0 0;
     }
 
     .hero-copy-eyebrow {
@@ -279,7 +279,7 @@
       gap: 10px;
       align-items: center;
       flex-wrap: wrap;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .hero-footnote {
@@ -294,31 +294,28 @@
     }
 
     .hero-visual {
-      border-radius: 24px;
+      border-radius: 22px;
       background:
         radial-gradient(circle at top, rgba(56, 189, 248, 0.18), transparent 55%),
         radial-gradient(circle at bottom, rgba(129, 140, 248, 0.25), #020617);
-      padding: 16px;
+      padding: 10px;
       border: 1px solid rgba(129, 140, 248, 0.55);
       box-shadow: var(--shadow-soft);
       position: relative;
       overflow: hidden;
-      min-height: 240px;
     }
 
     .hero-visual-inner {
       position: relative;
-      height: 100%;
-      border-radius: 18px;
+      border-radius: 16px;
       background:
         radial-gradient(circle at top left, rgba(56, 189, 248, 0.3), transparent 60%),
         radial-gradient(circle at bottom right, rgba(255, 78, 205, 0.35), transparent 60%),
         #020617;
-      padding: 16px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 14px;
+      gap: 10px;
     }
 
     .chip-row {
@@ -347,19 +344,19 @@
 
     .game-marquee {
       background: rgba(7, 10, 28, 0.98);
-      border-radius: 16px;
-      padding: 12px 14px;
+      border-radius: 14px;
+      padding: 10px 12px;
       border: 1px solid rgba(129, 140, 248, 0.65);
       display: grid;
-      grid-template-columns: 1fr; /* center layout */
-      gap: 8px;
+      grid-template-columns: 1fr;
+      gap: 6px;
       align-items: center;
-      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.9);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
       text-align: center;
     }
 
     .game-marquee-main {
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       color: #e5e7eb;
       text-shadow: 0 0 1px rgba(3, 7, 18, 0.75);
     }
@@ -376,7 +373,7 @@
       flex-wrap: wrap;
       gap: 6px;
       margin-top: 4px;
-      justify-content: center; /* center pills */
+      justify-content: center;
     }
 
     .pill {
@@ -392,8 +389,8 @@
 
     .stat-strip {
       display: flex;
-      margin-top: 10px;
-      gap: 10px;
+      margin-top: 6px;
+      gap: 8px;
       font-size: 0.72rem;
       flex-wrap: wrap;
       justify-content: center;
@@ -401,7 +398,7 @@
     }
 
     .stat-pill {
-      padding: 5px 8px;
+      padding: 4px 8px;
       border-radius: 999px;
       background: rgba(8, 11, 30, 0.96);
       border: 1px solid rgba(129, 140, 248, 0.6);
@@ -420,7 +417,7 @@
     .grid {
       display: grid;
       gap: 18px;
-      margin-top: 26px;
+      margin-top: 18px; /* tighter gap under hero */
     }
 
     .section-header {
@@ -627,7 +624,7 @@
       border: 1px solid var(--border-soft);
       padding: 16px;
       box-shadow: var(--shadow-soft);
-      margin-top: 30px;
+      margin-top: 28px;
       display: grid;
       gap: 14px;
       font-size: 0.88rem;
@@ -664,7 +661,7 @@
 
     footer {
       border-top: 1px solid rgba(129, 140, 248, 0.5);
-      margin-top: 32px;
+      margin-top: 30px;
       padding-top: 18px;
       font-size: 0.78rem;
       color: var(--muted);
@@ -790,63 +787,57 @@
 
       <!-- HERO VISUAL / EMERALD MINES PREVIEW -->
       <aside class="hero-visual" aria-label="Preview of Insert A Penny game Emerald Mines">
-  <div class="hero-visual-inner">
-    
-    <div class="chip-row">
-      <div class="chip">
-        <span>🔥</span>
-        <strong>Most Popular</strong>
-      </div>
+        <div class="hero-visual-inner">
+          <div class="chip-row">
+            <div class="chip">
+              <span>🔥</span>
+              <strong>Most Popular</strong>
+            </div>
+            <div class="chip">
+              Stake Engine • Live
+            </div>
+          </div>
 
-      <div class="chip">
-        Stake Engine • Live
-      </div>
-    </div>
+          <div class="game-marquee">
+            <div class="game-marquee-main">
+              <h3>Emerald Mines</h3>
+              <div>A classic diamond &amp; bomb game.</div>
 
-    <div class="game-marquee">
-      <div class="game-marquee-main">
+              <div class="pill-row">
+                <span class="pill">Max Win Potential: 10,000,000</span>
+              </div>
 
-        <h3>Emerald Mines</h3>
-        <div>A classic diamond &amp; bomb game.</div>
+              <div class="pill-row">
+                <span class="pill">5×5</span>
+                <span class="pill">6×6</span>
+                <span class="pill">7×7</span>
+                <span class="pill">8×8</span>
+              </div>
 
-        <div class="pill-row">
-          <span class="pill">Max Win Potential: 10,000,000</span>
+              <div class="pill-row">
+                <span class="pill">Click &amp; Cashout</span>
+                <span class="pill">Autobets</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-strip">
+            <div class="stat-pill">
+              <span>🧱</span>
+              <span>Minecraft Theme</span>
+            </div>
+            <div class="stat-pill">
+              <span>⚡</span>
+              <span>Fast rounds</span>
+            </div>
+            <div class="stat-pill">
+              <span>🛠️</span>
+              <span>Stake Engine</span>
+            </div>
+          </div>
         </div>
-
-        <div class="pill-row">
-          <span class="pill">5×5</span>
-          <span class="pill">6×6</span>
-          <span class="pill">7×7</span>
-          <span class="pill">8×8</span>
-        </div>
-
-        <div class="pill-row">
-          <span class="pill">Click &amp; Cashout</span>
-          <span class="pill">Autobets</span>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="stat-strip">
-      <div class="stat-pill">
-        <span>🧱</span>
-        <span>Minecraft Theme</span>
-      </div>
-
-      <div class="stat-pill">
-        <span>⚡</span>
-        <span>Fast rounds</span>
-      </div>
-
-      <div class="stat-pill">
-        <span>🛠️</span>
-        <span>Stake Engine</span>
-      </div>
-    </div>
-
-  </div>
-</aside>
+      </aside>
+    </section>
 
     <!-- GAMES SECTION -->
     <section id="games" class="grid" aria-labelledby="games-title">
