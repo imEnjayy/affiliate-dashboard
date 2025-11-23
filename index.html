@@ -357,14 +357,14 @@
     }
 
     .game-marquee-main {
-      font-size: 1rem; /* larger description text */
+      font-size: 1rem;
       color: #e5e7eb;
       text-shadow: 0 0 1px rgba(3, 7, 18, 0.75);
       max-width: 90%;
     }
 
     .game-marquee-main h3 {
-      font-size: 1.25rem; /* bigger title */
+      font-size: 1.25rem;
       margin-bottom: 4px;
       color: #f9fafb;
       text-shadow: 0 0 1px rgba(3, 7, 18, 0.9);
@@ -383,7 +383,7 @@
       border-radius: 999px;
       background: rgba(8, 11, 30, 0.98);
       border: 1px solid rgba(56, 189, 248, 0.7);
-      font-size: 0.82rem; /* larger pill text */
+      font-size: 0.82rem;
       color: var(--accent-cyan);
       box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
       text-shadow: 0 0 1px rgba(3, 7, 18, 0.8);
@@ -394,7 +394,7 @@
       display: flex;
       margin-top: 8px;
       gap: 8px;
-      font-size: 0.8rem; /* slightly larger */
+      font-size: 0.8rem;
       flex-wrap: wrap;
       justify-content: center;
       text-align: center;
@@ -420,7 +420,7 @@
     .grid {
       display: grid;
       gap: 18px;
-      margin-top: 14px; /* slightly tighter gap under hero */
+      margin-top: 14px;
     }
 
     .section-header {
@@ -660,6 +660,32 @@
     .availability-footnote {
       font-size: 0.78rem;
       color: var(--muted);
+    }
+
+    /* CREATOR SECTION */
+    .creator {
+      margin-top: 36px;
+      padding: 24px 24px 22px;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at top, rgba(79, 70, 229, 0.18), transparent 60%),
+        rgba(8, 11, 30, 0.96);
+      border: 1px solid rgba(129, 140, 248, 0.55);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .creator-desc {
+      max-width: 620px;
+      color: #e5e7eb;
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+      text-shadow: 0 0 1px rgba(3, 7, 18, 0.8);
+    }
+
+    .creator-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     footer {
@@ -984,6 +1010,42 @@
         terms of service. Always make sure you comply with local laws and age
         requirements before playing.
       </p>
+    </section>
+
+    <!-- CREATOR SECTION -->
+    <section class="creator" aria-labelledby="creator-title">
+      <div class="section-header" style="margin-bottom: 12px;">
+        <div>
+          <div class="section-kicker">Behind the games</div>
+          <h2 class="section-title" id="creator-title">Meet the Creator</h2>
+        </div>
+      </div>
+
+      <p class="creator-desc">
+        Insert A Penny is crafted by a solo developer passionate about arcade gameplay,
+        session-friendly designs, and unique house-game concepts built for Stake players.
+        Connect with the creator here:
+      </p>
+
+      <div class="creator-links">
+        <a
+          class="btn btn-primary"
+          href="https://kick.com/enjayy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Watch on Kick →
+        </a>
+
+        <a
+          class="btn"
+          href="https://discord.gg/enjayy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Join Discord →
+        </a>
+      </div>
     </section>
 
     <!-- FOOTER -->
