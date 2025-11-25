@@ -2,57 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Insert A Penny – Stake-Exclusive House Games</title>
+  <title>Insert A Penny – Stake Exclusive House Games</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
     content="Insert A Penny – arcade & video game themed house games built exclusively for Stake.com & Stake.us. First titles coming soon."
   />
+  <!-- Favicon (optional, change if you like) -->
+  <link rel="icon" href="assets/insertapenny-logo.png" />
+
   <style>
     :root {
-      --bg-dark: #030112;
-      --bg-card: #050818;
-      --bg-card-soft: #0c1024;
-      --accent: #ff4ecd;
-      --accent-soft: rgba(255, 78, 205, 0.11);
-      --accent-cyan: #22d3ee;
+      --bg: #020617;
+      --panel-bg: #050b25;
+      --panel-grad-1: #020617;
+      --panel-grad-2: #0f172a;
+      --panel-grad-3: #31104a;
+      --primary: #38bdf8;
+      --accent-pink: #ec4899;
+      --accent-purple: #a855f7;
       --accent-green: #22c55e;
-      --muted: #9ca3ff;
-      --text: #f9fafb;
-      --border-soft: rgba(129, 140, 248, 0.35);
-      --radius-xl: 18px;
-      --shadow-soft: 0 14px 30px rgba(0, 0, 0, 0.65);
-      --transition-fast: 180ms ease-out;
+      --text-main: #f9fafb;
+      --text-soft: #cbd5f5;
+      --text-muted: #6b7280;
+      --border-subtle: rgba(148, 163, 184, 0.22);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-pill: 999px;
     }
-    
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-/* restore original neon gradient theme */
-body {
-  background: radial-gradient(circle at top left, #05112c 0%, #0a0a26 40%, #160021 100%);
-  background-attachment: fixed;
-  color: #e4e7ff;
-}
-
-.panel {
-  background: linear-gradient(135deg, rgba(8, 22, 40, 0.92), rgba(49, 3, 56, 0.92));
-  border: 1px solid rgba(110, 60, 255, 0.25);
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.6), 0 0 40px rgba(91,0,153,0.3);
-}
-
-button, .btn {
-  box-shadow: 0 0 20px rgba(0, 221, 255, 0.35);
-}
-
-h1, h2, h3 {
-  color: #ffffff;
-  text-shadow: 0 0 12px rgba(255,0,240,0.7);
-}
-
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 10% 0%, #041125 0, transparent 55%),
+        radial-gradient(circle at 90% 0%, #230327 0, transparent 60%),
+        radial-gradient(circle at 50% 100%, #020617 0, #020617 60%);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
 
     .page {
       max-width: 1180px;
@@ -60,47 +55,30 @@ h1, h2, h3 {
       padding: 24px 16px 80px;
     }
 
+    /* HEADER */
+
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 32px;
       gap: 20px;
+      margin-bottom: 32px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .brand-logo {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #e5f2ff 0, #bae6fd 25%, #0ea5e9 55%, #0369a1 100%);
-      position: relative;
-      box-shadow: 0 0 24px rgba(59, 130, 246, 0.7);
-      overflow: hidden;
-    }
-
-    .brand-logo::before {
-      content: "https://imgur.com/a/ML5MkG3";
-      position: absolute;
-      inset: 6px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #f9fafb 0, #e5e7eb 35%, #94a3b8 100%);
-      clip-path: polygon(
-        40% 18%,
-        62% 18%,
-        76% 34%,
-        76% 60%,
-        64% 82%,
-        42% 82%,
-        28% 64%,
-        28% 36%
-      );
-      opacity: 0.9;
+      object-fit: contain;
+      display: block;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.9);
+      background: radial-gradient(circle at 30% 20%, #e5f2ff 0, #bae6fd 26%, #0ea5e9 55%, #0369a1 100%);
     }
 
     .brand-text {
@@ -121,7 +99,7 @@ h1, h2, h3 {
       font-size: 11px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--accent-green);
+      color: #22c55e;
       opacity: 0.9;
     }
 
@@ -138,40 +116,42 @@ h1, h2, h3 {
       padding: 6px 10px;
       border-radius: var(--radius-pill);
       transition: all 0.16s ease-out;
-      opacity: 0.75;
+      opacity: 0.8;
     }
 
     nav a:hover {
-      background: rgba(148, 163, 184, 0.14);
+      background: rgba(148, 163, 184, 0.16);
       opacity: 1;
     }
 
     .nav-pill {
       border-radius: var(--radius-pill);
       padding: 6px 14px;
-      border: 1px solid rgba(96, 165, 250, 0.6);
-      background: radial-gradient(circle at 0 0, rgba(59, 130, 246, 0.6), transparent 55%),
-        rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(96, 165, 250, 0.7);
+      background:
+        radial-gradient(circle at 0 0, rgba(59, 130, 246, 0.7), transparent 60%),
+        rgba(15, 23, 42, 0.9);
       color: #e0f2fe;
       font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      box-shadow: 0 0 22px rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.6);
     }
 
     .nav-cta {
       border-radius: var(--radius-pill);
       padding: 8px 18px;
       border: 1px solid rgba(52, 211, 153, 0.9);
-      background: radial-gradient(circle at 0 0, rgba(74, 222, 128, 0.7), transparent 55%),
+      background:
+        radial-gradient(circle at 0 0, rgba(74, 222, 128, 0.85), transparent 60%),
         linear-gradient(135deg, #22c55e, #16a34a);
       color: #ecfdf5;
       font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.2em;
-      box-shadow: 0 0 26px rgba(34, 197, 94, 0.55);
+      box-shadow: 0 0 26px rgba(34, 197, 94, 0.7);
       text-decoration: none;
       white-space: nowrap;
     }
@@ -182,17 +162,16 @@ h1, h2, h3 {
       gap: 40px;
     }
 
+    /* HERO */
+
     .hero {
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 32px;
+      gap: 28px;
       align-items: center;
     }
 
     @media (max-width: 900px) {
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-      }
       header {
         flex-direction: column;
         align-items: flex-start;
@@ -201,30 +180,35 @@ h1, h2, h3 {
         align-self: stretch;
         justify-content: space-between;
       }
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
     .hero-left {
-      padding: 26px 24px 24px;
-      border-radius: 26px;
-      background: radial-gradient(circle at 0 0, rgba(59, 130, 246, 0.4), transparent 55%),
-        radial-gradient(circle at 100% 0, rgba(236, 72, 153, 0.35), transparent 55%),
-        rgba(15, 23, 42, 0.95);
-      box-shadow: 0 0 60px rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      padding: 26px 24px 22px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 0 0, rgba(59, 130, 246, 0.4), transparent 60%),
+        radial-gradient(circle at 100% 0, rgba(236, 72, 153, 0.35), transparent 60%),
+        linear-gradient(135deg, #020617, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.32);
+      box-shadow: 0 0 60px rgba(15, 23, 42, 0.95);
       position: relative;
       overflow: hidden;
     }
 
-    .hero-left::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 10% 0, rgba(59, 130, 246, 0.4), transparent 55%),
-        radial-gradient(circle at 90% 0, rgba(236, 72, 153, 0.3), transparent 45%),
-        radial-gradient(circle at 0 100%, rgba(34, 197, 94, 0.35), transparent 55%);
-      mix-blend-mode: soft-light;
-      opacity: 0.8;
-      pointer-events: none;
+    .hero-right {
+      padding: 20px 18px 18px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 0 0, rgba(59, 130, 246, 0.35), transparent 60%),
+        radial-gradient(circle at 100% 0, rgba(236, 72, 153, 0.35), transparent 60%),
+        linear-gradient(135deg, #020617, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 0 60px rgba(15, 23, 42, 0.95);
+      position: relative;
+      overflow: hidden;
     }
 
     .hero-eyebrow {
@@ -232,19 +216,7 @@ h1, h2, h3 {
       text-transform: uppercase;
       letter-spacing: 0.24em;
       color: #a5b4fc;
-      margin-bottom: 12px;
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .hero-eyebrow::before {
-      content: "";
-      width: 18px;
-      height: 1px;
-      border-radius: 999px;
-      background: linear-gradient(to right, rgba(129, 140, 248, 0.3), rgba(129, 140, 248, 0.9));
+      margin-bottom: 10px;
     }
 
     h1.hero-title {
@@ -262,17 +234,15 @@ h1, h2, h3 {
       );
       -webkit-background-clip: text;
       color: transparent;
-      text-shadow: 0 0 24px rgba(56, 189, 248, 0.45);
+      text-shadow: 0 0 24px rgba(56, 189, 248, 0.5);
       margin-bottom: 10px;
-      position: relative;
     }
 
     .hero-subtitle {
       font-size: 14px;
       color: var(--text-soft);
       margin-bottom: 18px;
-      max-width: 490px;
-      position: relative;
+      max-width: 480px;
     }
 
     .hero-badges {
@@ -280,7 +250,6 @@ h1, h2, h3 {
       flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 18px;
-      position: relative;
     }
 
     .pill {
@@ -295,24 +264,27 @@ h1, h2, h3 {
       text-transform: uppercase;
       border: 1px solid rgba(148, 163, 184, 0.7);
       color: #e5e7eb;
-      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.3), transparent 55%),
+      background:
+        radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.35), transparent 60%),
         rgba(15, 23, 42, 0.9);
     }
 
     .pill.accent-green {
-      border-color: rgba(74, 222, 128, 0.8);
-      background: radial-gradient(circle at 0 0, rgba(22, 163, 74, 0.7), transparent 55%),
+      border-color: rgba(74, 222, 128, 0.85);
+      background:
+        radial-gradient(circle at 0 0, rgba(22, 163, 74, 0.9), transparent 60%),
         linear-gradient(135deg, #16a34a, #15803d);
       color: #ecfdf5;
-      box-shadow: 0 0 25px rgba(34, 197, 94, 0.6);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.7);
     }
 
     .pill.accent-stake {
-      border-color: rgba(56, 189, 248, 0.8);
-      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.7), transparent 55%),
+      border-color: rgba(56, 189, 248, 0.85);
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.9), transparent 60%),
         linear-gradient(135deg, #0ea5e9, #2563eb);
       color: #e0f2fe;
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
+      box-shadow: 0 0 22px rgba(56, 189, 248, 0.7);
     }
 
     .hero-cta-row {
@@ -320,7 +292,6 @@ h1, h2, h3 {
       flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 10px;
-      position: relative;
     }
 
     .btn {
@@ -339,44 +310,32 @@ h1, h2, h3 {
     }
 
     .btn-primary {
-      background: radial-gradient(circle at 0 0, rgba(59, 130, 246, 0.8), transparent 55%),
+      background:
+        radial-gradient(circle at 0 0, rgba(59, 130, 246, 0.85), transparent 60%),
         linear-gradient(135deg, #0ea5e9, #2563eb);
-      border-color: rgba(59, 130, 246, 0.9);
+      border-color: rgba(37, 99, 235, 0.9);
       color: #eff6ff;
-      box-shadow: 0 0 28px rgba(37, 99, 235, 0.75);
+      box-shadow: 0 0 26px rgba(37, 99, 235, 0.8);
     }
 
     .btn-secondary {
-      background: radial-gradient(circle at 0 0, rgba(236, 72, 153, 0.8), transparent 55%),
+      background:
+        radial-gradient(circle at 0 0, rgba(236, 72, 153, 0.9), transparent 60%),
         linear-gradient(135deg, #ec4899, #db2777);
       border-color: rgba(219, 39, 119, 0.9);
       color: #fdf2f8;
-      box-shadow: 0 0 26px rgba(236, 72, 153, 0.6);
+      box-shadow: 0 0 24px rgba(236, 72, 153, 0.7);
     }
 
     .btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 0 34px rgba(59, 130, 246, 0.85);
+      box-shadow: 0 0 32px rgba(56, 189, 248, 0.9);
     }
 
     .hero-disclaimer {
       font-size: 11px;
       color: var(--text-muted);
       margin-top: 10px;
-      position: relative;
-    }
-
-    .hero-right {
-      padding: 18px 18px 16px;
-      border-radius: 28px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.65), transparent 55%),
-        radial-gradient(circle at 100% 0, rgba(236, 72, 153, 0.55), transparent 55%),
-        radial-gradient(circle at 50% 100%, rgba(34, 197, 94, 0.55), transparent 50%),
-        #020617;
-      box-shadow: 0 0 60px rgba(15, 23, 42, 0.9);
-      position: relative;
-      overflow: hidden;
     }
 
     .panel-header {
@@ -393,7 +352,7 @@ h1, h2, h3 {
       gap: 6px;
       padding: 6px 12px;
       border-radius: var(--radius-pill);
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(148, 163, 184, 0.45);
       color: var(--text-soft);
     }
@@ -402,8 +361,8 @@ h1, h2, h3 {
       width: 6px;
       height: 6px;
       border-radius: 999px;
-      background: var(--accent-gold);
-      box-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
+      background: #facc15;
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.9);
     }
 
     .tag-label {
@@ -414,10 +373,11 @@ h1, h2, h3 {
 
     .panel-main {
       border-radius: 22px;
-      padding: 22px 18px 18px;
-      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.95), #020617);
+      padding: 22px 18px 16px;
+      background:
+        radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.95), #020617);
       border: 1px solid rgba(148, 163, 184, 0.45);
-      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.8);
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
     }
 
     .panel-title {
@@ -444,7 +404,7 @@ h1, h2, h3 {
       border-radius: var(--radius-pill);
       font-size: 11px;
       border: 1px solid rgba(56, 189, 248, 0.7);
-      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 1));
+      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 1));
       color: #e0f2fe;
     }
 
@@ -459,6 +419,8 @@ h1, h2, h3 {
     .pill-icon {
       font-size: 12px;
     }
+
+    /* SECTIONS */
 
     .section {
       margin-top: 40px;
@@ -488,7 +450,7 @@ h1, h2, h3 {
     .grid-2col {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 20px;
+      gap: 22px;
       align-items: flex-start;
     }
 
@@ -500,10 +462,13 @@ h1, h2, h3 {
 
     .card {
       border-radius: var(--radius-xl);
-      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.96), #020617);
+      background:
+        radial-gradient(circle at 0 0, rgba(37, 99, 235, 0.32), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(236, 72, 153, 0.3), transparent 55%),
+        linear-gradient(135deg, #020617, #020617);
       border: 1px solid var(--border-subtle);
       padding: 18px 18px 16px;
-      box-shadow: 0 0 40px rgba(15, 23, 42, 0.85);
+      box-shadow: 0 0 40px rgba(15, 23, 42, 0.95);
       position: relative;
       overflow: hidden;
     }
@@ -543,15 +508,18 @@ h1, h2, h3 {
       margin-top: 10px;
     }
 
+    /* CREATOR CARD */
+
     .creator-card {
       margin-top: 38px;
       border-radius: 26px;
       padding: 20px 20px 18px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.28), transparent 55%),
-        radial-gradient(circle at 100% 0, rgba(236, 72, 153, 0.25), transparent 55%),
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.3), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(236, 72, 153, 0.28), transparent 55%),
         rgba(15, 23, 42, 0.98);
-      box-shadow: 0 0 48px rgba(15, 23, 42, 0.9);
+      box-shadow: 0 0 48px rgba(15, 23, 42, 0.95);
     }
 
     .creator-eyebrow {
@@ -591,6 +559,8 @@ h1, h2, h3 {
       text-decoration: none;
     }
 
+    /* FOOTER */
+
     footer {
       margin-top: 38px;
       font-size: 11px;
@@ -622,16 +592,23 @@ h1, h2, h3 {
     }
   </style>
 </head>
+
 <body>
   <div class="page">
     <header>
       <div class="brand">
-        <div class="brand-logo"></div>
+        <!-- Place your logo file at assets/insertapenny-logo.png OR change src -->
+        <img
+          src="assets/insertapenny-logo.png"
+          alt="Insert A Penny logo"
+          class="brand-logo"
+        />
         <div class="brand-text">
           <div class="brand-name">Insert A Penny</div>
           <div class="brand-sub">Stake Exclusive Provider</div>
         </div>
       </div>
+
       <nav>
         <a href="#games">Games</a>
         <a href="#coming-soon">Coming soon</a>
@@ -647,13 +624,15 @@ h1, h2, h3 {
     </header>
 
     <main>
+      <!-- HERO -->
+
       <section class="hero" id="games">
         <div class="hero-left">
-          <div class="hero-eyebrow">Stake-Exclusive House Games</div>
+          <div class="hero-eyebrow">Stake-exclusive house games</div>
           <h1 class="hero-title">Insert A Penny</h1>
           <p class="hero-subtitle">
-            Arcade &amp; video game themed house games made by house game
-            enjoyers. Built on the Stake engine with time, energy and care.
+            Arcade &amp; video game themed house games made by house game enjoyers.
+            Built on the Stake engine with time, energy and care.
           </p>
 
           <div class="hero-badges">
@@ -672,17 +651,13 @@ h1, h2, h3 {
             >
               View Stake casino →
             </a>
-            <a
-              class="btn btn-secondary"
-              href="#coming-soon"
-            >
+            <a class="btn btn-secondary" href="#coming-soon">
               View upcoming titles →
             </a>
           </div>
 
           <p class="hero-disclaimer">
-            18+ only. Please gamble responsibly and follow all local
-            regulations.
+            18+ only. Please gamble responsibly and follow all local regulations.
           </p>
         </div>
 
@@ -690,19 +665,19 @@ h1, h2, h3 {
           <div class="panel-header">
             <div class="tag">
               <span class="tag-dot"></span>
-              <span class="tag-label">Most Anticipated</span>
+              <span class="tag-label">Most anticipated</span>
             </div>
             <div class="tag">
-              <span class="tag-label">Stake Engine • In Development</span>
+              <span class="tag-label">Stake Engine • In development</span>
             </div>
           </div>
 
           <div class="panel-main">
             <div class="panel-title">First Title Coming Soon</div>
             <div class="panel-subtitle">
-              Insert A Penny&apos;s debut house game is being built in
-              collaboration with Stake. Gameplay details and launch dates will
-              be revealed closer to release.
+              Insert A Penny&apos;s debut house game is being built in collaboration
+              with Stake. Gameplay details and launch dates will be revealed closer
+              to release.
             </div>
 
             <div class="panel-stat-row">
@@ -728,27 +703,28 @@ h1, h2, h3 {
         </aside>
       </section>
 
+      <!-- ROADMAP / AVAILABILITY -->
+
       <section class="section" id="coming-soon">
         <div class="grid-2col">
           <div>
             <div class="section-header">Roadmap</div>
             <div class="section-title">Coming soon to Stake</div>
             <p class="section-subtle">
-              Insert A Penny games are being developed as stateful house titles
-              and will go live once stateful providers are enabled on Stake.
-              The first release will be announced in collaboration with Stake.
+              Insert A Penny games are being developed as stateful house titles and
+              will go live once stateful providers are enabled on Stake. The first
+              release will be announced in collaboration with Stake.
             </p>
 
             <div class="card">
               <div class="card-heading">
                 <div class="card-title">Undisclosed Game</div>
-                <div class="card-pill">TBA • Coming Soon</div>
+                <div class="card-pill">TBA • Coming soon</div>
               </div>
               <div class="card-body">
-                More arcade &amp; video game inspired house games are in the
-                works. Details will be revealed as we move closer to launch and
-                showcase gameplay tuned specifically for Stake sessions and
-                streams.
+                More arcade &amp; video game inspired house games are in the works.
+                Details will be revealed as we move closer to launch and showcase
+                gameplay tuned specifically for Stake sessions and streams.
               </div>
               <div class="card-meta">
                 <span>Planned for Stake.com &amp; Stake.us</span>
@@ -761,9 +737,9 @@ h1, h2, h3 {
             <div class="section-header">Availability</div>
             <div class="section-title">Currently in pre-launch</div>
             <p class="section-subtle">
-              No Insert A Penny titles are live on Stake yet. All games are
-              being built as stateful house games and will become available once
-              stateful support is enabled for external providers.
+              No Insert A Penny titles are live on Stake yet. All games are being
+              built as stateful house games and will become available once stateful
+              support is enabled for external providers.
             </p>
 
             <div class="card">
@@ -772,9 +748,9 @@ h1, h2, h3 {
               </div>
               <div class="card-body">
                 Once live, Insert A Penny games will be playable only on
-                <strong>Stake.com</strong> and <strong>Stake.us</strong>.
-                Follow our channels and Stake announcements for launch timing
-                and feature reveals.
+                <strong>Stake.com</strong> and <strong>Stake.us</strong>. Follow our
+                channels and Stake announcements for launch timing and feature
+                reveals.
               </div>
               <div class="card-meta">
                 <span>Stake.com • Stake.us</span>
@@ -784,6 +760,8 @@ h1, h2, h3 {
           </div>
         </div>
       </section>
+
+      <!-- CREATORS -->
 
       <section class="creator-card" id="creators">
         <div class="creator-eyebrow">Behind the games</div>
@@ -824,14 +802,16 @@ h1, h2, h3 {
         </div>
       </section>
 
+      <!-- FOOTER -->
+
       <footer>
         <div class="footer-brand">
-          © 2025 Insert A Penny. All rights reserved. Stake Exclusive Casino
-          Game Provider.
+          © 2025 Insert A Penny. All rights reserved. Stake Exclusive Casino Game
+          Provider.
         </div>
         <div class="footer-legal">
-          18+ only • Gamble responsibly. For support visit your local helpline
-          or BeGambleAware.
+          18+ only • Gamble responsibly. For support visit your local helpline or
+          BeGambleAware.
         </div>
       </footer>
     </main>
