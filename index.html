@@ -31,19 +31,28 @@
       padding: 0;
     }
 
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Inter", sans-serif;
-      background: radial-gradient(circle at 10% 0%, #022c22 0, transparent 50%),
-        radial-gradient(circle at 90% 0%, #1d0337 0, transparent 55%),
-        radial-gradient(circle at 50% 100%, #083344 0, transparent 55%),
-        radial-gradient(circle at 10% 100%, #052e16 0, transparent 55%),
-        var(--bg);
-      color: var(--text-main);
-      min-height: 100vh;
-      padding: 0;
-      -webkit-font-smoothing: antialiased;
-    }
+/* restore original neon gradient theme */
+body {
+  background: radial-gradient(circle at top left, #05112c 0%, #0a0a26 40%, #160021 100%);
+  background-attachment: fixed;
+  color: #e4e7ff;
+}
+
+.panel {
+  background: linear-gradient(135deg, rgba(8, 22, 40, 0.92), rgba(49, 3, 56, 0.92));
+  border: 1px solid rgba(110, 60, 255, 0.25);
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.6), 0 0 40px rgba(91,0,153,0.3);
+}
+
+button, .btn {
+  box-shadow: 0 0 20px rgba(0, 221, 255, 0.35);
+}
+
+h1, h2, h3 {
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(255,0,240,0.7);
+}
+
 
     .page {
       max-width: 1180px;
