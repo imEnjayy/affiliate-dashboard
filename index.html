@@ -31,17 +31,20 @@
       padding: 0;
     }
 
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), transparent 55%),
-        radial-gradient(circle at top right, rgba(244, 114, 182, 0.18), transparent 55%),
-        radial-gradient(circle at bottom, rgba(59, 130, 246, 0.25), #020617 70%);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  background-color: #020617;
+  background-image:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), transparent 55%),
+    radial-gradient(circle at top right, rgba(244, 114, 182, 0.18), transparent 55%),
+    linear-gradient(to bottom, #020617, #020617);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
 
     a {
       color: inherit;
@@ -82,24 +85,11 @@
       font-size: 0.86rem;
     }
 
-    .logo-mark {
-      width: 30px;
+    .logo-img {
       height: 30px;
+      width: auto;
       border-radius: 999px;
-      background:
-        radial-gradient(circle at 20% 10%, #f97316, transparent 55%),
-        radial-gradient(circle at 80% 90%, #22d3ee, transparent 60%),
-        radial-gradient(circle at 50% 50%, #8b5cf6, #0b061c);
-      display: grid;
-      place-items: center;
-      box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
-      font-size: 0.9rem;
-    }
-
-    .logo-mark span {
-      font-weight: 900;
-      color: #f9fafb;
-      text-shadow: 0 0 2px rgba(15, 23, 42, 0.8);
+      box-shadow: 0 0 10px rgba(56,189,248,0.7);
     }
 
     .nav-links {
@@ -744,9 +734,11 @@
   <header>
     <nav class="nav">
       <div class="logo">
-        <div class="logo-mark" aria-hidden="true">
-          <span>₵</span>
-        </div>
+        <img
+          src="https://cdn.discordapp.com/attachments/1380875293367074846/1441985960098267286/content.png?ex=6923c993&is=69227813&hm=c933291fd1aa6371fcad3aa186475e0b0c71e5da51d5219d1e737aef3c6f8273&"
+          alt="Insert A Penny Logo"
+          class="logo-img"
+        />
         <div>
           <div>Insert A Penny</div>
           <div style="font-size: 0.68rem; color: var(--muted); text-transform: none;">
@@ -823,160 +815,265 @@
         </p>
       </div>
 
-        <aside class="hero-right">
-          <div class="panel-header">
-            <div class="tag">
-              <span class="tag-dot"></span>
-              <span class="tag-label">Most anticipated</span>
+      <!-- HERO VISUAL / EMERALD MINES PREVIEW -->
+      <aside class="hero-visual" aria-label="Preview of Insert A Penny game Emerald Mines">
+        <div class="hero-visual-inner">
+          <div class="chip-row">
+            <div class="chip">
+              <span>🔥</span>
+              <strong>Most Popular</strong>
             </div>
-            <div class="tag">
-              <span class="tag-label">Stake Engine • In development</span>
-            </div>
-          </div>
-
-          <div class="panel-main">
-            <div class="panel-title">First Title Coming Soon</div>
-            <div class="panel-subtitle">
-              Insert A Penny&apos;s debut house game is being built in collaboration
-              with Stake. Gameplay details and launch dates will be revealed closer
-              to release.
-            </div>
-
-            <div class="panel-stat-row">
-              <span class="chip">Stateful gameplay focused</span>
-              <span class="chip">Arcade &amp; video game inspired</span>
-            </div>
-            <div class="panel-stat-row">
-              <span class="chip">Stream-ready pacing</span>
-              <span class="chip">Optimized for Stake.com &amp; Stake.us</span>
-            </div>
-
-            <div class="panel-foot-tags">
-              <span class="pill">
-                <span class="pill-icon">🎮</span>
-                Built on Stake Engine
-              </span>
-              <span class="pill">
-                <span class="pill-icon">🧪</span>
-                Currently in internal testing
-              </span>
+            <div class="chip">
+              Stake Engine • Live
             </div>
           </div>
-        </aside>
-      </section>
 
-      <!-- ROADMAP / AVAILABILITY -->
+          <div class="game-marquee">
+            <div class="game-marquee-main">
+              <h3>Emerald Mines</h3>
+              <div>A classic diamond &amp; bomb game.</div>
 
-      <section class="section" id="coming-soon">
-        <div class="grid-2col">
-          <div>
-            <div class="section-header">Roadmap</div>
-            <div class="section-title">Coming soon to Stake</div>
-            <p class="section-subtle">
-              Insert A Penny games are being developed as stateful house titles and
-              will go live once stateful providers are enabled on Stake. The first
-              release will be announced in collaboration with Stake.
-            </p>
-
-            <div class="card">
-              <div class="card-heading">
-                <div class="card-title">Undisclosed Game</div>
-                <div class="card-pill">TBA • Coming soon</div>
+              <div class="pill-row">
+                <span class="pill">Max Win Potential: 10,000,000</span>
               </div>
-              <div class="card-body">
-                More arcade &amp; video game inspired house games are in the works.
-                Details will be revealed as we move closer to launch and showcase
-                gameplay tuned specifically for Stake sessions and streams.
+
+              <div class="pill-row">
+                <span class="pill">5×5</span>
+                <span class="pill">6×6</span>
+                <span class="pill">7×7</span>
+                <span class="pill">8×8</span>
               </div>
-              <div class="card-meta">
-                <span>Planned for Stake.com &amp; Stake.us</span>
-                <span>Stake Exclusive</span>
+
+              <div class="pill-row">
+                <span class="pill">Click &amp; Cashout</span>
+                <span class="pill">Autobets</span>
               </div>
             </div>
           </div>
 
-          <div>
-            <div class="section-header">Availability</div>
-            <div class="section-title">Currently in pre-launch</div>
-            <p class="section-subtle">
-              No Insert A Penny titles are live on Stake yet. All games are being
-              built as stateful house games and will become available once stateful
-              support is enabled for external providers.
-            </p>
-
-            <div class="card">
-              <div class="card-heading">
-                <div class="card-title">Where to play</div>
-              </div>
-              <div class="card-body">
-                Once live, Insert A Penny games will be playable only on
-                <strong>Stake.com</strong> and <strong>Stake.us</strong>. Follow our
-                channels and Stake announcements for launch timing and feature
-                reveals.
-              </div>
-              <div class="card-meta">
-                <span>Stake.com • Stake.us</span>
-                <span>Stake-Exclusive Provider</span>
-              </div>
+          <div class="stat-strip">
+            <div class="stat-pill">
+              <span>🧱</span>
+              <span>Minecraft Theme</span>
+            </div>
+            <div class="stat-pill">
+              <span>⚡</span>
+              <span>Fast rounds</span>
+            </div>
+            <div class="stat-pill">
+              <span>🛠️</span>
+              <span>Stake Engine</span>
             </div>
           </div>
         </div>
-      </section>
+      </aside>
+    </section>
 
-      <!-- CREATORS -->
-
-      <section class="creator-card" id="creators">
-        <div class="creator-eyebrow">Behind the games</div>
-        <div class="creator-title">Meet the Creators</div>
-        <div class="creator-subtitle">Enjayy &amp; Dave</div>
-        <p class="creator-body">
-          Insert A Penny is crafted by a duo team already known for their house
-          game content and tools creation. The two individuals are extremely
-          passionate about house games, making even the smallest details matter.
-          Connect with the creators below on Discord, Kick, and X.
+    <!-- GAMES SECTION -->
+    <section id="games" class="grid" aria-labelledby="games-title">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Featured titles</div>
+          <h2 class="section-title" id="games-title">Live on Stake</h2>
+        </div>
+        <p class="section-subtitle">
+          Insert A Penny games are playable only on
+          <strong>Stake.com</strong> and <strong>Stake.us</strong>.
         </p>
-        <div class="creator-links">
-          <a
-            href="https://kick.com/enjayy"
-            target="_blank"
-            rel="noreferrer"
-            class="btn btn-primary"
-          >
-            Watch on Kick →
-          </a>
-          <a
-            href="https://discord.gg/enjayy"
-            target="_blank"
-            rel="noreferrer"
-            class="btn btn-secondary"
-          >
-            Join Discord →
-          </a>
-          <a
-            href="https://x.com/imenjayy"
-            target="_blank"
-            rel="noreferrer"
-            class="btn"
-            style="border:1px solid rgba(148,163,184,0.6);background:rgba(15,23,42,0.9);color:#e5e7eb;"
-          >
-            Follow on X (Twitter) →
-          </a>
-        </div>
-      </section>
+      </div>
 
-      <!-- FOOTER -->
+      <div class="card-row">
+        <!-- Emerald Mines – single published game -->
+        <article class="card">
+          <div class="card-tag-row">
+            <span class="card-tag">
+              <span>💎</span>
+              <span>Emerald Mines</span>
+            </span>
+            <span>Available now</span>
+          </div>
+          <h3 class="card-title">Emerald Mines</h3>
+          <div class="card-meta">
+            <span>Max Win Potential: 10,000,000</span>
+            <span>•</span>
+            <span>Board Types: 5×5 | 6×6 | 7×7 | 8×8</span>
+          </div>
+          <p class="card-desc">
+            A classic diamond &amp; bomb game with board sizes ranging from 5×5 to 8×8.
+            Click and cashout when you’re ready — or try your luck with carefully tuned autobets.
+          </p>
+          <div class="card-footer">
+            <span>Stake.com • Stake.us</span>
+            <span>Stake Exclusive</span>
+          </div>
+        </article>
+      </div>
+    </section>
 
-      <footer>
-        <div class="footer-brand">
-          © 2025 Insert A Penny. All rights reserved. Stake Exclusive Casino Game
-          Provider.
+    <!-- COMING SOON SECTION -->
+    <section id="coming-soon" class="grid" aria-labelledby="coming-soon-title">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Roadmap</div>
+          <h2 class="section-title" id="coming-soon-title">Coming soon to Stake</h2>
         </div>
-        <div class="footer-legal">
-          18+ only • Gamble responsibly. For support visit your local helpline or
-          BeGambleAware.
+        <p class="section-subtitle">
+          Future titles are in development and will be announced in collaboration with Stake.
+        </p>
+      </div>
+
+      <div class="card-row">
+        <!-- Single undisclosed upcoming game -->
+        <article class="card">
+          <div class="card-tag-row">
+            <span class="pill-soft">Coming soon</span>
+            <span>TBA</span>
+          </div>
+          <h3 class="card-title">Undisclosed Game</h3>
+          <div class="card-meta">
+            <span>Undisclosed Description</span>
+          </div>
+          <p class="card-desc">
+            More arcade &amp; video game inspired house games are in the works.
+            Details will be revealed as we get closer to launch in partnership with Stake.
+          </p>
+          <div class="card-footer">
+            <span>Planned for Stake.com &amp; Stake.us</span>
+            <span>Stake Exclusive</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="timeline" aria-label="Insert A Penny release timeline">
+        <div class="section-kicker">Launch cadence</div>
+        <p>
+          Insert A Penny is focused on building a tight lineup of arcade-styled house games,
+          tuned for <strong>Stake Engine</strong> and real players who enjoy game-feel as much as potential.
+        </p>
+        <ul class="timeline-list">
+          <li class="timeline-item">
+            <div class="timeline-label">Now</div>
+            <div>
+              <div class="timeline-body-title">Emerald Mines live on Stake</div>
+              <div class="timeline-body-sub">
+                Emerald Mines is available exclusively on Stake.com and Stake.us, with high max win potential
+                and multiple board types for different risk appetites.
+              </div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-label">Next</div>
+            <div>
+              <div class="timeline-body-title">New undisclosed titles</div>
+              <div class="timeline-body-sub">
+                Additional Insert A Penny games are being developed with the same focus on arcade feel,
+                readable game states, and clean Stake Engine integration.
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- AVAILABILITY / STAKE EXCLUSIVE CALLOUT -->
+    <section id="availability" class="availability" aria-labelledby="availability-title">
+      <div class="section-header" style="margin-bottom: 0;">
+        <div>
+          <div class="section-kicker">Availability</div>
+          <h2 class="section-title" id="availability-title">
+            Stake Exclusive – only on Stake.com &amp; Stake.us
+          </h2>
         </div>
-      </footer>
-    </main>
-  </div>
+      </div>
+
+      <p>
+        Insert A Penny is built <strong>on the Stake Engine</strong>. Our games are not
+        available on any other casino, brand, or platform. To play, you must
+        have an account with Stake.com or Stake.us, depending on your region
+        and local regulations.
+      </p>
+
+      <div class="availability-grid">
+        <div class="availability-card">
+          <strong>Stake.com</strong>
+          <span>Global crypto casino</span>
+          <span>Players in eligible regions can access Insert A Penny titles directly from the Stake lobby.</span>
+        </div>
+        <div class="availability-card">
+          <strong>Stake.us</strong>
+          <span>Social casino platform</span>
+          <span>US-based players (where allowed) can enjoy Insert A Penny experiences tailored for Stake.us.</span>
+        </div>
+      </div>
+
+      <p class="availability-footnote">
+        Availability is subject to your jurisdiction’s rules &amp; Stake’s
+        terms of service. Always make sure you comply with local laws and age
+        requirements before playing.
+      </p>
+    </section>
+
+    <!-- CREATOR SECTION -->
+    <section class="creator" aria-labelledby="creator-title">
+      <div class="section-header" style="margin-bottom: 12px;">
+        <div>
+          <div class="section-kicker">Behind the games</div>
+          <h2 class="section-title" id="creator-title">Meet the Creators</h2>
+          <div class="creator-names">Enjayy &amp; Dave</div>
+        </div>
+      </div>
+
+      <p class="creator-desc">
+        Insert A Penny is crafted by a duo team already known for their house game content and tools creation.
+        The two individuals are extremely passionate about house games, making even the smallest details matter.
+        Connect with the creators below on Discord, Kick, and X.
+      </p>
+
+      <div class="creator-links">
+        <a
+          class="btn btn-primary"
+          href="https://kick.com/enjayy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Watch on Kick →
+        </a>
+
+        <a
+          class="btn"
+          href="https://discord.gg/enjayy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Join Discord →
+        </a>
+
+        <a
+          class="btn"
+          href="https://x.com/imenjayy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Follow on X (Twitter) →
+        </a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div>
+        © <span id="year"></span> Insert A Penny. All rights reserved. Stake
+        Exclusive Casino Game Provider.
+      </div>
+      <div>
+        18+ only • Gamble responsibly • For support visit your local
+        helpline or <a href="https://www.begambleaware.org" target="_blank" rel="noopener noreferrer">BeGambleAware</a>.
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
